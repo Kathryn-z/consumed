@@ -1,21 +1,49 @@
 import { customEntryStyles } from "@/styles/screens/customEntry";
-import { CATEGORIES, ContentCategory } from "@/types/content";
+import { CATEGORIES, ContentCategory, ContentStatus } from "@/types/content";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
+import { useContent } from "@/hooks/useContent";
 
 export default function CustomEntry() {
   const router = useRouter();
+  const { addItem } = useContent();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<ContentCategory | null>(null);
+  const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
   const [creator, setCreator] = useState("");
   const [year, setYear] = useState("");
   const [notes, setNotes] = useState("");
+  const [saving, setSaving] = useState(false);
 
-  const handleSave = () => {
-    // TODO: Save the custom entry
-    console.log("Saving custom entry:", { title, category, creator, year, notes });
-    router.back();
+  const handleSave = async () => {
+    // Validate required fields
+    if (!title.trim()) {
+      Alert.alert("Error", "Please enter a title");
+      return;
+    }
+    if (!category) {
+      Alert.alert("Error", "Please select a category");
+      return;
+    }
+
+    try {
+      setSaving(true);
+      await addItem({
+        title: title.trim(),
+        category,
+        status,
+        creator: creator.trim() || undefined,
+        year: year ? parseInt(year, 10) : undefined,
+        notes: notes.trim() || undefined,
+      });
+      router.back();
+    } catch (error) {
+      Alert.alert("Error", "Failed to save entry. Please try again.");
+      console.error("Error saving entry:", error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -66,6 +94,45 @@ export default function CustomEntry() {
             </View>
           </View>
 
+          {/* Status Selection */}
+          <View style={customEntryStyles.inputGroup}>
+            <Text style={customEntryStyles.label}>Status *</Text>
+            <View style={customEntryStyles.filterContainer}>
+              <TouchableOpacity
+                style={[
+                  customEntryStyles.chip,
+                  status === ContentStatus.TODO && customEntryStyles.chipActive,
+                ]}
+                onPress={() => setStatus(ContentStatus.TODO)}
+              >
+                <Text
+                  style={[
+                    customEntryStyles.chipText,
+                    status === ContentStatus.TODO && customEntryStyles.chipTextActive,
+                  ]}
+                >
+                  To do
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  customEntryStyles.chip,
+                  status === ContentStatus.DONE && customEntryStyles.chipActive,
+                ]}
+                onPress={() => setStatus(ContentStatus.DONE)}
+              >
+                <Text
+                  style={[
+                    customEntryStyles.chipText,
+                    status === ContentStatus.DONE && customEntryStyles.chipTextActive,
+                  ]}
+                >
+                  Done
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           {/* Creator/Author Input */}
           <View style={customEntryStyles.inputGroup}>
             <Text style={customEntryStyles.label}>Creator/Author</Text>
@@ -104,11 +171,14 @@ export default function CustomEntry() {
 
           {/* Save Button */}
           <TouchableOpacity
-            style={customEntryStyles.button}
+            style={[customEntryStyles.button, saving && { opacity: 0.6 }]}
             onPress={handleSave}
             activeOpacity={0.8}
+            disabled={saving}
           >
-            <Text style={customEntryStyles.buttonText}>Save Entry</Text>
+            <Text style={customEntryStyles.buttonText}>
+              {saving ? "Saving..." : "Save Entry"}
+            </Text>
           </TouchableOpacity>
 
           {/* Cancel Button */}

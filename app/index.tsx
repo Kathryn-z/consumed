@@ -1,18 +1,42 @@
+import { ContentCard } from "@/components/ContentCard";
+import { useContent } from "@/hooks/useContent";
 import { indexStyles } from "@/styles/screens/index";
-import { CATEGORIES, ContentCategory } from "@/types/content";
-import { useRouter } from "expo-router";
-import { useState, useRef } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View, Animated } from "react-native";
+import { CATEGORIES, ContentCategory, ContentStatus } from "@/types/content";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { ActivityIndicator, Animated, FlatList, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type TabType = "done" | "todo";
 
 export default function SearchInsert() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<ContentCategory | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>("done");
   const animatedValue = useRef(new Animated.Value(0)).current;
+
+  // Load items based on active tab
+  const status = activeTab === "done" ? ContentStatus.DONE : ContentStatus.TODO;
+  const { items, loading, refresh } = useContent(status);
+
+  // Refresh when screen comes into focus (e.g., after adding an item)
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
+
+  // Filter items based on selected category
+  const filteredItems = useMemo(() => {
+    let filtered = items;
+
+    // Filter by category
+    if (selectedCategory) {
+      filtered = filtered.filter((item) => item.category === selectedCategory);
+    }
+
+    return filtered;
+  }, [items, selectedCategory]);
 
   const handleCategoryPress = (category: ContentCategory) => {
     setSelectedCategory(selectedCategory === category ? null : category);
@@ -20,6 +44,10 @@ export default function SearchInsert() {
 
   const handleAddContent = () => {
     router.push("/search");
+  };
+
+  const handleSearchRecords = () => {
+    router.push("/searchRecords");
   };
 
   const handleTabPress = (tab: TabType) => {
@@ -38,54 +66,54 @@ export default function SearchInsert() {
   return (
     <SafeAreaView style={indexStyles.container}>
       <ScrollView style={indexStyles.content}>
-        <Text style={indexStyles.title}>Home</Text>
+        {/* Header with Tab Switcher and Search Icon */}
+        <View style={indexStyles.header}>
+          <View style={indexStyles.tabSwitcher}>
+            <TouchableOpacity
+              style={[
+                indexStyles.tab,
+                activeTab === "done" && indexStyles.tabActive,
+              ]}
+              onPress={() => handleTabPress("done")}
+              activeOpacity={0.8}
+            >
+              <Text
+                style={[
+                  indexStyles.tabText,
+                  activeTab === "done" && indexStyles.tabTextActive,
+                ]}
+              >
+                Done
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                indexStyles.tab,
+                activeTab === "todo" && indexStyles.tabActive,
+              ]}
+              onPress={() => handleTabPress("todo")}
+              activeOpacity={0.8}
+            >
+              <Text
+                style={[
+                  indexStyles.tabText,
+                  activeTab === "todo" && indexStyles.tabTextActive,
+                ]}
+              >
+                To do
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        {/* Tab Switcher */}
-        <View style={indexStyles.tabSwitcher}>
+          {/* Search Icon */}
           <TouchableOpacity
-            style={[
-              indexStyles.tab,
-              activeTab === "done" && indexStyles.tabActive,
-            ]}
-            onPress={() => handleTabPress("done")}
-            activeOpacity={0.8}
+            style={indexStyles.searchIcon}
+            onPress={handleSearchRecords}
+            activeOpacity={0.7}
           >
-            <Text
-              style={[
-                indexStyles.tabText,
-                activeTab === "done" && indexStyles.tabTextActive,
-              ]}
-            >
-              Done
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              indexStyles.tab,
-              activeTab === "todo" && indexStyles.tabActive,
-            ]}
-            onPress={() => handleTabPress("todo")}
-            activeOpacity={0.8}
-          >
-            <Text
-              style={[
-                indexStyles.tabText,
-                activeTab === "todo" && indexStyles.tabTextActive,
-              ]}
-            >
-              To do
-            </Text>
+            <Text style={indexStyles.searchIconText}>🔍</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Search Bar */}
-        <TextInput
-          style={indexStyles.searchBar}
-          placeholder="Search for content..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          returnKeyType="search"
-        />
 
         {/* Category Filter Chips */}
         <View style={indexStyles.filterContainer}>
@@ -110,21 +138,32 @@ export default function SearchInsert() {
           ))}
         </View>
 
-        {/* Search Results Area */}
-        <View style={indexStyles.searchResults}>
-          {searchQuery ? (
-            <Text style={indexStyles.searchResultsText}>
-              {activeTab === "done" ? "Done" : "To do"} results for "{searchQuery}"
-              {selectedCategory && ` in ${selectedCategory}`} will appear here
+        {/* Content List */}
+        {loading ? (
+          <View style={indexStyles.loadingContainer}>
+            <ActivityIndicator size="large" color="#007AFF" />
+          </View>
+        ) : filteredItems.length > 0 ? (
+          <FlatList
+            data={filteredItems}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <ContentCard item={item} onPress={(item) => console.log("Pressed:", item.title)} />
+            )}
+            scrollEnabled={false}
+            contentContainerStyle={indexStyles.listContent}
+          />
+        ) : (
+          <View style={indexStyles.emptyContainer}>
+            <Text style={indexStyles.emptyText}>
+              {selectedCategory
+                ? "No items found"
+                : activeTab === "done"
+                ? "No completed content yet"
+                : "No items to do yet"}
             </Text>
-          ) : (
-            <Text style={indexStyles.searchResultsText}>
-              {activeTab === "done"
-                ? "Your completed content will appear here"
-                : "Your to-do content will appear here"}
-            </Text>
-          )}
-        </View>
+          </View>
+        )}
       </ScrollView>
 
       {/* Floating Action Button */}

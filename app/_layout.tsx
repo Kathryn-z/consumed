@@ -41,6 +41,15 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
+          name="searchRecords"
+          options={{
+            href: null,
+            title: "Search Records",
+            headerShown: false,
+            tabBarStyle: { display: "none" },
+          }}
+        />
+        <Tabs.Screen
           name="customEntry"
           options={{
             href: null,

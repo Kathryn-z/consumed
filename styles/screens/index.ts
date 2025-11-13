@@ -3,14 +3,10 @@ import { commonStyles, spacing, colors } from "../common";
 
 export const indexStyles = StyleSheet.create({
   ...commonStyles,
-  searchBar: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 25,
-    paddingHorizontal: spacing.md,
-    fontSize: 16,
-    backgroundColor: "#f5f5f5",
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
     marginBottom: spacing.md,
   },
   filterContainer: {
@@ -60,22 +56,23 @@ export const indexStyles = StyleSheet.create({
     color: "#fff",
     fontWeight: "300",
   },
-  searchResults: {
-    flex: 1,
-    marginTop: spacing.md,
-  },
-  searchResultsText: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    textAlign: "center",
-    marginTop: spacing.lg,
-  },
   tabSwitcher: {
+    flex: 1,
     flexDirection: "row",
     backgroundColor: "#f0f0f0",
     borderRadius: 10,
     padding: 4,
-    marginBottom: spacing.md,
+  },
+  searchIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#f0f0f0",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  searchIconText: {
+    fontSize: 20,
   },
   tab: {
     flex: 1,
@@ -95,5 +92,25 @@ export const indexStyles = StyleSheet.create({
   tabTextActive: {
     color: colors.text.primary,
     fontWeight: "600",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: spacing.xl,
+  },
+  listContent: {
+    paddingBottom: spacing.md,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: spacing.xl,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    textAlign: "center",
   },
 });

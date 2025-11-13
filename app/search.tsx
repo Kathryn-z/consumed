@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import { searchStyles } from "@/styles/screens/search";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Search() {
   const router = useRouter();
@@ -27,8 +27,6 @@ export default function Search() {
   return (
     <SafeAreaView style={searchStyles.container}>
       <ScrollView style={searchStyles.content}>
-        <Text style={searchStyles.title}>Search Content</Text>
-
         {/* Search Bar with Cancel Button */}
         <View style={searchStyles.searchBarContainer}>
           <TextInput
