@@ -22,18 +22,28 @@ export const CATEGORIES = Object.values(ContentCategory);
 export type Category = ContentCategory;
 
 /**
+ * Content status enum
+ */
+export enum ContentStatus {
+  TODO = "todo",
+  DONE = "done",
+}
+
+/**
  * Content item interface
  * Represents a single piece of consumed content
  */
 export interface ContentItem {
-  id: string;
+  id: number;
   title: string;
   category: ContentCategory;
+  status: ContentStatus;
   creator?: string; // Author, Director, Producer, etc.
   year?: number;
   notes?: string;
-  rating?: number; // 1-5 stars or 1-10 scale
-  dateConsumed?: Date;
+  rating?: number; // 0-5 stars
+  dateConsumed?: string; // ISO string for database compatibility
+  dateAdded: string; // ISO string for when item was added
   coverImage?: string;
   externalId?: string; // ID from external API (TMDB, Google Books, etc.)
 }
@@ -49,8 +59,8 @@ export interface SearchFilter {
 /**
  * Content creation input
  */
-export type CreateContentInput = Omit<ContentItem, "id" | "dateConsumed"> & {
-  dateConsumed?: Date;
+export type CreateContentInput = Omit<ContentItem, "id" | "dateAdded" | "dateConsumed"> & {
+  dateConsumed?: string;
 };
 
 /**
