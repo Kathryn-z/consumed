@@ -43,7 +43,7 @@ export default function SearchInsert() {
   };
 
   const handleAddContent = () => {
-    router.push("/search");
+    router.push("/searchInsert");
   };
 
   const handleSearchRecords = () => {

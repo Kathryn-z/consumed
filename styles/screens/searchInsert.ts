@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { commonStyles, spacing, colors } from "../common";
 
-export const searchStyles = StyleSheet.create({
+export const searchInsertStyles = StyleSheet.create({
   ...commonStyles,
   searchBarContainer: {
     flexDirection: "row",

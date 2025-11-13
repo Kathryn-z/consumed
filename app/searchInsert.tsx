@@ -1,10 +1,10 @@
-import { searchStyles } from "@/styles/screens/search";
+import { searchInsertStyles } from "@/styles/screens/searchInsert";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Search() {
+export default function SearchInsert() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -25,12 +25,12 @@ export default function Search() {
   };
 
   return (
-    <SafeAreaView style={searchStyles.container}>
-      <ScrollView style={searchStyles.content}>
+    <SafeAreaView style={searchInsertStyles.container}>
+      <ScrollView style={searchInsertStyles.content}>
         {/* Search Bar with Cancel Button */}
-        <View style={searchStyles.searchBarContainer}>
+        <View style={searchInsertStyles.searchBarContainer}>
           <TextInput
-            style={searchStyles.searchBar}
+            style={searchInsertStyles.searchBar}
             placeholder="Search for content..."
             value={searchQuery}
             onChangeText={setSearchQuery}
@@ -38,30 +38,30 @@ export default function Search() {
             onSubmitEditing={handleSearch}
           />
           <TouchableOpacity
-            style={searchStyles.cancelButton}
+            style={searchInsertStyles.cancelButton}
             onPress={handleCancel}
             activeOpacity={0.7}
           >
-            <Text style={searchStyles.cancelButtonText}>Cancel</Text>
+            <Text style={searchInsertStyles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
 
         {/* Search Results Area */}
-        <View style={searchStyles.resultsContainer}>
+        <View style={searchInsertStyles.resultsContainer}>
           {searchResults.length > 0 ? (
             // TODO: Display search results here
             <Text>Results will appear here</Text>
           ) : (
-            <View style={searchStyles.noResultsContainer}>
-              <Text style={searchStyles.noResultsText}>
+            <View style={searchInsertStyles.noResultsContainer}>
+              <Text style={searchInsertStyles.noResultsText}>
                 If there is no content in the search result, you can try custom entry.
               </Text>
               <TouchableOpacity
-                style={searchStyles.customEntryButton}
+                style={searchInsertStyles.customEntryButton}
                 onPress={handleCustomEntry}
                 activeOpacity={0.8}
               >
-                <Text style={searchStyles.customEntryButtonText}>
+                <Text style={searchInsertStyles.customEntryButtonText}>
                   Enter Custom Entry
                 </Text>
               </TouchableOpacity>

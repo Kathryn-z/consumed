@@ -32,7 +32,7 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
-          name="search"
+          name="searchInsert"
           options={{
             href: null,
             title: "Search Content",
