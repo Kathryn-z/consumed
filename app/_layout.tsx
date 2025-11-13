@@ -50,6 +50,24 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
+          name="contentDetail"
+          options={{
+            href: null,
+            title: "Content Details",
+            headerShown: true,
+            headerShadowVisible: false,
+            tabBarStyle: { display: "none" },
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => router.back()}
+                style={layoutStyles.backButton}
+              >
+                <Text style={layoutStyles.backButtonText}>&lt;</Text>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="customEntry"
           options={{
             href: null,

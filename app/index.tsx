@@ -50,6 +50,10 @@ export default function SearchInsert() {
     router.push("/searchRecords");
   };
 
+  const handleItemPress = (item: any) => {
+    router.push(`/contentDetail?id=${item.id}`);
+  };
+
   const handleTabPress = (tab: TabType) => {
     if (tab === activeTab) return;
 
@@ -148,7 +152,7 @@ export default function SearchInsert() {
             data={filteredItems}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <ContentCard item={item} onPress={(item) => console.log("Pressed:", item.title)} />
+              <ContentCard item={item} onPress={handleItemPress} />
             )}
             scrollEnabled={false}
             contentContainerStyle={indexStyles.listContent}

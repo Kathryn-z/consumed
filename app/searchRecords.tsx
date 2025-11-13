@@ -32,6 +32,10 @@ export default function SearchRecords() {
     router.back();
   };
 
+  const handleItemPress = (item: any) => {
+    router.push(`/contentDetail?id=${item.id}`);
+  };
+
   return (
     <SafeAreaView style={searchRecordsStyles.container}>
       <ScrollView style={searchRecordsStyles.content}>
@@ -72,7 +76,7 @@ export default function SearchRecords() {
             data={filteredItems}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <ContentCard item={item} onPress={(item) => console.log("Pressed:", item.title)} />
+              <ContentCard item={item} onPress={handleItemPress} />
             )}
             scrollEnabled={false}
             contentContainerStyle={searchRecordsStyles.listContent}
