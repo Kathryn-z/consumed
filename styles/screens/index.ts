@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { commonStyles, spacing, colors } from "../common";
 
-export const searchInsertStyles = StyleSheet.create({
+export const indexStyles = StyleSheet.create({
   ...commonStyles,
   searchBar: {
     height: 50,
@@ -69,5 +69,31 @@ export const searchInsertStyles = StyleSheet.create({
     color: colors.text.secondary,
     textAlign: "center",
     marginTop: spacing.lg,
+  },
+  tabSwitcher: {
+    flexDirection: "row",
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+    padding: 4,
+    marginBottom: spacing.md,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: spacing.sm,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tabActive: {
+    backgroundColor: "#fff",
+  },
+  tabText: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    fontWeight: "500",
+  },
+  tabTextActive: {
+    color: colors.text.primary,
+    fontWeight: "600",
   },
 });

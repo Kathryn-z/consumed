@@ -1,8 +1,8 @@
 import { customEntryStyles } from "@/styles/screens/customEntry";
+import { CATEGORIES, ContentCategory } from "@/types/content";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { CATEGORIES, ContentCategory } from "@/types/content";
 
 export default function CustomEntry() {
   const router = useRouter();
@@ -28,11 +28,6 @@ export default function CustomEntry() {
         style={customEntryStyles.content}
         contentContainerStyle={customEntryStyles.scrollContent}
       >
-        <Text style={customEntryStyles.title}>Add Custom Entry</Text>
-        <Text style={customEntryStyles.description}>
-          Enter information about the content you want to add.
-        </Text>
-
         <View style={customEntryStyles.formContainer}>
           {/* Title Input */}
           <View style={customEntryStyles.inputGroup}>
