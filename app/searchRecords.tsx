@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Text, View, TextInput, TouchableOpacity, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { searchRecordsStyles } from "@/styles/screens/searchRecords";
 import { useContent } from "@/hooks/useContent";
 import { ContentCard } from "@/components/ContentCard";
@@ -12,6 +12,16 @@ export default function SearchRecords() {
 
   // Load all items (both done and todo)
   const { items, loading } = useContent();
+
+  // Reset search when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        // Cleanup when screen loses focus
+        setSearchQuery("");
+      };
+    }, [])
+  );
 
   // Filter items based on search query
   const filteredItems = useMemo(() => {

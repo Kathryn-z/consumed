@@ -1,6 +1,6 @@
 import { searchInsertStyles } from "@/styles/screens/searchInsert";
-import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useState } from "react";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,6 +8,17 @@ export default function SearchInsert() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
+
+  // Reset search when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        // Cleanup when screen loses focus
+        setSearchQuery("");
+        setSearchResults([]);
+      };
+    }, [])
+  );
 
   const handleSearch = () => {
     // TODO: Implement actual search logic
