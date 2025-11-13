@@ -102,4 +102,12 @@ export const customEntryStyles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
   },
+  ratingContainer: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  star: {
+    fontSize: 32,
+    color: "#FFD700",
+  },
 });

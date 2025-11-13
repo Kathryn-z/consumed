@@ -1,9 +1,9 @@
+import { useContent } from "@/hooks/useContent";
 import { customEntryStyles } from "@/styles/screens/customEntry";
 import { CATEGORIES, ContentCategory, ContentStatus } from "@/types/content";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
-import { useContent } from "@/hooks/useContent";
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function CustomEntry() {
   const router = useRouter();
@@ -14,6 +14,7 @@ export default function CustomEntry() {
   const [creator, setCreator] = useState("");
   const [year, setYear] = useState("");
   const [notes, setNotes] = useState("");
+  const [rating, setRating] = useState(0);
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
@@ -35,6 +36,7 @@ export default function CustomEntry() {
         status,
         creator: creator.trim() || undefined,
         year: year ? parseInt(year, 10) : undefined,
+        rating: rating > 0 ? rating : undefined,
         notes: notes.trim() || undefined,
       });
       router.back();
@@ -48,6 +50,28 @@ export default function CustomEntry() {
 
   const handleCancel = () => {
     router.back();
+  };
+
+  const handleStarPress = (starIndex: number) => {
+    setRating(starIndex);
+  };
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      const starDisplay = rating >= i ? '★' : '☆';
+
+      stars.push(
+        <TouchableOpacity
+          key={i}
+          onPress={() => handleStarPress(i)}
+          activeOpacity={0.7}
+        >
+          <Text style={customEntryStyles.star}>{starDisplay}</Text>
+        </TouchableOpacity>
+      );
+    }
+    return stars;
   };
 
   return (
@@ -154,6 +178,14 @@ export default function CustomEntry() {
               onChangeText={setYear}
               keyboardType="numeric"
             />
+          </View>
+
+          {/* Rating */}
+          <View style={customEntryStyles.inputGroup}>
+            <Text style={customEntryStyles.label}>Rating</Text>
+            <View style={customEntryStyles.ratingContainer}>
+              {renderStars()}
+            </View>
           </View>
 
           {/* Notes Input */}

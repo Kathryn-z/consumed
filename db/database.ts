@@ -32,13 +32,13 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
       creator TEXT,
       year INTEGER,
       notes TEXT,
-      rating INTEGER,
+      rating REAL,
       dateConsumed TEXT,
       dateAdded TEXT NOT NULL,
       coverImage TEXT,
       externalId TEXT,
       CONSTRAINT valid_status CHECK (status IN ('todo', 'done')),
-      CONSTRAINT valid_rating CHECK (rating IS NULL OR (rating >= 0 AND rating <= 5))
+      CONSTRAINT valid_rating CHECK (rating IS NULL OR (rating > 0 AND rating <= 5))
     );
 
     CREATE INDEX IF NOT EXISTS idx_status ON content_items(status);
