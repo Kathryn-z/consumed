@@ -1,7 +1,11 @@
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { TouchableOpacity, Text } from "react-native";
+import { layoutStyles } from "@/styles/layout";
 
 export default function RootLayout() {
+  const router = useRouter();
+
   return (
     <>
       <StatusBar style="auto" />
@@ -9,14 +13,14 @@ export default function RootLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: "Search",
+            title: "Index",
             headerShown: false,
           }}
         />
         <Tabs.Screen
-          name="list"
+          name="records"
           options={{
-            title: "List",
+            title: "Records",
             headerShown: false,
           }}
         />
@@ -28,11 +32,30 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
+          name="search"
+          options={{
+            href: null,
+            title: "Search Content",
+            headerShown: false,
+            tabBarStyle: { display: "none" },
+          }}
+        />
+        <Tabs.Screen
           name="customEntry"
           options={{
-            href: null, // Hide from tab bar
+            href: null,
             title: "Add Custom Entry",
             headerShown: true,
+            headerShadowVisible: false,
+            tabBarStyle: { display: "none" },
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => router.back()}
+                style={layoutStyles.backButton}
+              >
+                <Text style={layoutStyles.backButtonText}>&lt;</Text>
+              </TouchableOpacity>
+            ),
           }}
         />
       </Tabs>

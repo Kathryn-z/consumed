@@ -1,13 +1,13 @@
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { listStyles } from "@/styles/screens/list";
+import { recordsStyles } from "@/styles/screens/records";
 
-export default function List() {
+export default function Records() {
   return (
-    <SafeAreaView style={listStyles.container}>
-      <View style={listStyles.content}>
-        <Text style={listStyles.title}>My List</Text>
-        <Text style={listStyles.description}>
+    <SafeAreaView style={recordsStyles.container}>
+      <View style={recordsStyles.content}>
+        <Text style={recordsStyles.title}>My Records</Text>
+        <Text style={recordsStyles.description}>
           View all your rated and recorded content.
         </Text>
         {/* List of consumed content will be displayed here */}

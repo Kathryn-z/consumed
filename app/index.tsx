@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import { searchInsertStyles } from "@/styles/screens/searchInsert";
 import { CATEGORIES, ContentCategory } from "@/types/content";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SearchInsert() {
   const router = useRouter();
@@ -14,14 +14,14 @@ export default function SearchInsert() {
     setSelectedCategory(selectedCategory === category ? null : category);
   };
 
-  const handleAddCustomEntry = () => {
-    router.push("/customEntry");
+  const handleAddContent = () => {
+    router.push("/search");
   };
 
   return (
     <SafeAreaView style={searchInsertStyles.container}>
       <ScrollView style={searchInsertStyles.content}>
-        <Text style={searchInsertStyles.title}>Search</Text>
+        <Text style={searchInsertStyles.title}>Home</Text>
 
         {/* Search Bar */}
         <TextInput
@@ -73,7 +73,7 @@ export default function SearchInsert() {
       {/* Floating Action Button */}
       <TouchableOpacity
         style={searchInsertStyles.fab}
-        onPress={handleAddCustomEntry}
+        onPress={handleAddContent}
         activeOpacity={0.8}
       >
         <Text style={searchInsertStyles.fabText}>+</Text>

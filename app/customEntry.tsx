@@ -2,7 +2,6 @@ import { customEntryStyles } from "@/styles/screens/customEntry";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { CATEGORIES, ContentCategory } from "@/types/content";
 
 export default function CustomEntry() {
@@ -24,8 +23,11 @@ export default function CustomEntry() {
   };
 
   return (
-    <SafeAreaView style={customEntryStyles.container}>
-      <ScrollView style={customEntryStyles.content}>
+    <View style={customEntryStyles.container}>
+      <ScrollView
+        style={customEntryStyles.content}
+        contentContainerStyle={customEntryStyles.scrollContent}
+      >
         <Text style={customEntryStyles.title}>Add Custom Entry</Text>
         <Text style={customEntryStyles.description}>
           Enter information about the content you want to add.
@@ -126,6 +128,6 @@ export default function CustomEntry() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

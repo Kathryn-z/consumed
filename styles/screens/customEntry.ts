@@ -1,8 +1,29 @@
 import { StyleSheet } from "react-native";
-import { commonStyles, spacing, colors } from "../common";
+import { spacing, colors } from "../common";
 
 export const customEntryStyles = StyleSheet.create({
-  ...commonStyles,
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  content: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: spacing.md,
+    paddingBottom: spacing.lg,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: spacing.sm,
+    color: colors.text.primary,
+  },
+  description: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    marginBottom: spacing.md,
+  },
   formContainer: {
     gap: spacing.md,
   },
