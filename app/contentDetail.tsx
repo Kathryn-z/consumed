@@ -1,32 +1,53 @@
-import { useEffect, useState } from "react";
-import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
+import { useCallback, useLayoutEffect, useState } from "react";
+import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useLocalSearchParams } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
 import { ContentItem } from "@/types/content";
 import { getContentItemById } from "@/db/contentOperations";
 
 export default function ContentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
+  const navigation = useNavigation();
   const [item, setItem] = useState<ContentItem | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadItem() {
-      if (!id) return;
+  // Set header right button
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={contentDetailStyles.headerButton}
+          onPress={() => router.push(`/customEntry?id=${id}`)}
+          activeOpacity={0.8}
+        >
+          <Text style={contentDetailStyles.headerButtonText}>Edit</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, id, router]);
 
-      try {
-        const contentItem = await getContentItemById(parseInt(id, 10));
-        setItem(contentItem);
-      } catch (error) {
-        console.error("Error loading content item:", error);
-      } finally {
-        setLoading(false);
+  // Reload data whenever screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      async function loadItem() {
+        if (!id) return;
+
+        try {
+          setLoading(true);
+          const contentItem = await getContentItemById(parseInt(id, 10));
+          setItem(contentItem);
+        } catch (error) {
+          console.error("Error loading content item:", error);
+        } finally {
+          setLoading(false);
+        }
       }
-    }
 
-    loadItem();
-  }, [id]);
+      loadItem();
+    }, [id])
+  );
 
   if (loading) {
     return (

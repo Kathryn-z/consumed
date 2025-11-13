@@ -6,6 +6,13 @@ export const contentDetailStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.sm,
+  },
   content: {
     flex: 1,
   },
@@ -113,5 +120,90 @@ export const contentDetailStyles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     padding: spacing.md,
     borderRadius: 8,
+  },
+  editButton: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    backgroundColor: "#007AFF",
+    borderRadius: 8,
+  },
+  editButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  headerButton: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  headerButtonText: {
+    color: "#007AFF",
+    fontSize: 17,
+    fontWeight: "600",
+  },
+  formContainer: {
+    gap: spacing.md,
+  },
+  inputGroup: {
+    marginBottom: spacing.sm,
+  },
+  input: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    paddingHorizontal: spacing.md,
+    fontSize: 16,
+    backgroundColor: "#fff",
+  },
+  textArea: {
+    height: 100,
+    textAlignVertical: "top",
+    paddingTop: spacing.md,
+  },
+  filterContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  chip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+  },
+  chipActive: {
+    backgroundColor: "#007AFF",
+    borderColor: "#007AFF",
+  },
+  chipText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  chipTextActive: {
+    color: "#fff",
+    fontWeight: "600",
+  },
+  button: {
+    height: 50,
+    backgroundColor: "#007AFF",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: spacing.md,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  cancelButton: {
+    backgroundColor: "#f5f5f5",
+    marginTop: spacing.sm,
+  },
+  cancelButtonText: {
+    color: "#333",
   },
 });
