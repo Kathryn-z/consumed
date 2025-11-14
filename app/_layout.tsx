@@ -85,6 +85,24 @@ export default function RootLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="customEntryRecord"
+          options={{
+            href: null,
+            title: "Record Consumption",
+            headerShown: true,
+            headerShadowVisible: false,
+            tabBarStyle: { display: "none" },
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => router.back()}
+                style={layoutStyles.backButton}
+              >
+                <Text style={layoutStyles.backButtonText}>&lt;</Text>
+              </TouchableOpacity>
+            ),
+          }}
+        />
       </Tabs>
     </>
   );

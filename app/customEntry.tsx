@@ -1,25 +1,21 @@
-import { useContent } from "@/hooks/useContent";
 import { customEntryStyles } from "@/styles/screens/customEntry";
-import { CATEGORIES, ContentCategory, ContentStatus } from "@/types/content";
+import { CATEGORIES, ContentCategory } from "@/types/content";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { getContentItemById, updateContentItem } from "@/db/contentOperations";
-import { createConsumptionRecord } from "@/db/consumptionOperations";
 
 export default function CustomEntry() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { addItem } = useContent();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<ContentCategory | null>(null);
-  const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
   const [creator, setCreator] = useState("");
   const [year, setYear] = useState("");
-  const [notes, setNotes] = useState("");
-  const [rating, setRating] = useState(0);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const isEditing = !!id;
 
   // Load existing item if editing
   useEffect(() => {
@@ -32,13 +28,8 @@ export default function CustomEntry() {
         if (item) {
           setTitle(item.title);
           setCategory(item.category);
-          setStatus(item.status);
           setCreator(item.creator || "");
           setYear(item.year?.toString() || "");
-          // Don't pre-fill rating and notes when editing
-          // Each save creates a new consumption record
-          setRating(0);
-          setNotes("");
         }
       } catch (error) {
         console.error("Error loading item:", error);
@@ -50,6 +41,27 @@ export default function CustomEntry() {
 
     loadItem();
   }, [id]);
+
+  const handleNext = () => {
+    // Validate required fields
+    if (!title.trim()) {
+      Alert.alert("Error", "Please enter a title");
+      return;
+    }
+    if (!category) {
+      Alert.alert("Error", "Please select a category");
+      return;
+    }
+
+    // Navigate to record consumption page with data
+    const params = new URLSearchParams({
+      title: title.trim(),
+      category,
+      ...(creator.trim() && { creator: creator.trim() }),
+      ...(year && { year }),
+    });
+    router.push(`/customEntryRecord?${params.toString()}`);
+  };
 
   const handleSave = async () => {
     // Validate required fields
@@ -65,43 +77,17 @@ export default function CustomEntry() {
     try {
       setSaving(true);
 
-      let contentItemId: number;
-
-      if (id) {
-        // Update existing item metadata
-        await updateContentItem(parseInt(id, 10), {
-          title: title.trim(),
-          category,
-          status,
-          creator: creator.trim() || undefined,
-          year: year ? parseInt(year, 10) : undefined,
-        });
-        contentItemId = parseInt(id, 10);
-      } else {
-        // Create new item
-        const newItem = await addItem({
-          title: title.trim(),
-          category,
-          status,
-          creator: creator.trim() || undefined,
-          year: year ? parseInt(year, 10) : undefined,
-        });
-        contentItemId = newItem.id;
-      }
-
-      // If rating or notes are provided, create a consumption record
-      if (rating > 0 || notes.trim()) {
-        await createConsumptionRecord({
-          contentItemId,
-          rating: rating > 0 ? rating : undefined,
-          notes: notes.trim() || undefined,
-          dateConsumed: new Date().toISOString(),
-        });
-      }
+      // Update existing item metadata only
+      await updateContentItem(parseInt(id!, 10), {
+        title: title.trim(),
+        category,
+        creator: creator.trim() || undefined,
+        year: year ? parseInt(year, 10) : undefined,
+      });
 
       router.back();
     } catch (error) {
-      Alert.alert("Error", `Failed to ${id ? 'update' : 'save'} entry. Please try again.`);
+      Alert.alert("Error", "Failed to update entry. Please try again.");
       console.error("Error saving entry:", error);
     } finally {
       setSaving(false);
@@ -110,28 +96,6 @@ export default function CustomEntry() {
 
   const handleCancel = () => {
     router.back();
-  };
-
-  const handleStarPress = (starIndex: number) => {
-    setRating(starIndex);
-  };
-
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      const starDisplay = rating >= i ? '★' : '☆';
-
-      stars.push(
-        <TouchableOpacity
-          key={i}
-          onPress={() => handleStarPress(i)}
-          activeOpacity={0.7}
-        >
-          <Text style={customEntryStyles.star}>{starDisplay}</Text>
-        </TouchableOpacity>
-      );
-    }
-    return stars;
   };
 
   return (
@@ -178,45 +142,6 @@ export default function CustomEntry() {
             </View>
           </View>
 
-          {/* Status Selection */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Status *</Text>
-            <View style={customEntryStyles.filterContainer}>
-              <TouchableOpacity
-                style={[
-                  customEntryStyles.chip,
-                  status === ContentStatus.TODO && customEntryStyles.chipActive,
-                ]}
-                onPress={() => setStatus(ContentStatus.TODO)}
-              >
-                <Text
-                  style={[
-                    customEntryStyles.chipText,
-                    status === ContentStatus.TODO && customEntryStyles.chipTextActive,
-                  ]}
-                >
-                  To do
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  customEntryStyles.chip,
-                  status === ContentStatus.DONE && customEntryStyles.chipActive,
-                ]}
-                onPress={() => setStatus(ContentStatus.DONE)}
-              >
-                <Text
-                  style={[
-                    customEntryStyles.chipText,
-                    status === ContentStatus.DONE && customEntryStyles.chipTextActive,
-                  ]}
-                >
-                  Done
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
           {/* Creator/Author Input */}
           <View style={customEntryStyles.inputGroup}>
             <Text style={customEntryStyles.label}>Creator/Author</Text>
@@ -240,38 +165,30 @@ export default function CustomEntry() {
             />
           </View>
 
-          {/* Rating */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Rating</Text>
-            <View style={customEntryStyles.ratingContainer}>
-              {renderStars()}
-            </View>
-          </View>
+          {/* Save Button (for editing) */}
+          {isEditing && (
+            <TouchableOpacity
+              style={[customEntryStyles.button, saving && { opacity: 0.6 }]}
+              onPress={handleSave}
+              activeOpacity={0.8}
+              disabled={saving}
+            >
+              <Text style={customEntryStyles.buttonText}>
+                {saving ? "Updating..." : "Update Entry"}
+              </Text>
+            </TouchableOpacity>
+          )}
 
-          {/* Notes Input */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Notes</Text>
-            <TextInput
-              style={[customEntryStyles.input, customEntryStyles.textArea]}
-              placeholder="Add any additional notes"
-              value={notes}
-              onChangeText={setNotes}
-              multiline
-              numberOfLines={4}
-            />
-          </View>
-
-          {/* Save Button */}
-          <TouchableOpacity
-            style={[customEntryStyles.button, saving && { opacity: 0.6 }]}
-            onPress={handleSave}
-            activeOpacity={0.8}
-            disabled={saving}
-          >
-            <Text style={customEntryStyles.buttonText}>
-              {saving ? (id ? "Updating..." : "Saving...") : (id ? "Update Entry" : "Save Entry")}
-            </Text>
-          </TouchableOpacity>
+          {/* Next Button (for new entry) */}
+          {!isEditing && (
+            <TouchableOpacity
+              style={customEntryStyles.button}
+              onPress={handleNext}
+              activeOpacity={0.8}
+            >
+              <Text style={customEntryStyles.buttonText}>Next</Text>
+            </TouchableOpacity>
+          )}
 
           {/* Cancel Button */}
           <TouchableOpacity
