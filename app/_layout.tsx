@@ -1,109 +1,79 @@
-import { Tabs, useRouter } from "expo-router";
+import { Feather } from "@expo/vector-icons";
+import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { TouchableOpacity, Text } from "react-native";
-import { layoutStyles } from "@/styles/layout";
+import { TouchableOpacity } from "react-native";
 
 export default function RootLayout() {
-  const router = useRouter();
-
   return (
     <>
       <StatusBar style="auto" />
-      <Tabs>
-        <Tabs.Screen
-          name="index"
+      <Stack>
+        <Stack.Screen
+          name="(tabs)"
           options={{
-            title: "Index",
             headerShown: false,
           }}
         />
-        <Tabs.Screen
-          name="records"
-          options={{
-            title: "Records",
-            headerShown: false,
-          }}
-        />
-        <Tabs.Screen
-          name="profile"
-          options={{
-            title: "Profile",
-            headerShown: false,
-          }}
-        />
-        <Tabs.Screen
+        <Stack.Screen
           name="searchInsert"
           options={{
-            href: null,
             title: "Search Content",
             headerShown: false,
-            tabBarStyle: { display: "none" },
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="searchRecords"
           options={{
-            href: null,
             title: "Search Records",
             headerShown: false,
-            tabBarStyle: { display: "none" },
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="contentDetail"
-          options={{
-            href: null,
+          options={({ navigation }) => ({
             title: "Content Details",
             headerShown: true,
             headerShadowVisible: false,
-            tabBarStyle: { display: "none" },
             headerLeft: () => (
               <TouchableOpacity
-                onPress={() => router.back()}
-                style={layoutStyles.backButton}
+                onPress={() => navigation.goBack()}
               >
-                <Text style={layoutStyles.backButtonText}>&lt;</Text>
+                <Feather name="chevron-left" size={28} />
               </TouchableOpacity>
             ),
-          }}
+          })}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="customEntry"
-          options={{
-            href: null,
-            title: "Add Custom Entry",
+          options={({ navigation }) => ({
+            title: "Custom Entry",
             headerShown: true,
             headerShadowVisible: false,
-            tabBarStyle: { display: "none" },
             headerLeft: () => (
               <TouchableOpacity
-                onPress={() => router.back()}
-                style={layoutStyles.backButton}
+                onPress={() => navigation.goBack()}
               >
-                <Text style={layoutStyles.backButtonText}>&lt;</Text>
+                <Feather name="chevron-left" size={28} />
               </TouchableOpacity>
             ),
-          }}
+          })}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="customEntryRecord"
-          options={{
-            href: null,
+          options={({ navigation }) => ({
             title: "Record Consumption",
             headerShown: true,
             headerShadowVisible: false,
-            tabBarStyle: { display: "none" },
             headerLeft: () => (
               <TouchableOpacity
-                onPress={() => router.back()}
-                style={layoutStyles.backButton}
+                onPress={() => navigation.goBack()}
               >
-                <Text style={layoutStyles.backButtonText}>&lt;</Text>
+                <Feather name="chevron-left" size={28} />
               </TouchableOpacity>
             ),
-          }}
+          })}
         />
-      </Tabs>
+      </Stack>
     </>
   );
 }

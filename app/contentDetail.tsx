@@ -1,11 +1,12 @@
-import { useCallback, useLayoutEffect, useState, useEffect, useRef } from "react";
-import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Alert, Animated } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { contentDetailStyles } from "@/styles/screens/contentDetail";
-import { ContentItem, ConsumptionRecord } from "@/types/content";
-import { getContentItemById, deleteContentItem } from "@/db/contentOperations";
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
+import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
+import { contentDetailStyles } from "@/styles/screens/contentDetail";
+import { ConsumptionRecord, ContentItem } from "@/types/content";
+import { Feather } from "@expo/vector-icons";
+import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ActivityIndicator, Alert, Animated, Image, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -46,15 +47,14 @@ export default function ContentDetail() {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          style={contentDetailStyles.headerButton}
           onPress={() => setShowMenu(true)}
-          activeOpacity={0.8}
+          // style={{ marginRight: 16 }}
         >
-          <Text style={contentDetailStyles.headerButtonText}>⋯</Text>
+          <Feather name="more-horizontal" size={28} />
         </TouchableOpacity>
       ),
     });
-  }, [navigation, id, router]);
+  }, [navigation, id]);
 
   const handleEdit = () => {
     handleDismissMenu();
@@ -143,7 +143,7 @@ export default function ContentDetail() {
   };
 
   return (
-    <SafeAreaView style={contentDetailStyles.container}>
+    <View style={contentDetailStyles.container}>
       <ScrollView
         style={contentDetailStyles.content}
         contentContainerStyle={contentDetailStyles.scrollContent}
@@ -305,6 +305,6 @@ export default function ContentDetail() {
           </TouchableOpacity>
         </Modal>
       )}
-    </SafeAreaView>
+    </View>
   );
 }

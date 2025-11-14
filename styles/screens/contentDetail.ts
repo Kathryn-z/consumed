@@ -1,17 +1,10 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../common";
+import { colors, spacing } from "../common";
 
 export const contentDetailStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.sm,
   },
   content: {
     flex: 1,
@@ -130,15 +123,6 @@ export const contentDetailStyles = StyleSheet.create({
   editButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "600",
-  },
-  headerButton: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  headerButtonText: {
-    color: "#007AFF",
-    fontSize: 17,
     fontWeight: "600",
   },
   formContainer: {
