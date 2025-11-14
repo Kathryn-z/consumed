@@ -7,26 +7,57 @@ import { getDatabase } from "./database";
 export async function createContentItem(input: CreateContentInput): Promise<ContentItem> {
   const db = await getDatabase();
   const dateAdded = new Date().toISOString();
+  const inputAny = input as any;
 
   const result = await db.runAsync(
-    `INSERT INTO content_items (title, category, status, creator, year, rating, dateAdded, coverImage, cover, externalId, link, wordCount, actors, type, numberOfEpisodes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO content_items (
+      title, category, status, year, rating, dateAdded, externalId, link,
+      images, pubdates,
+      author, wordCount, tags,
+      subtype, mobileUrl, directors, casts, genres, seasonsCount, currentSeason, episodesCount, countries,
+      performers, venue, duration,
+      hosts,
+      creator, coverImage, cover, actors, type, numberOfEpisodes
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.category,
       input.status,
-      input.creator || null,
       input.year || null,
       input.rating || null,
       dateAdded,
-      input.coverImage || null,
-      (input as any).cover || null,
       input.externalId || null,
-      (input as any).link || null,
-      (input as any).wordCount || null,
-      (input as any).actors || null,
-      (input as any).type || null,
-      (input as any).numberOfEpisodes || null,
+      input.link || null,
+      // ContentBase
+      input.images || null,
+      input.pubdates || null,
+      // Book
+      inputAny.author || null,
+      inputAny.wordCount || null,
+      inputAny.tags || null,
+      // TVMovie & Drama (shared)
+      inputAny.subtype || null,
+      inputAny.mobileUrl || null,
+      inputAny.directors || null,
+      inputAny.casts || null,
+      inputAny.genres || null,
+      inputAny.seasonsCount || null,
+      inputAny.currentSeason || null,
+      inputAny.episodesCount || null,
+      inputAny.countries || null,
+      // Drama
+      inputAny.performers || null,
+      inputAny.venue || null,
+      inputAny.duration || null,
+      // Podcast
+      inputAny.hosts || null,
+      // Legacy
+      inputAny.creator || null,
+      inputAny.coverImage || null,
+      inputAny.cover || null,
+      inputAny.actors || null,
+      inputAny.type || null,
+      inputAny.numberOfEpisodes || null,
     ]
   );
 
@@ -126,8 +157,8 @@ export async function searchContentItems(
 ): Promise<ContentItem[]> {
   const db = await getDatabase();
   let sql = `SELECT * FROM content_items
-             WHERE (title LIKE ? OR creator LIKE ?)`;
-  const params: any[] = [`%${query}%`, `%${query}%`];
+             WHERE (title LIKE ? OR creator LIKE ? OR author LIKE ? OR hosts LIKE ? OR directors LIKE ?)`;
+  const params: any[] = [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`];
 
   if (status) {
     sql += " AND status = ?";

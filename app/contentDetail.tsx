@@ -2,10 +2,10 @@ import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
 import {
-  ConsumptionRecord,
   ContentItem,
-  getCreatorLabel,
+  ContentCategory,
 } from "@/types/content";
+import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { Feather } from "@expo/vector-icons";
 import {
   useFocusEffect,
@@ -191,8 +191,26 @@ export default function ContentDetail() {
     });
   };
 
-  // Use cover field first, fall back to coverImage for backward compatibility
-  const coverUrl = (item as any).cover || item.coverImage;
+  // Get image URL - try new images field, fall back to legacy fields
+  const getImageUrl = () => {
+    const itemAny = item as any;
+
+    // Try new images field (JSON string)
+    if (item.images) {
+      try {
+        const imagesObj = JSON.parse(item.images);
+        return imagesObj.large || imagesObj.medium || imagesObj.small;
+      } catch {
+        // If not JSON, treat as plain URL
+        return item.images;
+      }
+    }
+
+    // Fall back to legacy fields
+    return itemAny.cover || itemAny.coverImage;
+  };
+
+  const coverUrl = getImageUrl();
   const showImage = coverUrl && !imageError;
 
   return (
@@ -230,16 +248,6 @@ export default function ContentDetail() {
             <Text style={contentDetailStyles.value}>{item.category}</Text>
           </View>
 
-          {/* Creator (Author/Director/Host) */}
-          {item.creator && (
-            <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>
-                {getCreatorLabel(item.category)}:
-              </Text>
-              <Text style={contentDetailStyles.value}>{item.creator}</Text>
-            </View>
-          )}
-
           {/* Year */}
           {item.year && (
             <View style={contentDetailStyles.row}>
@@ -249,44 +257,234 @@ export default function ContentDetail() {
           )}
 
           {/* Category-specific fields */}
-          {/* Book: Word Count */}
-          {(item as any).wordCount && (
-            <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Word Count:</Text>
-              <Text style={contentDetailStyles.value}>
-                {(item as any).wordCount.toLocaleString()}
-              </Text>
-            </View>
+
+          {/* Book fields */}
+          {item.category === ContentCategory.BOOK && (
+            <>
+              {(item as any).author && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Author:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).author}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).wordCount && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Word Count:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).wordCount.toLocaleString()}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).tags && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Tags:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const tagsArray = JSON.parse((item as any).tags);
+                        return Array.isArray(tagsArray) ? tagsArray.join(", ") : (item as any).tags;
+                      } catch {
+                        return (item as any).tags;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+            </>
           )}
 
-          {/* Movies, TV Shows, Reality Shows, Musicals: Actors */}
-          {(item as any).actors && (
-            <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Actors:</Text>
-              <Text style={contentDetailStyles.value}>
-                {(item as any).actors}
-              </Text>
-            </View>
+          {/* TV/Movie fields */}
+          {item.category === ContentCategory.TV_MOVIE && (
+            <>
+              {(item as any).subtype && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Type:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).subtype}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).directors && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Directors:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const directorsArray = JSON.parse((item as any).directors);
+                        return directorsArray.map((d: any) => d.name || d).join(", ");
+                      } catch {
+                        return (item as any).directors;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).casts && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Cast:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const castsArray = JSON.parse((item as any).casts);
+                        return castsArray.map((c: any) => c.name || c).join(", ");
+                      } catch {
+                        return (item as any).casts;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).genres && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Genres:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const genresArray = JSON.parse((item as any).genres);
+                        return Array.isArray(genresArray) ? genresArray.join(", ") : (item as any).genres;
+                      } catch {
+                        return (item as any).genres;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).episodesCount && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Episodes:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).episodesCount}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).countries && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Countries:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const countriesArray = JSON.parse((item as any).countries);
+                        return Array.isArray(countriesArray) ? countriesArray.join(", ") : (item as any).countries;
+                      } catch {
+                        return (item as any).countries;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+            </>
           )}
 
-          {/* Movies, TV Shows, Reality Shows, Musicals: Type/Genre */}
-          {(item as any).type && (
-            <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Type/Genre:</Text>
-              <Text style={contentDetailStyles.value}>
-                {(item as any).type}
-              </Text>
-            </View>
+          {/* Podcast fields */}
+          {item.category === ContentCategory.PODCAST && (
+            <>
+              {(item as any).hosts && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Hosts:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const hostsArray = JSON.parse((item as any).hosts);
+                        return Array.isArray(hostsArray) ? hostsArray.join(", ") : (item as any).hosts;
+                      } catch {
+                        return (item as any).hosts;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).episodesCount && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Episodes:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).episodesCount}
+                  </Text>
+                </View>
+              )}
+            </>
           )}
 
-          {/* TV Shows, Reality Shows: Number of Episodes */}
-          {(item as any).numberOfEpisodes && (
-            <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Episodes:</Text>
-              <Text style={contentDetailStyles.value}>
-                {(item as any).numberOfEpisodes}
-              </Text>
-            </View>
+          {/* Drama fields */}
+          {item.category === ContentCategory.DRAMA && (
+            <>
+              {(item as any).subtype && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Type:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).subtype}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).directors && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Directors:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const directorsArray = JSON.parse((item as any).directors);
+                        return Array.isArray(directorsArray) ? directorsArray.map((d: any) => d.name || d).join(", ") : (item as any).directors;
+                      } catch {
+                        return (item as any).directors;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).casts && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Cast:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(() => {
+                      try {
+                        const castsArray = JSON.parse((item as any).casts);
+                        return Array.isArray(castsArray) ? castsArray.map((c: any) => c.name || c).join(", ") : (item as any).casts;
+                      } catch {
+                        return (item as any).casts;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).performers && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Performers:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).performers}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).venue && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Venue:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).venue}
+                  </Text>
+                </View>
+              )}
+
+              {(item as any).duration && (
+                <View style={contentDetailStyles.row}>
+                  <Text style={contentDetailStyles.label}>Duration:</Text>
+                  <Text style={contentDetailStyles.value}>
+                    {(item as any).duration} minutes
+                  </Text>
+                </View>
+              )}
+            </>
           )}
 
           {/* Status */}
