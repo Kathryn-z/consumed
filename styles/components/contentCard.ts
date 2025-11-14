@@ -62,5 +62,10 @@ export const contentCardStyles = StyleSheet.create({
   creator: {
     fontSize: 14,
     color: colors.text.secondary,
+    marginBottom: spacing.xs,
+  },
+  date: {
+    fontSize: 12,
+    color: "#999",
   },
 });

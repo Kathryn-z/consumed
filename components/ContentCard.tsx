@@ -8,6 +8,15 @@ interface ContentCardProps {
 }
 
 export function ContentCard({ item, onPress }: ContentCardProps) {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
     <TouchableOpacity
       style={contentCardStyles.container}
@@ -45,6 +54,7 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
             {item.creator}
           </Text>
         )}
+        <Text style={contentCardStyles.date}>{formatDate(item.dateAdded)}</Text>
       </View>
     </TouchableOpacity>
   );
