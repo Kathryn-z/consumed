@@ -1,7 +1,3 @@
-# Welcome to your Expo app 👋
-
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
 ## Get started
 
 1. Install dependencies
@@ -24,5 +20,6 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 ## References
+- [`create-expo-app`](https://www.npmjs.com/package/create-expo-app)
 - https://github.com/douban/douban-client
 - https://github.com/iiiiiii1/douban-imdb-api?tab=readme-ov-file
