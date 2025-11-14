@@ -1,9 +1,16 @@
+import { getContentItemById, updateContentItem } from "@/db/contentOperations";
 import { customEntryStyles } from "@/styles/screens/customEntry";
 import { CATEGORIES, ContentCategory } from "@/types/content";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { getContentItemById, updateContentItem } from "@/db/contentOperations";
+import {
+  Alert,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function CustomEntry() {
   const router = useRouter();
@@ -196,7 +203,12 @@ export default function CustomEntry() {
             onPress={handleCancel}
             activeOpacity={0.8}
           >
-            <Text style={[customEntryStyles.buttonText, customEntryStyles.cancelButtonText]}>
+            <Text
+              style={[
+                customEntryStyles.buttonText,
+                customEntryStyles.cancelButtonText,
+              ]}
+            >
               Cancel
             </Text>
           </TouchableOpacity>

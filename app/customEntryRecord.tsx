@@ -2,9 +2,10 @@ import { customEntryStyles } from "@/styles/screens/customEntry";
 import { ContentCategory, ContentStatus } from "@/types/content";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { createContentItem } from "@/db/contentOperations";
 import { createConsumptionRecord } from "@/db/consumptionOperations";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function CustomEntryRecord() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function CustomEntryRecord() {
 
   const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
   const [rating, setRating] = useState(0);
-  const [dateConsumed, setDateConsumed] = useState(new Date().toISOString().split('T')[0]); // YYYY-MM-DD format
+  const [dateConsumed, setDateConsumed] = useState(new Date());
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
@@ -35,19 +36,16 @@ export default function CustomEntryRecord() {
 
       // If status is done, create a consumption record
       if (status === ContentStatus.DONE) {
-        // Parse the date and create ISO string for the consumed date
-        const consumedDateISO = new Date(dateConsumed).toISOString();
-
         await createConsumptionRecord({
           contentItemId: newItem.id,
           rating: rating > 0 ? rating : undefined,
           notes: undefined,
-          dateConsumed: consumedDateISO,
+          dateConsumed: dateConsumed.toISOString(),
         });
       }
 
-      // Navigate to content detail page
-      router.replace(`/contentDetail?id=${newItem.id}`);
+      // Navigate to index page
+      router.replace("/");
     } catch (error) {
       Alert.alert("Error", "Failed to save entry. Please try again.");
       console.error("Error saving entry:", error);
@@ -134,11 +132,16 @@ export default function CustomEntryRecord() {
               {/* Date Consumed */}
               <View style={customEntryStyles.inputGroup}>
                 <Text style={customEntryStyles.label}>Date Consumed</Text>
-                <TextInput
-                  style={customEntryStyles.input}
-                  placeholder="YYYY-MM-DD"
+                <DateTimePicker
                   value={dateConsumed}
-                  onChangeText={setDateConsumed}
+                  mode="date"
+                  display="default"
+                  onChange={(_event, selectedDate) => {
+                    if (selectedDate) {
+                      setDateConsumed(selectedDate);
+                    }
+                  }}
+                  style={{ alignSelf: 'flex-start' }}
                 />
               </View>
 
