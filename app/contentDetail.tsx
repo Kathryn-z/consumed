@@ -3,9 +3,30 @@ import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
 import { ConsumptionRecord, ContentItem } from "@/types/content";
 import { Feather } from "@expo/vector-icons";
-import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ActivityIndicator, Alert, Animated, Image, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  useFocusEffect,
+  useLocalSearchParams,
+  useNavigation,
+  useRouter,
+} from "expo-router";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  Animated,
+  Image,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContentDetail() {
@@ -13,7 +34,9 @@ export default function ContentDetail() {
   const router = useRouter();
   const navigation = useNavigation();
   const [item, setItem] = useState<ContentItem | null>(null);
-  const [consumptionRecords, setConsumptionRecords] = useState<ConsumptionRecord[]>([]);
+  const [consumptionRecords, setConsumptionRecords] = useState<
+    ConsumptionRecord[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const slideAnim = useRef(new Animated.Value(300)).current;
@@ -46,9 +69,7 @@ export default function ContentDetail() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
-          onPress={() => setShowMenu(true)}
-        >
+        <TouchableOpacity onPress={() => setShowMenu(true)}>
           <Feather name="more-horizontal" size={24} />
         </TouchableOpacity>
       ),
@@ -68,7 +89,7 @@ export default function ContentDetail() {
       [
         {
           text: "Cancel",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Delete",
@@ -79,10 +100,13 @@ export default function ContentDetail() {
               router.back();
             } catch (error) {
               console.error("Error deleting content:", error);
-              Alert.alert("Error", "Failed to delete content. Please try again.");
+              Alert.alert(
+                "Error",
+                "Failed to delete content. Please try again."
+              );
             }
-          }
-        }
+          },
+        },
       ]
     );
   };
@@ -99,7 +123,9 @@ export default function ContentDetail() {
           setItem(contentItem);
 
           // Load consumption records
-          const records = await getConsumptionRecordsByContentId(parseInt(id, 10));
+          const records = await getConsumptionRecordsByContentId(
+            parseInt(id, 10)
+          );
           setConsumptionRecords(records);
         } catch (error) {
           console.error("Error loading content item:", error);
@@ -134,10 +160,10 @@ export default function ContentDetail() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -194,12 +220,16 @@ export default function ContentDetail() {
           {/* Status */}
           <View style={contentDetailStyles.row}>
             <Text style={contentDetailStyles.label}>Status:</Text>
-            <View style={[
-              contentDetailStyles.statusBadge,
-              item.status === 'done' ? contentDetailStyles.statusDone : contentDetailStyles.statusTodo
-            ]}>
+            <View
+              style={[
+                contentDetailStyles.statusBadge,
+                item.status === "done"
+                  ? contentDetailStyles.statusDone
+                  : contentDetailStyles.statusTodo,
+              ]}
+            >
               <Text style={contentDetailStyles.statusText}>
-                {item.status === 'done' ? 'Done' : 'To do'}
+                {item.status === "done" ? "Done" : "To do"}
               </Text>
             </View>
           </View>
@@ -207,7 +237,9 @@ export default function ContentDetail() {
           {/* Date Added */}
           <View style={contentDetailStyles.row}>
             <Text style={contentDetailStyles.label}>Added:</Text>
-            <Text style={contentDetailStyles.value}>{formatDate(item.dateAdded)}</Text>
+            <Text style={contentDetailStyles.value}>
+              {formatDate(item.dateAdded)}
+            </Text>
           </View>
 
           {/* Latest Rating */}
@@ -217,7 +249,7 @@ export default function ContentDetail() {
               <View style={contentDetailStyles.ratingContainer}>
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Text key={star} style={contentDetailStyles.star}>
-                    {star <= item.rating! ? '★' : '☆'}
+                    {star <= item.rating! ? "★" : "☆"}
                   </Text>
                 ))}
               </View>
@@ -239,15 +271,20 @@ export default function ContentDetail() {
                     {record.rating !== undefined && record.rating !== null && (
                       <View style={contentDetailStyles.ratingContainer}>
                         {[1, 2, 3, 4, 5].map((star) => (
-                          <Text key={star} style={contentDetailStyles.recordStar}>
-                            {star <= record.rating! ? '★' : '☆'}
+                          <Text
+                            key={star}
+                            style={contentDetailStyles.recordStar}
+                          >
+                            {star <= record.rating! ? "★" : "☆"}
                           </Text>
                         ))}
                       </View>
                     )}
                   </View>
                   {record.notes && (
-                    <Text style={contentDetailStyles.recordNotes}>{record.notes}</Text>
+                    <Text style={contentDetailStyles.recordNotes}>
+                      {record.notes}
+                    </Text>
                   )}
                 </View>
               ))}
@@ -273,7 +310,7 @@ export default function ContentDetail() {
             <Animated.View
               style={[
                 contentDetailStyles.menuContainer,
-                { transform: [{ translateY: slideAnim }] }
+                { transform: [{ translateY: slideAnim }] },
               ]}
             >
               <TouchableOpacity
@@ -297,7 +334,14 @@ export default function ContentDetail() {
                   activeOpacity={0.8}
                 >
                   <Text style={contentDetailStyles.menuIcon}>🗑️</Text>
-                  <Text style={[contentDetailStyles.menuText, contentDetailStyles.deleteText]}>Delete</Text>
+                  <Text
+                    style={[
+                      contentDetailStyles.menuText,
+                      contentDetailStyles.deleteText,
+                    ]}
+                  >
+                    Delete
+                  </Text>
                 </TouchableOpacity>
               </TouchableOpacity>
             </Animated.View>

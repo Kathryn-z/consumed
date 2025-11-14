@@ -9,10 +9,10 @@ export default function TabLayout() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarIconStyle: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          },
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: any;
 
@@ -25,21 +25,19 @@ export default function TabLayout() {
           }
           return (
             <View>
-              <Ionicons name={iconName} color={focused ? "#517bd0ff" : "#808080"} size={24} />
+              <Ionicons
+                name={iconName}
+                color={focused ? "#517bd0ff" : "#808080"}
+                size={24}
+              />
             </View>
           );
         },
       })}
     >
-      <Tabs.Screen
-        name="index"
-      />
-      <Tabs.Screen
-        name="records"
-      />
-      <Tabs.Screen
-        name="profile"
-      />
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="records" />
+      <Tabs.Screen name="profile" />
     </Tabs>
   );
 }
