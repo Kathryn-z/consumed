@@ -232,14 +232,24 @@ export default function CustomEntry() {
           {/* Link URL Input */}
           <View style={customEntryStyles.inputGroup}>
             <Text style={customEntryStyles.label}>External Link</Text>
-            <TextInput
-              style={customEntryStyles.input}
-              placeholder="Enter external link (e.g., IMDB)"
-              value={link}
-              onChangeText={setLink}
-              autoCapitalize="none"
-              keyboardType="url"
-            />
+            <View style={customEntryStyles.inputWithButton}>
+              <TextInput
+                style={customEntryStyles.inputWithClearButton}
+                placeholder="Enter external link (e.g., IMDB)"
+                value={link}
+                onChangeText={setLink}
+                autoCapitalize="none"
+                keyboardType="url"
+              />
+              {link.trim() !== "" && (
+                <TouchableOpacity
+                  onPress={() => setLink("")}
+                  style={customEntryStyles.clearButton}
+                >
+                  <Feather name="x" size={20} color="#999" />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
 
           {/* Category-specific fields */}

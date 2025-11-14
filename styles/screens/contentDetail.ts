@@ -268,4 +268,21 @@ export const contentDetailStyles = StyleSheet.create({
     borderColor: "#ddd",
     marginTop: spacing.sm,
   },
+  linkButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    backgroundColor: "#f0f7ff",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#007AFF",
+    alignSelf: "flex-start",
+  },
+  linkButtonText: {
+    fontSize: 15,
+    color: "#007AFF",
+    fontWeight: "500",
+  },
 });

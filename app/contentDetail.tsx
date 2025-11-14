@@ -25,6 +25,7 @@ import {
   Alert,
   Animated,
   Image,
+  Linking,
   Modal,
   ScrollView,
   Text,
@@ -114,6 +115,23 @@ export default function ContentDetail() {
         },
       ]
     );
+  };
+
+  const handleOpenLink = async () => {
+    const link = (item as any).link;
+    if (link) {
+      try {
+        const canOpen = await Linking.canOpenURL(link);
+        if (canOpen) {
+          await Linking.openURL(link);
+        } else {
+          Alert.alert("Error", "Unable to open this link");
+        }
+      } catch (error) {
+        console.error("Error opening link:", error);
+        Alert.alert("Error", "Failed to open link");
+      }
+    }
   };
 
   // Reload data whenever screen comes into focus
@@ -308,6 +326,20 @@ export default function ContentDetail() {
                 ))}
               </View>
             </View>
+          )}
+
+          {/* External Link Button */}
+          {(item as any).link && (
+            <TouchableOpacity
+              style={contentDetailStyles.linkButton}
+              onPress={handleOpenLink}
+              activeOpacity={0.8}
+            >
+              <Feather name="external-link" size={18} color="#007AFF" />
+              <Text style={contentDetailStyles.linkButtonText}>
+                Go to External Link
+              </Text>
+            </TouchableOpacity>
           )}
 
           {/* Consumption History */}
