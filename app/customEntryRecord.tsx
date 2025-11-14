@@ -15,6 +15,7 @@ export default function CustomEntryRecord() {
     year?: string;
     images?: string;
     link?: string;
+    externalId?: string;
     // Book fields
     author?: string;
     wordCount?: string;
@@ -32,6 +33,7 @@ export default function CustomEntryRecord() {
     duration?: string;
     // Podcast fields
     hosts?: string;
+    feedUrl?: string;
   }>();
 
   const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
@@ -51,6 +53,7 @@ export default function CustomEntryRecord() {
         year: params.year ? parseInt(params.year, 10) : undefined,
         images: params.images,
         link: params.link,
+        externalId: params.externalId,
       };
 
       // Add category-specific fields
@@ -70,6 +73,8 @@ export default function CustomEntryRecord() {
       } else if (category === ContentCategory.PODCAST) {
         contentData.hosts = params.hosts;
         contentData.episodesCount = params.episodesCount ? parseInt(params.episodesCount, 10) : undefined;
+        contentData.genres = params.genres;
+        contentData.feedUrl = params.feedUrl;
       } else if (category === ContentCategory.DRAMA) {
         contentData.subtype = params.subtype;
         contentData.directors = params.directors;

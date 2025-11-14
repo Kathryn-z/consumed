@@ -1,8 +1,20 @@
+import {
+  ItunesPodcastResult,
+  searchItunesPodcast,
+} from "@/services/api/itunes";
 import { searchInsertStyles } from "@/styles/screens/searchInsert";
 import { ContentCategory } from "@/types/content";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SearchInsert() {
@@ -10,7 +22,9 @@ export default function SearchInsert() {
   const params = useLocalSearchParams<{ category?: string }>();
   const category = params.category as ContentCategory | undefined;
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<ItunesPodcastResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Reset search when screen comes into focus
   useFocusEffect(
@@ -23,11 +37,55 @@ export default function SearchInsert() {
     }, [])
   );
 
-  const handleSearch = () => {
-    // TODO: Implement actual search logic with category filter
-    console.log("Searching for:", searchQuery, "in category:", category);
-    // For now, set empty results to show the "no results" message
-    setSearchResults([]);
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+
+    if (category !== ContentCategory.PODCAST) {
+      setError("Search is currently only supported for Podcast category");
+      return;
+    }
+
+    try {
+      setSearching(true);
+      setError(null);
+      const results = await searchItunesPodcast(searchQuery.trim());
+      setSearchResults(results.results);
+    } catch (err) {
+      console.error("Search error:", err);
+      setError("Failed to search. Please try again.");
+      setSearchResults([]);
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const handleResultPress = (result: ItunesPodcastResult) => {
+    // Extract year from releaseDate if available
+    const year = result.releaseDate
+      ? new Date(result.releaseDate).getFullYear().toString()
+      : "";
+
+    // Build the images object with standardized field names
+    const images = {
+      small: result.artworkUrl60 || result.artworkUrl30 || "",
+      medium: result.artworkUrl100 || result.artworkUrl60 || "",
+      large: result.artworkUrl600 || result.artworkUrl100 || "",
+    };
+
+    const params = new URLSearchParams({
+      title: result.collectionName,
+      category: ContentCategory.PODCAST,
+      year: year,
+      images: JSON.stringify(images),
+      link: result.collectionViewUrl || "",
+      externalId: result.trackId.toString(),
+      hosts: result.artistName,
+      genres: JSON.stringify(result.genres || []),
+      feedUrl: result.feedUrl || "",
+      episodesCount: result.trackCount?.toString() || "",
+    });
+
+    router.push(`/customEntryRecord?${params.toString()}`);
   };
 
   const handleCustomEntry = () => {
@@ -75,13 +133,75 @@ export default function SearchInsert() {
 
         {/* Search Results Area */}
         <View style={searchInsertStyles.resultsContainer}>
-          {searchResults.length > 0 ? (
-            // TODO: Display search results here
-            <Text>Results will appear here</Text>
+          {searching ? (
+            <View style={searchInsertStyles.loadingContainer}>
+              <ActivityIndicator size="large" color="#007AFF" />
+              <Text style={searchInsertStyles.loadingText}>Searching...</Text>
+            </View>
+          ) : error ? (
+            <View style={searchInsertStyles.errorContainer}>
+              <Text style={searchInsertStyles.errorText}>{error}</Text>
+              <TouchableOpacity
+                style={searchInsertStyles.customEntryButton}
+                onPress={handleCustomEntry}
+                activeOpacity={0.8}
+              >
+                <Text style={searchInsertStyles.customEntryButtonText}>
+                  Enter Custom Entry
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : searchResults.length > 0 ? (
+            <ScrollView>
+              {searchResults.map((result) => (
+                <TouchableOpacity
+                  key={result.trackId}
+                  style={searchInsertStyles.resultItem}
+                  onPress={() => handleResultPress(result)}
+                  activeOpacity={0.7}
+                >
+                  <Image
+                    source={{
+                      uri: result.artworkUrl100 || result.artworkUrl60,
+                    }}
+                    style={searchInsertStyles.resultImage}
+                    resizeMode="cover"
+                  />
+                  <View style={searchInsertStyles.resultInfo}>
+                    <Text
+                      style={searchInsertStyles.resultTitle}
+                      numberOfLines={2}
+                    >
+                      {result.collectionName}
+                    </Text>
+                    <Text
+                      style={searchInsertStyles.resultArtist}
+                      numberOfLines={1}
+                    >
+                      by {result.artistName}
+                    </Text>
+                    {result.genres && result.genres.length > 0 && (
+                      <Text
+                        style={searchInsertStyles.resultGenre}
+                        numberOfLines={1}
+                      >
+                        {result.genres.join(", ")}
+                      </Text>
+                    )}
+                    {result.trackCount && (
+                      <Text style={searchInsertStyles.resultMeta}>
+                        {result.trackCount} episodes
+                      </Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           ) : (
             <View style={searchInsertStyles.noResultsContainer}>
               <Text style={searchInsertStyles.noResultsText}>
-                If there is no content in the search result, you can try custom entry.
+                If there is no content in the search result, you can try custom
+                entry.
               </Text>
               <TouchableOpacity
                 style={searchInsertStyles.customEntryButton}
