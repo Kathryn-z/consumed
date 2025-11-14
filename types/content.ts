@@ -4,11 +4,26 @@
  */
 export enum ContentCategory {
   BOOK = "Book",
-  MOVIE = "Movie",
-  TV_SHOW = "TV Show",
-  REALITY_SHOW = "Reality Show",
-  MUSICAL = "Musical",
+  TV_MOVIE = "TV/Movie",
   PODCAST = "Podcast",
+  DRAMA = "Drama",
+}
+
+/**
+ * TV/Movie subtype enum
+ */
+export enum TVMovieSubtype {
+  TV = "TV",
+  MOVIE = "Movie",
+}
+
+/**
+ * Drama subtype enum
+ */
+export enum DramaSubtype {
+  MUSICAL = "Musical",
+  PLAY = "Play",
+  DANCE = "Dance",
 }
 
 /**
@@ -32,14 +47,13 @@ export interface ContentBase {
   title: string;
   category: ContentCategory;
   status: ContentStatus;
-  creator?: string; // Author, Director, Host, etc. (label varies by category)
   year?: number;
   rating?: number; // 0-5 stars (denormalized from most recent ConsumptionRecord)
   dateAdded: string; // ISO string for when item was added
-  coverImage?: string; // Deprecated: Use cover instead
-  cover?: string; // URL to cover image
-  externalId?: string; // ID from external API (TMDB, Google Books, etc.)
-  link?: string; // URL to external website (e.g., IMDB, Goodreads)
+  images?: string; // JSON string of image URLs (for Douban: {small, medium, large})
+  externalId?: string; // ID from external API (Douban, TMDB, Google Books, etc.)
+  link?: string; // URL to external website
+  pubdates?: string; // JSON string of publication dates array
 }
 
 /**
@@ -47,50 +61,26 @@ export interface ContentBase {
  */
 export interface Book extends ContentBase {
   category: ContentCategory.BOOK;
-  creator?: string; // Author
+  author?: string;
   wordCount?: number;
+  tags?: string; // JSON string of tags array
 }
 
 /**
- * Movie-specific content
+ * TV/Movie content (from Douban API)
+ * Field names follow Douban API convention
  */
-export interface Movie extends ContentBase {
-  category: ContentCategory.MOVIE;
-  creator?: string; // Director
-  actors?: string;
-  type?: string; // Genre/Type
-}
-
-/**
- * TV Show-specific content
- */
-export interface TVShow extends ContentBase {
-  category: ContentCategory.TV_SHOW;
-  creator?: string; // Director
-  actors?: string;
-  type?: string; // Genre/Type
-  numberOfEpisodes?: number;
-}
-
-/**
- * Reality Show-specific content
- */
-export interface RealityShow extends ContentBase {
-  category: ContentCategory.REALITY_SHOW;
-  creator?: string; // Host
-  actors?: string;
-  type?: string; // Genre/Type
-  numberOfEpisodes?: number;
-}
-
-/**
- * Musical-specific content
- */
-export interface Musical extends ContentBase {
-  category: ContentCategory.MUSICAL;
-  creator?: string; // Director
-  actors?: string;
-  type?: string; // Genre/Type
+export interface TVMovie extends ContentBase {
+  category: ContentCategory.TV_MOVIE;
+  subtype: TVMovieSubtype; // Required: TV or Movie
+  mobileUrl?: string; // Douban mobile URL
+  directors?: string; // JSON string of director objects
+  casts?: string; // JSON string of cast objects
+  genres?: string; // JSON string of genres array
+  seasonsCount?: number;
+  currentSeason?: number;
+  episodesCount?: number; // For TV shows
+  countries?: string; // JSON string of countries array
 }
 
 /**
@@ -98,50 +88,32 @@ export interface Musical extends ContentBase {
  */
 export interface Podcast extends ContentBase {
   category: ContentCategory.PODCAST;
-  creator?: string; // Host
-  numberOfEpisodes?: number;
+  hosts?: string; // JSON string of hosts array
+  episodesCount?: number;
+}
+
+/**
+ * Drama content (Musical, Play, Dance)
+ */
+export interface Drama extends ContentBase {
+  category: ContentCategory.DRAMA;
+  subtype: DramaSubtype; // Required: Musical, Play, or Dance
+  directors?: string; // JSON string of directors array
+  casts?: string; // JSON string of cast array
+  performers?: string; // Actors/Dancers (legacy/additional performers)
+  venue?: string; // Theater/Performance venue
+  duration?: number; // Duration in minutes
 }
 
 /**
  * Union type of all content items
  */
-export type ContentItem =
-  | Book
-  | Movie
-  | TVShow
-  | RealityShow
-  | Musical
-  | Podcast;
-
-/**
- * Consumption record interface
- * Represents a single viewing/reading/listening of a content item
- */
-export interface ConsumptionRecord {
-  id: number;
-  contentItemId: number; // Foreign key to ContentItem
-  rating?: number; // 0-5 stars
-  notes?: string;
-  dateConsumed: string; // ISO string for when consumed
-}
-
-/**
- * Search filter interface
- */
-export interface SearchFilter {
-  query: string;
-  category?: ContentCategory;
-}
+export type ContentItem = Book | TVMovie | Podcast | Drama;
 
 /**
  * Content creation input
  */
 export type CreateContentInput = Omit<ContentItem, "id" | "dateAdded">;
-
-/**
- * Consumption record creation input
- */
-export type CreateConsumptionRecordInput = Omit<ConsumptionRecord, "id">;
 
 /**
  * Helper function to get category display name
@@ -155,23 +127,4 @@ export const getCategoryDisplayName = (category: ContentCategory): string => {
  */
 export const isValidCategory = (value: string): value is ContentCategory => {
   return Object.values(ContentCategory).includes(value as ContentCategory);
-};
-
-/**
- * Helper function to get the creator label based on category
- */
-export const getCreatorLabel = (category: ContentCategory): string => {
-  switch (category) {
-    case ContentCategory.BOOK:
-      return "Author";
-    case ContentCategory.MOVIE:
-    case ContentCategory.TV_SHOW:
-    case ContentCategory.MUSICAL:
-      return "Director";
-    case ContentCategory.REALITY_SHOW:
-    case ContentCategory.PODCAST:
-      return "Host";
-    default:
-      return "Creator";
-  }
 };

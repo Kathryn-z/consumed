@@ -20,8 +20,70 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
     });
   };
 
-  // Use cover field first, fall back to coverImage for backward compatibility
-  const coverUrl = (item as any).cover || item.coverImage;
+  // Get image URL - try new images field, fall back to legacy fields
+  const getImageUrl = () => {
+    const itemAny = item as any;
+
+    // Try new images field (JSON string)
+    if (item.images) {
+      try {
+        const imagesObj = JSON.parse(item.images);
+        return imagesObj.medium || imagesObj.large || imagesObj.small;
+      } catch {
+        // If not JSON, treat as plain URL
+        return item.images;
+      }
+    }
+
+    // Fall back to legacy fields
+    return itemAny.cover || itemAny.coverImage;
+  };
+
+  // Get creator/author label based on category
+  const getCreatorInfo = () => {
+    const itemAny = item as any;
+
+    if (item.category === "Book" && itemAny.author) {
+      return itemAny.author;
+    }
+
+    if (item.category === "TV/Movie" && itemAny.directors) {
+      try {
+        const directorsArray = JSON.parse(itemAny.directors);
+        return directorsArray.map((d: any) => d.name || d).join(", ");
+      } catch {
+        return itemAny.directors;
+      }
+    }
+
+    if (item.category === "Drama" && itemAny.directors) {
+      try {
+        const directorsArray = JSON.parse(itemAny.directors);
+        return Array.isArray(directorsArray) ? directorsArray.map((d: any) => d.name || d).join(", ") : itemAny.directors;
+      } catch {
+        return itemAny.directors;
+      }
+    }
+
+    if (item.category === "Podcast" && itemAny.hosts) {
+      try {
+        const hostsArray = JSON.parse(itemAny.hosts);
+        return Array.isArray(hostsArray) ? hostsArray.join(", ") : itemAny.hosts;
+      } catch {
+        return itemAny.hosts;
+      }
+    }
+
+    // Fallback to legacy creator field
+    if (itemAny.creator) {
+      return itemAny.creator;
+    }
+
+    return null;
+  };
+
+  const coverUrl = getImageUrl();
+  const creatorInfo = getCreatorInfo();
   const showImage = coverUrl && !imageError;
 
   return (
@@ -57,9 +119,9 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
         {item.year && (
           <Text style={contentCardStyles.year}>{item.year}</Text>
         )}
-        {item.creator && (
+        {creatorInfo && (
           <Text style={contentCardStyles.creator} numberOfLines={1}>
-            {item.creator}
+            {creatorInfo}
           </Text>
         )}
         <Text style={contentCardStyles.date}>{formatDate(item.dateAdded)}</Text>

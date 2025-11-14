@@ -12,14 +12,26 @@ export default function CustomEntryRecord() {
   const params = useLocalSearchParams<{
     title: string;
     category: string;
-    creator?: string;
     year?: string;
-    cover?: string;
+    images?: string;
     link?: string;
+    // Book fields
+    author?: string;
     wordCount?: string;
-    actors?: string;
-    type?: string;
-    numberOfEpisodes?: string;
+    tags?: string;
+    // TV/Movie & Drama shared fields
+    subtype?: string;
+    directors?: string;
+    casts?: string;
+    genres?: string;
+    episodesCount?: string;
+    countries?: string;
+    // Drama-specific fields
+    performers?: string;
+    venue?: string;
+    duration?: string;
+    // Podcast fields
+    hosts?: string;
   }>();
 
   const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
@@ -31,20 +43,44 @@ export default function CustomEntryRecord() {
     try {
       setSaving(true);
 
-      // Create new content item with category-specific fields
-      const newItem = await createContentItem({
+      // Build base content item
+      const contentData: any = {
         title: params.title,
         category: params.category as ContentCategory,
         status,
-        creator: params.creator,
         year: params.year ? parseInt(params.year, 10) : undefined,
-        cover: params.cover,
+        images: params.images,
         link: params.link,
-        wordCount: params.wordCount ? parseInt(params.wordCount, 10) : undefined,
-        actors: params.actors,
-        type: params.type,
-        numberOfEpisodes: params.numberOfEpisodes ? parseInt(params.numberOfEpisodes, 10) : undefined,
-      } as any);
+      };
+
+      // Add category-specific fields
+      const category = params.category as ContentCategory;
+
+      if (category === ContentCategory.BOOK) {
+        contentData.author = params.author;
+        contentData.wordCount = params.wordCount ? parseInt(params.wordCount, 10) : undefined;
+        contentData.tags = params.tags;
+      } else if (category === ContentCategory.TV_MOVIE) {
+        contentData.subtype = params.subtype;
+        contentData.directors = params.directors;
+        contentData.casts = params.casts;
+        contentData.genres = params.genres;
+        contentData.episodesCount = params.episodesCount ? parseInt(params.episodesCount, 10) : undefined;
+        contentData.countries = params.countries;
+      } else if (category === ContentCategory.PODCAST) {
+        contentData.hosts = params.hosts;
+        contentData.episodesCount = params.episodesCount ? parseInt(params.episodesCount, 10) : undefined;
+      } else if (category === ContentCategory.DRAMA) {
+        contentData.subtype = params.subtype;
+        contentData.directors = params.directors;
+        contentData.casts = params.casts;
+        contentData.performers = params.performers;
+        contentData.venue = params.venue;
+        contentData.duration = params.duration ? parseInt(params.duration, 10) : undefined;
+      }
+
+      // Create new content item
+      const newItem = await createContentItem(contentData);
 
       // If status is done, create a consumption record
       if (status === ContentStatus.DONE) {
