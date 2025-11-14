@@ -3,8 +3,8 @@ import { useContent } from "@/hooks/useContent";
 import { indexStyles } from "@/styles/screens/index";
 import { CATEGORIES, ContentCategory, ContentStatus } from "@/types/content";
 import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, Animated, FlatList, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ActivityIndicator, Animated, FlatList, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type TabType = "done" | "todo";
@@ -13,7 +13,9 @@ export default function SearchInsert() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<ContentCategory | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>("done");
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(300)).current;
 
   // Load items based on active tab
   const status = activeTab === "done" ? ContentStatus.DONE : ContentStatus.TODO;
@@ -25,6 +27,18 @@ export default function SearchInsert() {
       refresh();
     }, [refresh])
   );
+
+  // Animate modal slide-up when shown
+  useEffect(() => {
+    if (categoryModalVisible) {
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        tension: 65,
+        friction: 11,
+      }).start();
+    }
+  }, [categoryModalVisible, slideAnim]);
 
   // Filter items based on selected category
   const filteredItems = useMemo(() => {
@@ -43,7 +57,28 @@ export default function SearchInsert() {
   };
 
   const handleAddContent = () => {
-    router.push("/searchInsert");
+    setCategoryModalVisible(true);
+  };
+
+  const handleDismissModal = () => {
+    Animated.timing(slideAnim, {
+      toValue: 300,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      setCategoryModalVisible(false);
+    });
+  };
+
+  const handleCategorySelect = (category: ContentCategory) => {
+    Animated.timing(slideAnim, {
+      toValue: 300,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      setCategoryModalVisible(false);
+      router.push(`/searchInsert?category=${category}`);
+    });
   };
 
   const handleSearchRecords = () => {
@@ -178,6 +213,56 @@ export default function SearchInsert() {
       >
         <Text style={indexStyles.fabText}>+</Text>
       </TouchableOpacity>
+
+      {/* Category Selection Modal */}
+      {categoryModalVisible && (
+        <Modal
+          visible={categoryModalVisible}
+          transparent={true}
+          animationType="none"
+          onRequestClose={handleDismissModal}
+          statusBarTranslucent={false}
+        >
+          <TouchableOpacity
+            style={indexStyles.modalOverlay}
+            activeOpacity={1}
+            onPress={handleDismissModal}
+          >
+            <Animated.View
+              style={[
+                indexStyles.modalContent,
+                { transform: [{ translateY: slideAnim }] },
+              ]}
+            >
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={(e) => e.stopPropagation()}
+              >
+                <Text style={indexStyles.modalTitle}>Select Category</Text>
+                <View style={indexStyles.categoryButtons}>
+                  {CATEGORIES.map((category) => (
+                    <TouchableOpacity
+                      key={category}
+                      style={indexStyles.categoryButton}
+                      onPress={() => handleCategorySelect(category)}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={indexStyles.categoryButtonText}>{category}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <TouchableOpacity
+                  style={indexStyles.modalCancelButton}
+                  onPress={handleDismissModal}
+                  activeOpacity={0.8}
+                >
+                  <Text style={indexStyles.modalCancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </Animated.View>
+          </TouchableOpacity>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 }

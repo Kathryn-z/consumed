@@ -3,6 +3,19 @@ import { commonStyles, spacing, colors } from "../common";
 
 export const searchInsertStyles = StyleSheet.create({
   ...commonStyles,
+  categoryIndicator: {
+    backgroundColor: "#007AFF",
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: 8,
+    alignSelf: "flex-start",
+    marginBottom: spacing.md,
+  },
+  categoryIndicatorText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+  },
   searchBarContainer: {
     flexDirection: "row",
     alignItems: "center",

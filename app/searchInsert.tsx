@@ -1,11 +1,14 @@
 import { searchInsertStyles } from "@/styles/screens/searchInsert";
-import { useFocusEffect, useRouter } from "expo-router";
+import { ContentCategory } from "@/types/content";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SearchInsert() {
   const router = useRouter();
+  const params = useLocalSearchParams<{ category?: string }>();
+  const category = params.category as ContentCategory | undefined;
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -21,14 +24,18 @@ export default function SearchInsert() {
   );
 
   const handleSearch = () => {
-    // TODO: Implement actual search logic
-    console.log("Searching for:", searchQuery);
+    // TODO: Implement actual search logic with category filter
+    console.log("Searching for:", searchQuery, "in category:", category);
     // For now, set empty results to show the "no results" message
     setSearchResults([]);
   };
 
   const handleCustomEntry = () => {
-    router.push("/customEntry");
+    if (category) {
+      router.push(`/customEntry?category=${category}`);
+    } else {
+      router.push("/customEntry");
+    }
   };
 
   const handleCancel = () => {
@@ -38,11 +45,20 @@ export default function SearchInsert() {
   return (
     <SafeAreaView style={searchInsertStyles.container}>
       <ScrollView style={searchInsertStyles.content}>
+        {/* Category Indicator */}
+        {category && (
+          <View style={searchInsertStyles.categoryIndicator}>
+            <Text style={searchInsertStyles.categoryIndicatorText}>
+              Searching in: {category}
+            </Text>
+          </View>
+        )}
+
         {/* Search Bar with Cancel Button */}
         <View style={searchInsertStyles.searchBarContainer}>
           <TextInput
             style={searchInsertStyles.searchBar}
-            placeholder="Search for content..."
+            placeholder={`Search for ${category || "content"}...`}
             value={searchQuery}
             onChangeText={setSearchQuery}
             returnKeyType="search"

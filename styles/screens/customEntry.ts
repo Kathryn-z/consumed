@@ -133,4 +133,17 @@ export const customEntryStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  readOnlyField: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    borderRadius: 10,
+    paddingHorizontal: spacing.md,
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
+  },
+  readOnlyText: {
+    fontSize: 16,
+    color: colors.text.secondary,
+  },
 });

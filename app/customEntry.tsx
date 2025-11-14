@@ -15,10 +15,13 @@ import { Feather } from "@expo/vector-icons";
 
 export default function CustomEntry() {
   const router = useRouter();
-  const { id } = useLocalSearchParams<{ id?: string }>();
+  const params = useLocalSearchParams<{ id?: string; category?: string }>();
+  const { id } = params;
   // Shared fields
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<ContentCategory | null>(null);
+  const [category, setCategory] = useState<ContentCategory | null>(
+    params.category ? (params.category as ContentCategory) : null
+  );
   const [year, setYear] = useState("");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -264,31 +267,40 @@ export default function CustomEntry() {
             />
           </View>
 
-          {/* Category Selection */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Category *</Text>
-            <View style={customEntryStyles.filterContainer}>
-              {CATEGORIES.map((cat) => (
-                <TouchableOpacity
-                  key={cat}
-                  style={[
-                    customEntryStyles.chip,
-                    category === cat && customEntryStyles.chipActive,
-                  ]}
-                  onPress={() => setCategory(cat)}
-                >
-                  <Text
-                    style={[
-                      customEntryStyles.chipText,
-                      category === cat && customEntryStyles.chipTextActive,
-                    ]}
-                  >
-                    {cat}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+          {/* Category Selection - Only show if not passed as parameter */}
+          {params.category ? (
+            <View style={customEntryStyles.inputGroup}>
+              <Text style={customEntryStyles.label}>Category</Text>
+              <View style={customEntryStyles.readOnlyField}>
+                <Text style={customEntryStyles.readOnlyText}>{category}</Text>
+              </View>
             </View>
-          </View>
+          ) : (
+            <View style={customEntryStyles.inputGroup}>
+              <Text style={customEntryStyles.label}>Category *</Text>
+              <View style={customEntryStyles.filterContainer}>
+                {CATEGORIES.map((cat) => (
+                  <TouchableOpacity
+                    key={cat}
+                    style={[
+                      customEntryStyles.chip,
+                      category === cat && customEntryStyles.chipActive,
+                    ]}
+                    onPress={() => setCategory(cat)}
+                  >
+                    <Text
+                      style={[
+                        customEntryStyles.chipText,
+                        category === cat && customEntryStyles.chipTextActive,
+                      ]}
+                    >
+                      {cat}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          )}
 
           {/* Author Input - only for Book */}
           {category === ContentCategory.BOOK && (
