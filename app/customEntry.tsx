@@ -5,6 +5,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { getContentItemById, updateContentItem } from "@/db/contentOperations";
+import { createConsumptionRecord } from "@/db/consumptionOperations";
 
 export default function CustomEntry() {
   const router = useRouter();
@@ -34,8 +35,10 @@ export default function CustomEntry() {
           setStatus(item.status);
           setCreator(item.creator || "");
           setYear(item.year?.toString() || "");
-          setRating(item.rating || 0);
-          setNotes(item.notes || "");
+          // Don't pre-fill rating and notes when editing
+          // Each save creates a new consumption record
+          setRating(0);
+          setNotes("");
         }
       } catch (error) {
         console.error("Error loading item:", error);
@@ -62,27 +65,37 @@ export default function CustomEntry() {
     try {
       setSaving(true);
 
+      let contentItemId: number;
+
       if (id) {
-        // Update existing item
+        // Update existing item metadata
         await updateContentItem(parseInt(id, 10), {
           title: title.trim(),
           category,
           status,
           creator: creator.trim() || undefined,
           year: year ? parseInt(year, 10) : undefined,
-          rating: rating > 0 ? rating : undefined,
-          notes: notes.trim() || undefined,
         });
+        contentItemId = parseInt(id, 10);
       } else {
         // Create new item
-        await addItem({
+        const newItem = await addItem({
           title: title.trim(),
           category,
           status,
           creator: creator.trim() || undefined,
           year: year ? parseInt(year, 10) : undefined,
+        });
+        contentItemId = newItem.id;
+      }
+
+      // If rating or notes are provided, create a consumption record
+      if (rating > 0 || notes.trim()) {
+        await createConsumptionRecord({
+          contentItemId,
           rating: rating > 0 ? rating : undefined,
           notes: notes.trim() || undefined,
+          dateConsumed: new Date().toISOString(),
         });
       }
 

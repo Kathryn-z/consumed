@@ -31,7 +31,7 @@ export enum ContentStatus {
 
 /**
  * Content item interface
- * Represents a single piece of consumed content
+ * Represents a single piece of content (book, movie, etc.)
  */
 export interface ContentItem {
   id: number;
@@ -40,12 +40,22 @@ export interface ContentItem {
   status: ContentStatus;
   creator?: string; // Author, Director, Producer, etc.
   year?: number;
-  notes?: string;
-  rating?: number; // 0-5 stars
-  dateConsumed?: string; // ISO string for database compatibility
+  rating?: number; // 0-5 stars (denormalized from most recent ConsumptionRecord)
   dateAdded: string; // ISO string for when item was added
   coverImage?: string;
   externalId?: string; // ID from external API (TMDB, Google Books, etc.)
+}
+
+/**
+ * Consumption record interface
+ * Represents a single viewing/reading/listening of a content item
+ */
+export interface ConsumptionRecord {
+  id: number;
+  contentItemId: number; // Foreign key to ContentItem
+  rating?: number; // 0-5 stars
+  notes?: string;
+  dateConsumed: string; // ISO string for when consumed
 }
 
 /**
@@ -59,9 +69,12 @@ export interface SearchFilter {
 /**
  * Content creation input
  */
-export type CreateContentInput = Omit<ContentItem, "id" | "dateAdded" | "dateConsumed"> & {
-  dateConsumed?: string;
-};
+export type CreateContentInput = Omit<ContentItem, "id" | "dateAdded">;
+
+/**
+ * Consumption record creation input
+ */
+export type CreateConsumptionRecordInput = Omit<ConsumptionRecord, "id">;
 
 /**
  * Helper function to get category display name

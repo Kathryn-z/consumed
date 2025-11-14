@@ -9,17 +9,15 @@ export async function createContentItem(input: CreateContentInput): Promise<Cont
   const dateAdded = new Date().toISOString();
 
   const result = await db.runAsync(
-    `INSERT INTO content_items (title, category, status, creator, year, notes, rating, dateConsumed, dateAdded, coverImage, externalId)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO content_items (title, category, status, creator, year, rating, dateAdded, coverImage, externalId)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.category,
       input.status,
       input.creator || null,
       input.year || null,
-      input.notes || null,
       input.rating || null,
-      input.dateConsumed || null,
       dateAdded,
       input.coverImage || null,
       input.externalId || null,
@@ -147,7 +145,6 @@ export async function searchContentItems(
 export async function markContentAsDone(id: number): Promise<ContentItem | null> {
   return updateContentItem(id, {
     status: ContentStatus.DONE,
-    dateConsumed: new Date().toISOString(),
   });
 }
 
@@ -157,7 +154,6 @@ export async function markContentAsDone(id: number): Promise<ContentItem | null>
 export async function markContentAsTodo(id: number): Promise<ContentItem | null> {
   return updateContentItem(id, {
     status: ContentStatus.TODO,
-    dateConsumed: undefined,
   });
 }
 

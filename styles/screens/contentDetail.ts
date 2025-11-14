@@ -206,4 +206,42 @@ export const contentDetailStyles = StyleSheet.create({
   cancelButtonText: {
     color: "#333",
   },
+  historySection: {
+    marginTop: spacing.lg,
+    gap: spacing.md,
+  },
+  historySectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
+  },
+  recordCard: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 12,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+  },
+  recordHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: spacing.sm,
+  },
+  recordDate: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.text.primary,
+  },
+  recordStar: {
+    fontSize: 16,
+    color: "#FFD700",
+  },
+  recordNotes: {
+    fontSize: 15,
+    color: colors.text.primary,
+    lineHeight: 22,
+    marginTop: spacing.xs,
+  },
 });

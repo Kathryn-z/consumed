@@ -3,14 +3,16 @@ import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } fr
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
-import { ContentItem } from "@/types/content";
+import { ContentItem, ConsumptionRecord } from "@/types/content";
 import { getContentItemById } from "@/db/contentOperations";
+import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 
 export default function ContentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const navigation = useNavigation();
   const [item, setItem] = useState<ContentItem | null>(null);
+  const [consumptionRecords, setConsumptionRecords] = useState<ConsumptionRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Set header right button
@@ -31,13 +33,17 @@ export default function ContentDetail() {
   // Reload data whenever screen comes into focus
   useFocusEffect(
     useCallback(() => {
-      async function loadItem() {
+      async function loadData() {
         if (!id) return;
 
         try {
           setLoading(true);
           const contentItem = await getContentItemById(parseInt(id, 10));
           setItem(contentItem);
+
+          // Load consumption records
+          const records = await getConsumptionRecordsByContentId(parseInt(id, 10));
+          setConsumptionRecords(records);
         } catch (error) {
           console.error("Error loading content item:", error);
         } finally {
@@ -45,7 +51,7 @@ export default function ContentDetail() {
         }
       }
 
-      loadItem();
+      loadData();
     }, [id])
   );
 
@@ -147,18 +153,10 @@ export default function ContentDetail() {
             <Text style={contentDetailStyles.value}>{formatDate(item.dateAdded)}</Text>
           </View>
 
-          {/* Date Consumed */}
-          {item.dateConsumed && (
-            <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Consumed:</Text>
-              <Text style={contentDetailStyles.value}>{formatDate(item.dateConsumed)}</Text>
-            </View>
-          )}
-
-          {/* Rating */}
+          {/* Latest Rating */}
           {item.rating !== undefined && item.rating !== null && (
             <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Rating:</Text>
+              <Text style={contentDetailStyles.label}>Latest Rating:</Text>
               <View style={contentDetailStyles.ratingContainer}>
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Text key={star} style={contentDetailStyles.star}>
@@ -169,11 +167,33 @@ export default function ContentDetail() {
             </View>
           )}
 
-          {/* Notes */}
-          {item.notes && (
-            <View style={contentDetailStyles.notesSection}>
-              <Text style={contentDetailStyles.label}>Notes:</Text>
-              <Text style={contentDetailStyles.notes}>{item.notes}</Text>
+          {/* Consumption History */}
+          {consumptionRecords.length > 0 && (
+            <View style={contentDetailStyles.historySection}>
+              <Text style={contentDetailStyles.historySectionTitle}>
+                Consumption History ({consumptionRecords.length})
+              </Text>
+              {consumptionRecords.map((record) => (
+                <View key={record.id} style={contentDetailStyles.recordCard}>
+                  <View style={contentDetailStyles.recordHeader}>
+                    <Text style={contentDetailStyles.recordDate}>
+                      {formatDate(record.dateConsumed)}
+                    </Text>
+                    {record.rating !== undefined && record.rating !== null && (
+                      <View style={contentDetailStyles.ratingContainer}>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Text key={star} style={contentDetailStyles.recordStar}>
+                            {star <= record.rating! ? '★' : '☆'}
+                          </Text>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                  {record.notes && (
+                    <Text style={contentDetailStyles.recordNotes}>{record.notes}</Text>
+                  )}
+                </View>
+              ))}
             </View>
           )}
         </View>
