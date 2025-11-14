@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const DATABASE_NAME = "consumed.db";
-const SCHEMA_VERSION = 2; // Updated for ConsumptionRecord feature
+const SCHEMA_VERSION = 3; // Updated for category-specific attributes
 
 let db: SQLite.SQLiteDatabase | null = null;
 
@@ -103,6 +103,10 @@ async function migrateToV2(database: SQLite.SQLiteDatabase) {
       dateAdded TEXT NOT NULL,
       coverImage TEXT,
       externalId TEXT,
+      wordCount INTEGER,
+      actors TEXT,
+      type TEXT,
+      numberOfEpisodes INTEGER,
       CONSTRAINT valid_status CHECK (status IN ('todo', 'done')),
       CONSTRAINT valid_rating CHECK (rating IS NULL OR (rating >= 0 AND rating <= 5))
     );
@@ -120,6 +124,36 @@ async function migrateToV2(database: SQLite.SQLiteDatabase) {
   `);
 
   console.log("Migration to version 2 complete");
+}
+
+/**
+ * Migrate from version 2 to version 3
+ * Adds category-specific attributes
+ */
+async function migrateToV3(database: SQLite.SQLiteDatabase) {
+  console.log("Migrating database to version 3...");
+
+  // Check which columns need to be added
+  const tableInfo = await database.getAllAsync<{ name: string }>(
+    "PRAGMA table_info(content_items)"
+  );
+  const existingColumns = new Set(tableInfo.map((col) => col.name));
+
+  // Add columns only if they don't exist
+  if (!existingColumns.has("wordCount")) {
+    await database.execAsync("ALTER TABLE content_items ADD COLUMN wordCount INTEGER;");
+  }
+  if (!existingColumns.has("actors")) {
+    await database.execAsync("ALTER TABLE content_items ADD COLUMN actors TEXT;");
+  }
+  if (!existingColumns.has("type")) {
+    await database.execAsync("ALTER TABLE content_items ADD COLUMN type TEXT;");
+  }
+  if (!existingColumns.has("numberOfEpisodes")) {
+    await database.execAsync("ALTER TABLE content_items ADD COLUMN numberOfEpisodes INTEGER;");
+  }
+
+  console.log("Migration to version 3 complete");
 }
 
 /**
@@ -145,6 +179,10 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
         dateAdded TEXT NOT NULL,
         coverImage TEXT,
         externalId TEXT,
+        wordCount INTEGER,
+        actors TEXT,
+        type TEXT,
+        numberOfEpisodes INTEGER,
         CONSTRAINT valid_status CHECK (status IN ('todo', 'done')),
         CONSTRAINT valid_rating CHECK (rating IS NULL OR (rating >= 0 AND rating <= 5))
       );
@@ -178,8 +216,13 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
       await setSchemaVersion(database, 2);
     }
 
+    if (currentVersion < 3) {
+      await migrateToV3(database);
+      await setSchemaVersion(database, 3);
+    }
+
     // Future migrations would go here
-    // if (currentVersion < 3) { await migrateToV3(database); }
+    // if (currentVersion < 4) { await migrateToV4(database); }
   }
 }
 

@@ -14,6 +14,10 @@ export default function CustomEntryRecord() {
     category: string;
     creator?: string;
     year?: string;
+    wordCount?: string;
+    actors?: string;
+    type?: string;
+    numberOfEpisodes?: string;
   }>();
 
   const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
@@ -25,14 +29,18 @@ export default function CustomEntryRecord() {
     try {
       setSaving(true);
 
-      // Create new content item
+      // Create new content item with category-specific fields
       const newItem = await createContentItem({
         title: params.title,
         category: params.category as ContentCategory,
         status,
         creator: params.creator,
         year: params.year ? parseInt(params.year, 10) : undefined,
-      });
+        wordCount: params.wordCount ? parseInt(params.wordCount, 10) : undefined,
+        actors: params.actors,
+        type: params.type,
+        numberOfEpisodes: params.numberOfEpisodes ? parseInt(params.numberOfEpisodes, 10) : undefined,
+      } as any);
 
       // If status is done, create a consumption record
       if (status === ContentStatus.DONE) {

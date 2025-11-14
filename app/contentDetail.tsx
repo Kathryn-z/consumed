@@ -1,7 +1,11 @@
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
-import { ConsumptionRecord, ContentItem } from "@/types/content";
+import {
+  ConsumptionRecord,
+  ContentItem,
+  getCreatorLabel,
+} from "@/types/content";
 import { Feather } from "@expo/vector-icons";
 import {
   useFocusEffect,
@@ -201,10 +205,12 @@ export default function ContentDetail() {
             <Text style={contentDetailStyles.value}>{item.category}</Text>
           </View>
 
-          {/* Creator */}
+          {/* Creator (Author/Director/Host) */}
           {item.creator && (
             <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Creator:</Text>
+              <Text style={contentDetailStyles.label}>
+                {getCreatorLabel(item.category)}:
+              </Text>
               <Text style={contentDetailStyles.value}>{item.creator}</Text>
             </View>
           )}
@@ -214,6 +220,47 @@ export default function ContentDetail() {
             <View style={contentDetailStyles.row}>
               <Text style={contentDetailStyles.label}>Year:</Text>
               <Text style={contentDetailStyles.value}>{item.year}</Text>
+            </View>
+          )}
+
+          {/* Category-specific fields */}
+          {/* Book: Word Count */}
+          {(item as any).wordCount && (
+            <View style={contentDetailStyles.row}>
+              <Text style={contentDetailStyles.label}>Word Count:</Text>
+              <Text style={contentDetailStyles.value}>
+                {(item as any).wordCount.toLocaleString()}
+              </Text>
+            </View>
+          )}
+
+          {/* Movies, TV Shows, Reality Shows, Musicals: Actors */}
+          {(item as any).actors && (
+            <View style={contentDetailStyles.row}>
+              <Text style={contentDetailStyles.label}>Actors:</Text>
+              <Text style={contentDetailStyles.value}>
+                {(item as any).actors}
+              </Text>
+            </View>
+          )}
+
+          {/* Movies, TV Shows, Reality Shows, Musicals: Type/Genre */}
+          {(item as any).type && (
+            <View style={contentDetailStyles.row}>
+              <Text style={contentDetailStyles.label}>Type/Genre:</Text>
+              <Text style={contentDetailStyles.value}>
+                {(item as any).type}
+              </Text>
+            </View>
+          )}
+
+          {/* TV Shows, Reality Shows: Number of Episodes */}
+          {(item as any).numberOfEpisodes && (
+            <View style={contentDetailStyles.row}>
+              <Text style={contentDetailStyles.label}>Episodes:</Text>
+              <Text style={contentDetailStyles.value}>
+                {(item as any).numberOfEpisodes}
+              </Text>
             </View>
           )}
 

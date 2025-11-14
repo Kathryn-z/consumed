@@ -30,21 +30,91 @@ export enum ContentStatus {
 }
 
 /**
- * Content item interface
- * Represents a single piece of content (book, movie, etc.)
+ * Base content item interface with shared attributes
  */
-export interface ContentItem {
+export interface ContentBase {
   id: number;
   title: string;
   category: ContentCategory;
   status: ContentStatus;
-  creator?: string; // Author, Director, Producer, etc.
+  creator?: string; // Author, Director, Host, etc. (label varies by category)
   year?: number;
   rating?: number; // 0-5 stars (denormalized from most recent ConsumptionRecord)
   dateAdded: string; // ISO string for when item was added
   coverImage?: string;
   externalId?: string; // ID from external API (TMDB, Google Books, etc.)
 }
+
+/**
+ * Book-specific content
+ */
+export interface Book extends ContentBase {
+  category: ContentCategory.BOOK;
+  creator?: string; // Author
+  wordCount?: number;
+}
+
+/**
+ * Movie-specific content
+ */
+export interface Movie extends ContentBase {
+  category: ContentCategory.MOVIE;
+  creator?: string; // Director
+  actors?: string;
+  type?: string; // Genre/Type
+}
+
+/**
+ * TV Show-specific content
+ */
+export interface TVShow extends ContentBase {
+  category: ContentCategory.TV_SHOW;
+  creator?: string; // Director
+  actors?: string;
+  type?: string; // Genre/Type
+  numberOfEpisodes?: number;
+}
+
+/**
+ * Reality Show-specific content
+ */
+export interface RealityShow extends ContentBase {
+  category: ContentCategory.REALITY_SHOW;
+  creator?: string; // Host
+  actors?: string;
+  type?: string; // Genre/Type
+  numberOfEpisodes?: number;
+}
+
+/**
+ * Musical-specific content
+ */
+export interface Musical extends ContentBase {
+  category: ContentCategory.MUSICAL;
+  creator?: string; // Director
+  actors?: string;
+  type?: string; // Genre/Type
+}
+
+/**
+ * Podcast-specific content
+ */
+export interface Podcast extends ContentBase {
+  category: ContentCategory.PODCAST;
+  creator?: string; // Host
+  numberOfEpisodes?: number;
+}
+
+/**
+ * Union type of all content items
+ */
+export type ContentItem =
+  | Book
+  | Movie
+  | TVShow
+  | RealityShow
+  | Musical
+  | Podcast;
 
 /**
  * Consumption record interface
@@ -88,4 +158,23 @@ export const getCategoryDisplayName = (category: ContentCategory): string => {
  */
 export const isValidCategory = (value: string): value is ContentCategory => {
   return Object.values(ContentCategory).includes(value as ContentCategory);
+};
+
+/**
+ * Helper function to get the creator label based on category
+ */
+export const getCreatorLabel = (category: ContentCategory): string => {
+  switch (category) {
+    case ContentCategory.BOOK:
+      return "Author";
+    case ContentCategory.MOVIE:
+    case ContentCategory.TV_SHOW:
+    case ContentCategory.MUSICAL:
+      return "Director";
+    case ContentCategory.REALITY_SHOW:
+    case ContentCategory.PODCAST:
+      return "Host";
+    default:
+      return "Creator";
+  }
 };
