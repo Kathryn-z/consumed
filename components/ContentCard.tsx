@@ -1,6 +1,7 @@
 import { ContentItem } from "@/types/content";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { contentCardStyles } from "@/styles/components/contentCard";
+import { useState } from "react";
 
 interface ContentCardProps {
   item: ContentItem;
@@ -8,6 +9,8 @@ interface ContentCardProps {
 }
 
 export function ContentCard({ item, onPress }: ContentCardProps) {
+  const [imageError, setImageError] = useState(false);
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -17,6 +20,10 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
     });
   };
 
+  // Use cover field first, fall back to coverImage for backward compatibility
+  const coverUrl = (item as any).cover || item.coverImage;
+  const showImage = coverUrl && !imageError;
+
   return (
     <TouchableOpacity
       style={contentCardStyles.container}
@@ -25,11 +32,12 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
     >
       {/* Cover Image or Placeholder */}
       <View style={contentCardStyles.imageContainer}>
-        {item.coverImage ? (
+        {showImage ? (
           <Image
-            source={{ uri: item.coverImage }}
+            source={{ uri: coverUrl }}
             style={contentCardStyles.image}
             resizeMode="cover"
+            onError={() => setImageError(true)}
           />
         ) : (
           <View style={contentCardStyles.placeholder}>

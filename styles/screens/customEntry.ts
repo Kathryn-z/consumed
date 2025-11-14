@@ -110,4 +110,27 @@ export const customEntryStyles = StyleSheet.create({
     fontSize: 32,
     color: "#FFD700",
   },
+  inputWithButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+  },
+  inputWithClearButton: {
+    flex: 1,
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    paddingHorizontal: spacing.md,
+    paddingRight: 45,
+    fontSize: 16,
+    backgroundColor: "#fff",
+  },
+  clearButton: {
+    position: "absolute",
+    right: 10,
+    padding: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

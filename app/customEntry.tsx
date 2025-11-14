@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export default function CustomEntry() {
   const router = useRouter();
@@ -208,14 +209,24 @@ export default function CustomEntry() {
           {/* Cover URL Input */}
           <View style={customEntryStyles.inputGroup}>
             <Text style={customEntryStyles.label}>Cover Image URL</Text>
-            <TextInput
-              style={customEntryStyles.input}
-              placeholder="Enter cover image URL"
-              value={cover}
-              onChangeText={setCover}
-              autoCapitalize="none"
-              keyboardType="url"
-            />
+            <View style={customEntryStyles.inputWithButton}>
+              <TextInput
+                style={customEntryStyles.inputWithClearButton}
+                placeholder="Enter cover image URL"
+                value={cover}
+                onChangeText={setCover}
+                autoCapitalize="none"
+                keyboardType="url"
+              />
+              {cover.trim() !== "" && (
+                <TouchableOpacity
+                  onPress={() => setCover("")}
+                  style={customEntryStyles.clearButton}
+                >
+                  <Feather name="x" size={20} color="#999" />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
 
           {/* Link URL Input */}

@@ -43,6 +43,7 @@ export default function ContentDetail() {
   >([]);
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const slideAnim = useRef(new Animated.Value(300)).current;
 
   // Animate menu slide-up when shown
@@ -123,6 +124,7 @@ export default function ContentDetail() {
 
         try {
           setLoading(true);
+          setImageError(false); // Reset image error state when loading new item
           const contentItem = await getContentItemById(parseInt(id, 10));
           setItem(contentItem);
 
@@ -171,6 +173,10 @@ export default function ContentDetail() {
     });
   };
 
+  // Use cover field first, fall back to coverImage for backward compatibility
+  const coverUrl = (item as any).cover || item.coverImage;
+  const showImage = coverUrl && !imageError;
+
   return (
     <View style={contentDetailStyles.container}>
       <ScrollView
@@ -179,11 +185,12 @@ export default function ContentDetail() {
       >
         {/* Cover Image or Placeholder */}
         <View style={contentDetailStyles.imageContainer}>
-          {item.coverImage ? (
+          {showImage ? (
             <Image
-              source={{ uri: item.coverImage }}
+              source={{ uri: coverUrl }}
               style={contentDetailStyles.image}
               resizeMode="cover"
+              onError={() => setImageError(true)}
             />
           ) : (
             <View style={contentDetailStyles.placeholder}>
