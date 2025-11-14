@@ -48,9 +48,8 @@ export default function ContentDetail() {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => setShowMenu(true)}
-          // style={{ marginRight: 16 }}
         >
-          <Feather name="more-horizontal" size={28} />
+          <Feather name="more-horizontal" size={24} />
         </TouchableOpacity>
       ),
     });

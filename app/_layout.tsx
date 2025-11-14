@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { TouchableOpacity } from "react-native";
@@ -37,8 +37,9 @@ export default function RootLayout() {
             headerLeft: () => (
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
+                style={{ marginLeft: -5 }}
               >
-                <Feather name="chevron-left" size={28} />
+                <Ionicons name="chevron-back-outline" size={28} />
               </TouchableOpacity>
             ),
           })}
@@ -52,8 +53,9 @@ export default function RootLayout() {
             headerLeft: () => (
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
+                style={{ marginLeft: -5 }}
               >
-                <Feather name="chevron-left" size={28} />
+                <Ionicons name="chevron-back-outline" size={28} />
               </TouchableOpacity>
             ),
           })}
@@ -67,8 +69,9 @@ export default function RootLayout() {
             headerLeft: () => (
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
+                style={{ marginLeft: -5 }}
               >
-                <Feather name="chevron-left" size={28} />
+                <Ionicons name="chevron-back-outline" size={28} />
               </TouchableOpacity>
             ),
           })}
