@@ -15,12 +15,15 @@ import {
 export default function CustomEntry() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
+  // Shared fields
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<ContentCategory | null>(null);
   const [creator, setCreator] = useState("");
   const [year, setYear] = useState("");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
+    const [cover, setCover] = useState("");
+  const [link, setLink] = useState("");
 
   // Category-specific fields
   const [wordCount, setWordCount] = useState("");
@@ -40,10 +43,13 @@ export default function CustomEntry() {
         setLoading(true);
         const item = await getContentItemById(parseInt(id, 10));
         if (item) {
+          // Load shared fields
           setTitle(item.title);
           setCategory(item.category);
           setCreator(item.creator || "");
           setYear(item.year?.toString() || "");
+          setCover((item as any).cover || "");
+          setLink((item as any).link || "");
 
           // Load category-specific fields
           setWordCount((item as any).wordCount?.toString() || "");
@@ -79,6 +85,8 @@ export default function CustomEntry() {
       category,
       ...(creator.trim() && { creator: creator.trim() }),
       ...(year && { year }),
+      ...(cover.trim() && { cover: cover.trim() }),
+      ...(link.trim() && { link: link.trim() }),
       ...(wordCount && { wordCount }),
       ...(actors.trim() && { actors: actors.trim() }),
       ...(type.trim() && { type: type.trim() }),
@@ -107,6 +115,8 @@ export default function CustomEntry() {
         category,
         creator: creator.trim() || undefined,
         year: year ? parseInt(year, 10) : undefined,
+        cover: cover.trim() || undefined,
+        link: link.trim() || undefined,
         wordCount: wordCount ? parseInt(wordCount, 10) : undefined,
         actors: actors.trim() || undefined,
         type: type.trim() || undefined,
@@ -192,6 +202,32 @@ export default function CustomEntry() {
               value={year}
               onChangeText={setYear}
               keyboardType="numeric"
+            />
+          </View>
+
+          {/* Cover URL Input */}
+          <View style={customEntryStyles.inputGroup}>
+            <Text style={customEntryStyles.label}>Cover Image URL</Text>
+            <TextInput
+              style={customEntryStyles.input}
+              placeholder="Enter cover image URL"
+              value={cover}
+              onChangeText={setCover}
+              autoCapitalize="none"
+              keyboardType="url"
+            />
+          </View>
+
+          {/* Link URL Input */}
+          <View style={customEntryStyles.inputGroup}>
+            <Text style={customEntryStyles.label}>External Link</Text>
+            <TextInput
+              style={customEntryStyles.input}
+              placeholder="Enter external link (e.g., IMDB)"
+              value={link}
+              onChangeText={setLink}
+              autoCapitalize="none"
+              keyboardType="url"
             />
           </View>
 

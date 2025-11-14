@@ -9,8 +9,8 @@ export async function createContentItem(input: CreateContentInput): Promise<Cont
   const dateAdded = new Date().toISOString();
 
   const result = await db.runAsync(
-    `INSERT INTO content_items (title, category, status, creator, year, rating, dateAdded, coverImage, externalId, wordCount, actors, type, numberOfEpisodes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO content_items (title, category, status, creator, year, rating, dateAdded, coverImage, cover, externalId, link, wordCount, actors, type, numberOfEpisodes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.category,
@@ -20,7 +20,9 @@ export async function createContentItem(input: CreateContentInput): Promise<Cont
       input.rating || null,
       dateAdded,
       input.coverImage || null,
+      (input as any).cover || null,
       input.externalId || null,
+      (input as any).link || null,
       (input as any).wordCount || null,
       (input as any).actors || null,
       (input as any).type || null,

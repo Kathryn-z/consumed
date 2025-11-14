@@ -14,6 +14,8 @@ export default function CustomEntryRecord() {
     category: string;
     creator?: string;
     year?: string;
+    cover?: string;
+    link?: string;
     wordCount?: string;
     actors?: string;
     type?: string;
@@ -36,6 +38,8 @@ export default function CustomEntryRecord() {
         status,
         creator: params.creator,
         year: params.year ? parseInt(params.year, 10) : undefined,
+        cover: params.cover,
+        link: params.link,
         wordCount: params.wordCount ? parseInt(params.wordCount, 10) : undefined,
         actors: params.actors,
         type: params.type,

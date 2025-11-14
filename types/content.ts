@@ -17,11 +17,6 @@ export enum ContentCategory {
 export const CATEGORIES = Object.values(ContentCategory);
 
 /**
- * Type for category values
- */
-export type Category = ContentCategory;
-
-/**
  * Content status enum
  */
 export enum ContentStatus {
@@ -41,8 +36,10 @@ export interface ContentBase {
   year?: number;
   rating?: number; // 0-5 stars (denormalized from most recent ConsumptionRecord)
   dateAdded: string; // ISO string for when item was added
-  coverImage?: string;
+  coverImage?: string; // Deprecated: Use cover instead
+  cover?: string; // URL to cover image
   externalId?: string; // ID from external API (TMDB, Google Books, etc.)
+  link?: string; // URL to external website (e.g., IMDB, Goodreads)
 }
 
 /**
