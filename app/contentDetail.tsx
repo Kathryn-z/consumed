@@ -1,10 +1,10 @@
-import { useCallback, useLayoutEffect, useState } from "react";
-import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
+import { useCallback, useLayoutEffect, useState, useEffect, useRef } from "react";
+import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Alert, Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
 import { ContentItem, ConsumptionRecord } from "@/types/content";
-import { getContentItemById } from "@/db/contentOperations";
+import { getContentItemById, deleteContentItem } from "@/db/contentOperations";
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 
 export default function ContentDetail() {
@@ -14,21 +14,79 @@ export default function ContentDetail() {
   const [item, setItem] = useState<ContentItem | null>(null);
   const [consumptionRecords, setConsumptionRecords] = useState<ConsumptionRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
+  const slideAnim = useRef(new Animated.Value(300)).current;
 
-  // Set header right button
+  // Animate menu slide-up when shown
+  useEffect(() => {
+    if (showMenu) {
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        tension: 65,
+        friction: 11,
+      }).start();
+    }
+  }, [showMenu, slideAnim]);
+
+  // Handle menu dismissal with slide down animation
+  const handleDismissMenu = () => {
+    Animated.timing(slideAnim, {
+      toValue: 300,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowMenu(false);
+      slideAnim.setValue(300);
+    });
+  };
+
+  // Set header right button (three-dot menu)
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           style={contentDetailStyles.headerButton}
-          onPress={() => router.push(`/customEntry?id=${id}`)}
+          onPress={() => setShowMenu(true)}
           activeOpacity={0.8}
         >
-          <Text style={contentDetailStyles.headerButtonText}>Edit</Text>
+          <Text style={contentDetailStyles.headerButtonText}>⋯</Text>
         </TouchableOpacity>
       ),
     });
   }, [navigation, id, router]);
+
+  const handleEdit = () => {
+    handleDismissMenu();
+    router.push(`/customEntry?id=${id}`);
+  };
+
+  const handleDelete = () => {
+    handleDismissMenu();
+    Alert.alert(
+      "Delete Content",
+      "Are you sure you want to delete this content? This will also delete all consumption records.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteContentItem(parseInt(id, 10));
+              router.back();
+            } catch (error) {
+              console.error("Error deleting content:", error);
+              Alert.alert("Error", "Failed to delete content. Please try again.");
+            }
+          }
+        }
+      ]
+    );
+  };
 
   // Reload data whenever screen comes into focus
   useFocusEffect(
@@ -198,6 +256,55 @@ export default function ContentDetail() {
           )}
         </View>
       </ScrollView>
+
+      {/* Bottom Menu Modal */}
+      {showMenu && (
+        <Modal
+          visible={showMenu}
+          transparent={true}
+          animationType="none"
+          onRequestClose={handleDismissMenu}
+          statusBarTranslucent={false}
+        >
+          <TouchableOpacity
+            style={contentDetailStyles.modalOverlay}
+            activeOpacity={1}
+            onPress={handleDismissMenu}
+          >
+            <Animated.View
+              style={[
+                contentDetailStyles.menuContainer,
+                { transform: [{ translateY: slideAnim }] }
+              ]}
+            >
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={(e) => e.stopPropagation()}
+              >
+                {/* Edit Option */}
+                <TouchableOpacity
+                  style={contentDetailStyles.menuItem}
+                  onPress={handleEdit}
+                  activeOpacity={0.8}
+                >
+                  <Text style={contentDetailStyles.menuIcon}>✏️</Text>
+                  <Text style={contentDetailStyles.menuText}>Edit</Text>
+                </TouchableOpacity>
+
+                {/* Delete Option */}
+                <TouchableOpacity
+                  style={contentDetailStyles.menuItem}
+                  onPress={handleDelete}
+                  activeOpacity={0.8}
+                >
+                  <Text style={contentDetailStyles.menuIcon}>🗑️</Text>
+                  <Text style={[contentDetailStyles.menuText, contentDetailStyles.deleteText]}>Delete</Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </Animated.View>
+          </TouchableOpacity>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 }

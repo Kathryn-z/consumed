@@ -244,4 +244,44 @@ export const contentDetailStyles = StyleSheet.create({
     lineHeight: 22,
     marginTop: spacing.xs,
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
+  },
+  menuContainer: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 40,
+    paddingTop: spacing.md,
+    paddingHorizontal: spacing.md,
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+    borderRadius: 12,
+    marginBottom: spacing.sm,
+    backgroundColor: "#f9f9f9",
+  },
+  menuIcon: {
+    fontSize: 20,
+    marginRight: spacing.md,
+  },
+  menuText: {
+    fontSize: 17,
+    color: colors.text.primary,
+    fontWeight: "500",
+  },
+  deleteText: {
+    color: "#FF3B30",
+  },
+  cancelMenuItem: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginTop: spacing.sm,
+  },
 });
