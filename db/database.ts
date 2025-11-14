@@ -48,9 +48,7 @@ async function setSchemaVersion(
  * Migrate database from version 1 to version 2
  * Adds category-specific columns: cover, link, wordCount, actors, type, numberOfEpisodes
  */
-async function migrateToV2(database: SQLite.SQLiteDatabase) {
-  console.log("Running migration to V4...");
-
+async function migrateToV6(database: SQLite.SQLiteDatabase) {
   // Get existing columns
   const columns = await database.getAllAsync<{ name: string }>(
     "PRAGMA table_info(content_items)"
@@ -90,9 +88,6 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
   await database.execAsync("PRAGMA foreign_keys = ON");
 
   const currentVersion = await getSchemaVersion(database);
-  console.log(
-    `Current database version: ${currentVersion}, Target version: ${SCHEMA_VERSION}`
-  );
 
   if (currentVersion === 0) {
     // Fresh install - create all tables at current version
@@ -143,7 +138,7 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
   } else if (currentVersion < SCHEMA_VERSION) {
     // Run migrations
     if (currentVersion < 6) {
-      await migrateToV2(database);
+      await migrateToV6(database);
       await setSchemaVersion(database, 6);
     }
   }
