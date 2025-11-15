@@ -45,7 +45,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="contentDetail"
+          name="contentDetail/[contentId]"
           options={{
             title: "Content Details",
           }}
@@ -68,7 +68,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="recordDetail"
+          name="recordDetail/[recordId]"
           options={{
             title: "Record Detail",
           }}

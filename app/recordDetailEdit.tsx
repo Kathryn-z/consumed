@@ -305,7 +305,7 @@ export default function RecordDetailEdit() {
         {/* Content Card */}
         <TouchableOpacity
           style={recordDetailEditStyles.contentCard}
-          onPress={() => router.push(`/contentDetail?id=${id}`)}
+          onPress={() => router.push(`/contentDetail/${id}`)}
           activeOpacity={0.7}
         >
           {/* Cover Image */}

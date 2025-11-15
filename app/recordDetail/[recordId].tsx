@@ -27,7 +27,7 @@ import {
 } from "react-native";
 
 export default function RecordDetail() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { recordId } = useLocalSearchParams<{ recordId: string }>();
   const router = useRouter();
   const navigation = useNavigation();
   const [item, setItem] = useState<ContentItem | null>(null);
@@ -92,10 +92,10 @@ export default function RecordDetail() {
       const loadData = async () => {
         try {
           setLoading(true);
-          if (id) {
+          if (recordId) {
             // First, fetch the consumption record by record ID
             const consumptionRecord = await getConsumptionRecordById(
-              parseInt(id, 10)
+              parseInt(recordId, 10)
             );
             setRecord(consumptionRecord);
 
@@ -115,7 +115,7 @@ export default function RecordDetail() {
       };
 
       loadData();
-    }, [id])
+    }, [recordId])
   );
 
   const coverUrl = item ? getImageUrl(item) : undefined;
@@ -149,7 +149,7 @@ export default function RecordDetail() {
       {/* Content Card */}
       <TouchableOpacity
         style={recordDetailStyles.contentCard}
-        onPress={() => router.push(`/contentDetail?id=${item.id}`)}
+        onPress={() => router.push(`/contentDetail/${item.id}`)}
         activeOpacity={0.7}
       >
         {/* Cover Image */}

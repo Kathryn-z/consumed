@@ -67,7 +67,7 @@ export default function Search() {
   };
 
   const handleItemPress = (item: any) => {
-    router.push(`/contentDetail?id=${item.id}`);
+    router.push(`/contentDetail/${item.id}`);
   };
 
   const handleTabPress = (tab: TabType) => {
