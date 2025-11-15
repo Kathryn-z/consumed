@@ -87,11 +87,11 @@ export default function SearchInsert() {
     router.push(`/customEntryRecord?${params.toString()}`);
   };
 
-  const handleCustomEntry = () => {
+  const handleContentInfo = () => {
     if (category) {
-      router.push(`/customEntry?category=${category}`);
+      router.push(`/contentInfo?category=${category}`);
     } else {
-      router.push("/customEntry");
+      router.push("/contentInfo");
     }
   };
 
@@ -122,11 +122,11 @@ export default function SearchInsert() {
               <Text style={searchInsertStyles.errorText}>{error}</Text>
               <TouchableOpacity
                 style={searchInsertStyles.customEntryButton}
-                onPress={handleCustomEntry}
+                onPress={handleContentInfo}
                 activeOpacity={0.8}
               >
                 <Text style={searchInsertStyles.customEntryButtonText}>
-                  Enter Custom Entry
+                  Enter Content Info
                 </Text>
               </TouchableOpacity>
             </View>
@@ -184,11 +184,11 @@ export default function SearchInsert() {
               </Text>
               <TouchableOpacity
                 style={searchInsertStyles.customEntryButton}
-                onPress={handleCustomEntry}
+                onPress={handleContentInfo}
                 activeOpacity={0.8}
               >
                 <Text style={searchInsertStyles.customEntryButtonText}>
-                  Enter Custom Entry
+                  Enter Content Info
                 </Text>
               </TouchableOpacity>
             </View>

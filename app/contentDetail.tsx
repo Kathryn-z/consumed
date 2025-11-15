@@ -56,7 +56,7 @@ export default function ContentDetail() {
 
   const handleEdit = () => {
     setShowMenu(false);
-    router.push(`/customEntry?id=${id}`);
+    router.push(`/contentInfo?id=${id}`);
   };
 
   const handleDelete = () => {

@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { spacing, colors } from "../common";
 
-export const customEntryStyles = StyleSheet.create({
+export const contentInfoStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,

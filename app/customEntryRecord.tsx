@@ -1,4 +1,4 @@
-import { customEntryStyles } from "@/styles/screens/customEntry";
+import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, ContentStatus } from "@/types/content";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
@@ -126,7 +126,7 @@ export default function CustomEntryRecord() {
           onPress={() => handleStarPress(i)}
           activeOpacity={0.7}
         >
-          <Text style={customEntryStyles.star}>{starDisplay}</Text>
+          <Text style={contentInfoStyles.star}>{starDisplay}</Text>
         </TouchableOpacity>
       );
     }
@@ -134,27 +134,27 @@ export default function CustomEntryRecord() {
   };
 
   return (
-    <View style={customEntryStyles.container}>
+    <View style={contentInfoStyles.container}>
       <ScrollView
-        style={customEntryStyles.content}
-        contentContainerStyle={customEntryStyles.scrollContent}
+        style={contentInfoStyles.content}
+        contentContainerStyle={contentInfoStyles.scrollContent}
       >
-        <View style={customEntryStyles.formContainer}>
+        <View style={contentInfoStyles.formContainer}>
           {/* Status Selection */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Status *</Text>
-            <View style={customEntryStyles.filterContainer}>
+          <View style={contentInfoStyles.inputGroup}>
+            <Text style={contentInfoStyles.label}>Status *</Text>
+            <View style={contentInfoStyles.filterContainer}>
               <TouchableOpacity
                 style={[
-                  customEntryStyles.chip,
-                  status === ContentStatus.TODO && customEntryStyles.chipActive,
+                  contentInfoStyles.chip,
+                  status === ContentStatus.TODO && contentInfoStyles.chipActive,
                 ]}
                 onPress={() => setStatus(ContentStatus.TODO)}
               >
                 <Text
                   style={[
-                    customEntryStyles.chipText,
-                    status === ContentStatus.TODO && customEntryStyles.chipTextActive,
+                    contentInfoStyles.chipText,
+                    status === ContentStatus.TODO && contentInfoStyles.chipTextActive,
                   ]}
                 >
                   To do
@@ -162,15 +162,15 @@ export default function CustomEntryRecord() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
-                  customEntryStyles.chip,
-                  status === ContentStatus.DONE && customEntryStyles.chipActive,
+                  contentInfoStyles.chip,
+                  status === ContentStatus.DONE && contentInfoStyles.chipActive,
                 ]}
                 onPress={() => setStatus(ContentStatus.DONE)}
               >
                 <Text
                   style={[
-                    customEntryStyles.chipText,
-                    status === ContentStatus.DONE && customEntryStyles.chipTextActive,
+                    contentInfoStyles.chipText,
+                    status === ContentStatus.DONE && contentInfoStyles.chipTextActive,
                   ]}
                 >
                   Done
@@ -183,8 +183,8 @@ export default function CustomEntryRecord() {
           {status === ContentStatus.DONE && (
             <>
               {/* Date Consumed */}
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Date Consumed</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Date Consumed</Text>
                 <DateTimePicker
                   value={dateConsumed}
                   mode="date"
@@ -199,9 +199,9 @@ export default function CustomEntryRecord() {
               </View>
 
               {/* Rating */}
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Rating</Text>
-                <View style={customEntryStyles.ratingContainer}>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Rating</Text>
+                <View style={contentInfoStyles.ratingContainer}>
                   {renderStars()}
                 </View>
               </View>
@@ -210,23 +210,23 @@ export default function CustomEntryRecord() {
 
           {/* Save Button */}
           <TouchableOpacity
-            style={[customEntryStyles.button, saving && { opacity: 0.6 }]}
+            style={[contentInfoStyles.button, saving && { opacity: 0.6 }]}
             onPress={handleSave}
             activeOpacity={0.8}
             disabled={saving}
           >
-            <Text style={customEntryStyles.buttonText}>
+            <Text style={contentInfoStyles.buttonText}>
               {saving ? "Saving..." : "Save"}
             </Text>
           </TouchableOpacity>
 
           {/* Cancel Button */}
           <TouchableOpacity
-            style={[customEntryStyles.button, customEntryStyles.cancelButton]}
+            style={[contentInfoStyles.button, contentInfoStyles.cancelButton]}
             onPress={handleCancel}
             activeOpacity={0.8}
           >
-            <Text style={[customEntryStyles.buttonText, customEntryStyles.cancelButtonText]}>
+            <Text style={[contentInfoStyles.buttonText, contentInfoStyles.cancelButtonText]}>
               Cancel
             </Text>
           </TouchableOpacity>

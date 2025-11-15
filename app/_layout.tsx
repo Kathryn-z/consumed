@@ -51,7 +51,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="customEntry"
+          name="contentInfo"
           options={({ route }) => {
             const params = route.params as { category?: string };
             const category = params?.category;

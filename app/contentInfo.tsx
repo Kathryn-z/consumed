@@ -1,5 +1,5 @@
 import { getContentItemById, updateContentItem } from "@/db/contentOperations";
-import { customEntryStyles } from "@/styles/screens/customEntry";
+import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, DramaSubtype, TVMovieSubtype } from "@/types/content";
 import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -258,17 +258,17 @@ export default function CustomEntry() {
   };
 
   return (
-    <View style={customEntryStyles.container}>
+    <View style={contentInfoStyles.container}>
       <ScrollView
-        style={customEntryStyles.content}
-        contentContainerStyle={customEntryStyles.scrollContent}
+        style={contentInfoStyles.content}
+        contentContainerStyle={contentInfoStyles.scrollContent}
       >
-        <View style={customEntryStyles.formContainer}>
+        <View style={contentInfoStyles.formContainer}>
           {/* Title Input */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Title *</Text>
+          <View style={contentInfoStyles.inputGroup}>
+            <Text style={contentInfoStyles.label}>Title *</Text>
             <TextInput
-              style={customEntryStyles.input}
+              style={contentInfoStyles.input}
               placeholder="Enter title"
               value={title}
               onChangeText={setTitle}
@@ -277,10 +277,10 @@ export default function CustomEntry() {
 
           {/* Author Input - only for Book */}
           {category === ContentCategory.BOOK && (
-            <View style={customEntryStyles.inputGroup}>
-              <Text style={customEntryStyles.label}>Author</Text>
+            <View style={contentInfoStyles.inputGroup}>
+              <Text style={contentInfoStyles.label}>Author</Text>
               <TextInput
-                style={customEntryStyles.input}
+                style={contentInfoStyles.input}
                 placeholder="Enter author"
                 value={author}
                 onChangeText={setAuthor}
@@ -289,10 +289,10 @@ export default function CustomEntry() {
           )}
 
           {/* Year Input */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Year</Text>
+          <View style={contentInfoStyles.inputGroup}>
+            <Text style={contentInfoStyles.label}>Year</Text>
             <TextInput
-              style={customEntryStyles.input}
+              style={contentInfoStyles.input}
               placeholder="Enter year"
               value={year}
               onChangeText={setYear}
@@ -301,11 +301,11 @@ export default function CustomEntry() {
           </View>
 
           {/* Cover URL Input */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>Cover Image URL</Text>
-            <View style={customEntryStyles.inputWithButton}>
+          <View style={contentInfoStyles.inputGroup}>
+            <Text style={contentInfoStyles.label}>Cover Image URL</Text>
+            <View style={contentInfoStyles.inputWithButton}>
               <TextInput
-                style={customEntryStyles.inputWithClearButton}
+                style={contentInfoStyles.inputWithClearButton}
                 placeholder="Enter cover image URL"
                 value={images}
                 onChangeText={setImages}
@@ -315,7 +315,7 @@ export default function CustomEntry() {
               {images.trim() !== "" && (
                 <TouchableOpacity
                   onPress={() => setImages("")}
-                  style={customEntryStyles.clearButton}
+                  style={contentInfoStyles.clearButton}
                 >
                   <Feather name="x" size={20} color="#999" />
                 </TouchableOpacity>
@@ -324,11 +324,11 @@ export default function CustomEntry() {
           </View>
 
           {/* Link URL Input */}
-          <View style={customEntryStyles.inputGroup}>
-            <Text style={customEntryStyles.label}>External Link</Text>
-            <View style={customEntryStyles.inputWithButton}>
+          <View style={contentInfoStyles.inputGroup}>
+            <Text style={contentInfoStyles.label}>External Link</Text>
+            <View style={contentInfoStyles.inputWithButton}>
               <TextInput
-                style={customEntryStyles.inputWithClearButton}
+                style={contentInfoStyles.inputWithClearButton}
                 placeholder="Enter external link (e.g., IMDB)"
                 value={link}
                 onChangeText={setLink}
@@ -338,7 +338,7 @@ export default function CustomEntry() {
               {link.trim() !== "" && (
                 <TouchableOpacity
                   onPress={() => setLink("")}
-                  style={customEntryStyles.clearButton}
+                  style={contentInfoStyles.clearButton}
                 >
                   <Feather name="x" size={20} color="#999" />
                 </TouchableOpacity>
@@ -351,10 +351,10 @@ export default function CustomEntry() {
           {/* Book fields */}
           {category === ContentCategory.BOOK && (
             <>
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Word Count</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Word Count</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter word count"
                   value={wordCount}
                   onChangeText={setWordCount}
@@ -362,10 +362,10 @@ export default function CustomEntry() {
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Tags</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Tags</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter tags (comma-separated)"
                   value={tags}
                   onChangeText={setTags}
@@ -377,24 +377,24 @@ export default function CustomEntry() {
           {/* TV/Movie fields */}
           {category === ContentCategory.TV_MOVIE && (
             <>
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Type *</Text>
-                <View style={customEntryStyles.filterContainer}>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Type *</Text>
+                <View style={contentInfoStyles.filterContainer}>
                   {Object.values(TVMovieSubtype).map((subtype) => (
                     <TouchableOpacity
                       key={subtype}
                       style={[
-                        customEntryStyles.chip,
+                        contentInfoStyles.chip,
                         tvMovieSubtype === subtype &&
-                          customEntryStyles.chipActive,
+                          contentInfoStyles.chipActive,
                       ]}
                       onPress={() => setTvMovieSubtype(subtype)}
                     >
                       <Text
                         style={[
-                          customEntryStyles.chipText,
+                          contentInfoStyles.chipText,
                           tvMovieSubtype === subtype &&
-                            customEntryStyles.chipTextActive,
+                            contentInfoStyles.chipTextActive,
                         ]}
                       >
                         {subtype}
@@ -404,30 +404,30 @@ export default function CustomEntry() {
                 </View>
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Directors</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Directors</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter directors (comma-separated)"
                   value={directors}
                   onChangeText={setDirectors}
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Cast</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Cast</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter cast members (comma-separated)"
                   value={casts}
                   onChangeText={setCasts}
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Genres</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Genres</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter genres (comma-separated)"
                   value={genres}
                   onChangeText={setGenres}
@@ -435,10 +435,10 @@ export default function CustomEntry() {
               </View>
 
               {tvMovieSubtype === TVMovieSubtype.TV && (
-                <View style={customEntryStyles.inputGroup}>
-                  <Text style={customEntryStyles.label}>Episodes Count</Text>
+                <View style={contentInfoStyles.inputGroup}>
+                  <Text style={contentInfoStyles.label}>Episodes Count</Text>
                   <TextInput
-                    style={customEntryStyles.input}
+                    style={contentInfoStyles.input}
                     placeholder="Enter number of episodes"
                     value={episodesCount}
                     onChangeText={setEpisodesCount}
@@ -447,10 +447,10 @@ export default function CustomEntry() {
                 </View>
               )}
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Countries</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Countries</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter countries (comma-separated)"
                   value={countries}
                   onChangeText={setCountries}
@@ -462,20 +462,20 @@ export default function CustomEntry() {
           {/* Podcast fields */}
           {category === ContentCategory.PODCAST && (
             <>
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Hosts</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Hosts</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter hosts (comma-separated)"
                   value={hosts}
                   onChangeText={setHosts}
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Episodes Count</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Episodes Count</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter number of episodes"
                   value={episodesCount}
                   onChangeText={setEpisodesCount}
@@ -488,24 +488,24 @@ export default function CustomEntry() {
           {/* Drama fields */}
           {category === ContentCategory.DRAMA && (
             <>
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Type *</Text>
-                <View style={customEntryStyles.filterContainer}>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Type *</Text>
+                <View style={contentInfoStyles.filterContainer}>
                   {Object.values(DramaSubtype).map((subtype) => (
                     <TouchableOpacity
                       key={subtype}
                       style={[
-                        customEntryStyles.chip,
+                        contentInfoStyles.chip,
                         dramaSubtype === subtype &&
-                          customEntryStyles.chipActive,
+                          contentInfoStyles.chipActive,
                       ]}
                       onPress={() => setDramaSubtype(subtype)}
                     >
                       <Text
                         style={[
-                          customEntryStyles.chipText,
+                          contentInfoStyles.chipText,
                           dramaSubtype === subtype &&
-                            customEntryStyles.chipTextActive,
+                            contentInfoStyles.chipTextActive,
                         ]}
                       >
                         {subtype}
@@ -515,50 +515,50 @@ export default function CustomEntry() {
                 </View>
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Directors</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Directors</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter directors (comma-separated)"
                   value={dramaDirectors}
                   onChangeText={setDramaDirectors}
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Cast</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Cast</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter cast members (comma-separated)"
                   value={dramaCasts}
                   onChangeText={setDramaCasts}
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Performers</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Performers</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter performers"
                   value={performers}
                   onChangeText={setPerformers}
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Venue</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Venue</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter venue/theater"
                   value={venue}
                   onChangeText={setVenue}
                 />
               </View>
 
-              <View style={customEntryStyles.inputGroup}>
-                <Text style={customEntryStyles.label}>Duration (minutes)</Text>
+              <View style={contentInfoStyles.inputGroup}>
+                <Text style={contentInfoStyles.label}>Duration (minutes)</Text>
                 <TextInput
-                  style={customEntryStyles.input}
+                  style={contentInfoStyles.input}
                   placeholder="Enter duration in minutes"
                   value={duration}
                   onChangeText={setDuration}
@@ -571,12 +571,12 @@ export default function CustomEntry() {
           {/* Save Button (for editing) */}
           {isEditing && (
             <TouchableOpacity
-              style={[customEntryStyles.button, saving && { opacity: 0.6 }]}
+              style={[contentInfoStyles.button, saving && { opacity: 0.6 }]}
               onPress={handleSave}
               activeOpacity={0.8}
               disabled={saving}
             >
-              <Text style={customEntryStyles.buttonText}>
+              <Text style={contentInfoStyles.buttonText}>
                 {saving ? "Updating..." : "Update Entry"}
               </Text>
             </TouchableOpacity>
@@ -585,24 +585,24 @@ export default function CustomEntry() {
           {/* Next Button (for new entry) */}
           {!isEditing && (
             <TouchableOpacity
-              style={customEntryStyles.button}
+              style={contentInfoStyles.button}
               onPress={handleNext}
               activeOpacity={0.8}
             >
-              <Text style={customEntryStyles.buttonText}>Next</Text>
+              <Text style={contentInfoStyles.buttonText}>Next</Text>
             </TouchableOpacity>
           )}
 
           {/* Cancel Button */}
           <TouchableOpacity
-            style={[customEntryStyles.button, customEntryStyles.cancelButton]}
+            style={[contentInfoStyles.button, contentInfoStyles.cancelButton]}
             onPress={handleCancel}
             activeOpacity={0.8}
           >
             <Text
               style={[
-                customEntryStyles.buttonText,
-                customEntryStyles.cancelButtonText,
+                contentInfoStyles.buttonText,
+                contentInfoStyles.cancelButtonText,
               ]}
             >
               Cancel
