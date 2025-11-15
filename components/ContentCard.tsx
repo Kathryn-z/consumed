@@ -1,6 +1,7 @@
 import { ContentItem } from "@/types/content";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { contentCardStyles } from "@/styles/components/contentCard";
+import { getImageUrl } from "@/utils/images";
 import { useState } from "react";
 
 interface ContentCardProps {
@@ -18,25 +19,6 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
       month: "short",
       day: "numeric",
     });
-  };
-
-  // Get image URL - try new images field, fall back to legacy fields
-  const getImageUrl = () => {
-    const itemAny = item as any;
-
-    // Try new images field (JSON string)
-    if (item.images) {
-      try {
-        const imagesObj = JSON.parse(item.images);
-        return imagesObj.medium || imagesObj.large || imagesObj.small;
-      } catch {
-        // If not JSON, treat as plain URL
-        return item.images;
-      }
-    }
-
-    // Fall back to legacy fields
-    return itemAny.cover || itemAny.coverImage;
   };
 
   // Get creator/author label based on category
@@ -82,7 +64,7 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
     return null;
   };
 
-  const coverUrl = getImageUrl();
+  const coverUrl = getImageUrl(item);
   const creatorInfo = getCreatorInfo();
   const showImage = coverUrl && !imageError;
 

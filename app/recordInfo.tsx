@@ -1,13 +1,14 @@
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import { createConsumptionRecord } from "@/db/consumptionOperations";
+import { createContentItem } from "@/db/contentOperations";
 import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, ContentStatus } from "@/types/content";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { createContentItem } from "@/db/contentOperations";
-import { createConsumptionRecord } from "@/db/consumptionOperations";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default function CustomEntryRecord() {
+export default function RecordInfo() {
   const router = useRouter();
   const params = useLocalSearchParams<{
     title: string;
@@ -61,18 +62,24 @@ export default function CustomEntryRecord() {
 
       if (category === ContentCategory.BOOK) {
         contentData.author = params.author;
-        contentData.wordCount = params.wordCount ? parseInt(params.wordCount, 10) : undefined;
+        contentData.wordCount = params.wordCount
+          ? parseInt(params.wordCount, 10)
+          : undefined;
         contentData.tags = params.tags;
       } else if (category === ContentCategory.TV_MOVIE) {
         contentData.subtype = params.subtype;
         contentData.directors = params.directors;
         contentData.casts = params.casts;
         contentData.genres = params.genres;
-        contentData.episodesCount = params.episodesCount ? parseInt(params.episodesCount, 10) : undefined;
+        contentData.episodesCount = params.episodesCount
+          ? parseInt(params.episodesCount, 10)
+          : undefined;
         contentData.countries = params.countries;
       } else if (category === ContentCategory.PODCAST) {
         contentData.hosts = params.hosts;
-        contentData.episodesCount = params.episodesCount ? parseInt(params.episodesCount, 10) : undefined;
+        contentData.episodesCount = params.episodesCount
+          ? parseInt(params.episodesCount, 10)
+          : undefined;
         contentData.genres = params.genres;
         contentData.feedUrl = params.feedUrl;
       } else if (category === ContentCategory.DRAMA) {
@@ -81,7 +88,9 @@ export default function CustomEntryRecord() {
         contentData.casts = params.casts;
         contentData.performers = params.performers;
         contentData.venue = params.venue;
-        contentData.duration = params.duration ? parseInt(params.duration, 10) : undefined;
+        contentData.duration = params.duration
+          ? parseInt(params.duration, 10)
+          : undefined;
       }
 
       // Create new content item
@@ -118,7 +127,7 @@ export default function CustomEntryRecord() {
   const renderStars = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
-      const starDisplay = rating >= i ? '★' : '☆';
+      const starDisplay = rating >= i ? "★" : "☆";
 
       stars.push(
         <TouchableOpacity
@@ -154,7 +163,8 @@ export default function CustomEntryRecord() {
                 <Text
                   style={[
                     contentInfoStyles.chipText,
-                    status === ContentStatus.TODO && contentInfoStyles.chipTextActive,
+                    status === ContentStatus.TODO &&
+                      contentInfoStyles.chipTextActive,
                   ]}
                 >
                   To do
@@ -170,7 +180,8 @@ export default function CustomEntryRecord() {
                 <Text
                   style={[
                     contentInfoStyles.chipText,
-                    status === ContentStatus.DONE && contentInfoStyles.chipTextActive,
+                    status === ContentStatus.DONE &&
+                      contentInfoStyles.chipTextActive,
                   ]}
                 >
                   Done
@@ -194,7 +205,7 @@ export default function CustomEntryRecord() {
                       setDateConsumed(selectedDate);
                     }
                   }}
-                  style={{ alignSelf: 'flex-start' }}
+                  style={{ alignSelf: "flex-start" }}
                 />
               </View>
 
@@ -209,27 +220,20 @@ export default function CustomEntryRecord() {
           )}
 
           {/* Save Button */}
-          <TouchableOpacity
-            style={[contentInfoStyles.button, saving && { opacity: 0.6 }]}
+          <PrimaryButton
+            text="Save"
+            loadingText="Saving..."
+            loading={saving}
             onPress={handleSave}
-            activeOpacity={0.8}
-            disabled={saving}
-          >
-            <Text style={contentInfoStyles.buttonText}>
-              {saving ? "Saving..." : "Save"}
-            </Text>
-          </TouchableOpacity>
+          />
 
           {/* Cancel Button */}
-          <TouchableOpacity
-            style={[contentInfoStyles.button, contentInfoStyles.cancelButton]}
+          <PrimaryButton
+            text="Cancel"
             onPress={handleCancel}
-            activeOpacity={0.8}
-          >
-            <Text style={[contentInfoStyles.buttonText, contentInfoStyles.cancelButtonText]}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
+            buttonStyle={contentInfoStyles.cancelButton}
+            textStyle={contentInfoStyles.cancelButtonText}
+          />
         </View>
       </ScrollView>
     </View>

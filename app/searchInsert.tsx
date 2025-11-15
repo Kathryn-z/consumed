@@ -1,3 +1,4 @@
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 import {
   ItunesPodcastResult,
   searchItunesPodcast,
@@ -118,17 +119,12 @@ export default function SearchInsert() {
               <Text style={searchInsertStyles.loadingText}>Searching...</Text>
             </View>
           ) : error ? (
-            <View style={searchInsertStyles.errorContainer}>
+            <View>
               <Text style={searchInsertStyles.errorText}>{error}</Text>
-              <TouchableOpacity
-                style={searchInsertStyles.customEntryButton}
+              <PrimaryButton
+                text="Enter Content Info"
                 onPress={handleContentInfo}
-                activeOpacity={0.8}
-              >
-                <Text style={searchInsertStyles.customEntryButtonText}>
-                  Enter Content Info
-                </Text>
-              </TouchableOpacity>
+              />
             </View>
           ) : searchResults.length > 0 ? (
             <ScrollView>
@@ -177,20 +173,15 @@ export default function SearchInsert() {
               ))}
             </ScrollView>
           ) : (
-            <View style={searchInsertStyles.noResultsContainer}>
+            <View>
               <Text style={searchInsertStyles.noResultsText}>
                 If there is no content in the search result, you can try custom
                 entry.
               </Text>
-              <TouchableOpacity
-                style={searchInsertStyles.customEntryButton}
+              <PrimaryButton
+                text="Enter Content Info"
                 onPress={handleContentInfo}
-                activeOpacity={0.8}
-              >
-                <Text style={searchInsertStyles.customEntryButtonText}>
-                  Enter Content Info
-                </Text>
-              </TouchableOpacity>
+              />
             </View>
           )}
         </View>

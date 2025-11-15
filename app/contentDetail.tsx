@@ -1,6 +1,7 @@
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
+import { getImageUrl } from "@/utils/images";
 import {
   ContentItem,
   ContentCategory,
@@ -163,26 +164,7 @@ export default function ContentDetail() {
     });
   };
 
-  // Get image URL - try new images field, fall back to legacy fields
-  const getImageUrl = () => {
-    const itemAny = item as any;
-
-    // Try new images field (JSON string)
-    if (item.images) {
-      try {
-        const imagesObj = JSON.parse(item.images);
-        return imagesObj.large || imagesObj.medium || imagesObj.small;
-      } catch {
-        // If not JSON, treat as plain URL
-        return item.images;
-      }
-    }
-
-    // Fall back to legacy fields
-    return itemAny.cover || itemAny.coverImage;
-  };
-
-  const coverUrl = getImageUrl();
+  const coverUrl = getImageUrl(item);
   const showImage = coverUrl && !imageError;
 
   return (

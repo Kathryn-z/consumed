@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { commonStyles, spacing, colors } from "../common";
+import { colors, commonStyles, spacing } from "../common";
 
 export const searchInsertStyles = StyleSheet.create({
   ...commonStyles,
@@ -45,32 +45,12 @@ export const searchInsertStyles = StyleSheet.create({
     flex: 1,
     marginTop: spacing.md,
   },
-  noResultsContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xl * 2,
-  },
   noResultsText: {
     fontSize: 16,
     color: colors.text.secondary,
     textAlign: "center",
     marginBottom: spacing.lg,
     lineHeight: 24,
-  },
-  customEntryButton: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    backgroundColor: "#007AFF",
-    borderRadius: 10,
-    minWidth: 200,
-    alignItems: "center",
-  },
-  customEntryButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
   },
   loadingContainer: {
     flex: 1,
@@ -82,13 +62,6 @@ export const searchInsertStyles = StyleSheet.create({
     marginTop: spacing.md,
     fontSize: 16,
     color: colors.text.secondary,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.xl * 2,
   },
   errorText: {
     fontSize: 16,

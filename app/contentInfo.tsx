@@ -1,3 +1,4 @@
+import PrimaryButton from "@/components/buttons/PrimaryButton";
 import { getContentItemById, updateContentItem } from "@/db/contentOperations";
 import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, DramaSubtype, TVMovieSubtype } from "@/types/content";
@@ -13,7 +14,7 @@ import {
   View,
 } from "react-native";
 
-export default function CustomEntry() {
+export default function ContentInfo() {
   const router = useRouter();
   const params = useLocalSearchParams<{ id?: string; category?: string }>();
   const { id } = params;
@@ -570,44 +571,24 @@ export default function CustomEntry() {
 
           {/* Save Button (for editing) */}
           {isEditing && (
-            <TouchableOpacity
-              style={[contentInfoStyles.button, saving && { opacity: 0.6 }]}
+            <PrimaryButton
+              text="Update Entry"
+              loadingText="Updating..."
+              loading={saving}
               onPress={handleSave}
-              activeOpacity={0.8}
-              disabled={saving}
-            >
-              <Text style={contentInfoStyles.buttonText}>
-                {saving ? "Updating..." : "Update Entry"}
-              </Text>
-            </TouchableOpacity>
+            />
           )}
 
           {/* Next Button (for new entry) */}
-          {!isEditing && (
-            <TouchableOpacity
-              style={contentInfoStyles.button}
-              onPress={handleNext}
-              activeOpacity={0.8}
-            >
-              <Text style={contentInfoStyles.buttonText}>Next</Text>
-            </TouchableOpacity>
-          )}
+          {!isEditing && <PrimaryButton text="Next" onPress={handleNext} />}
 
           {/* Cancel Button */}
-          <TouchableOpacity
-            style={[contentInfoStyles.button, contentInfoStyles.cancelButton]}
+          <PrimaryButton
+            text="Cancel"
             onPress={handleCancel}
-            activeOpacity={0.8}
-          >
-            <Text
-              style={[
-                contentInfoStyles.buttonText,
-                contentInfoStyles.cancelButtonText,
-              ]}
-            >
-              Cancel
-            </Text>
-          </TouchableOpacity>
+            buttonStyle={contentInfoStyles.cancelButton}
+            textStyle={contentInfoStyles.cancelButtonText}
+          />
         </View>
       </ScrollView>
     </View>
