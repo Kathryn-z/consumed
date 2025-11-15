@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../common";
+import { colors, spacing } from "../common";
 
 export const recordCardStyles = StyleSheet.create({
   container: {
     borderRadius: 12,
-    padding: spacing.md,
+    padding: spacing.sm,
     marginBottom: spacing.sm,
   },
   topRow: {
@@ -12,7 +12,7 @@ export const recordCardStyles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   imageContainer: {
-    width: 100,
+    width: 80,
     height: 100,
     borderRadius: 8,
     overflow: "hidden",

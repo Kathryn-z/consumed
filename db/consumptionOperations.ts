@@ -177,3 +177,18 @@ export async function getAllConsumptionRecords(): Promise<ConsumptionRecord[]> {
   );
   return rows;
 }
+
+/**
+ * Get consumption records only for content items marked as "done"
+ * Joins with content_items table to filter by status
+ */
+export async function getConsumptionRecordsForDoneContent(): Promise<ConsumptionRecord[]> {
+  const db = await getDatabase();
+  const rows = await db.getAllAsync<ConsumptionRecord>(
+    `SELECT cr.* FROM consumption_records cr
+     INNER JOIN content_items ci ON cr.contentItemId = ci.id
+     WHERE ci.status = 'done'
+     ORDER BY cr.dateConsumed DESC`
+  );
+  return rows;
+}

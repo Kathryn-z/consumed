@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
-import { getAllConsumptionRecords } from "@/db/consumptionOperations";
+import { getConsumptionRecordsForDoneContent } from "@/db/consumptionOperations";
 import { openDatabase } from "@/db/database";
 
 /**
  * Hook for managing consumption records
+ * Only returns records for content items marked as "done"
  */
 export function useRecords() {
   const [records, setRecords] = useState<ConsumptionRecord[]>([]);
@@ -16,7 +17,7 @@ export function useRecords() {
       setLoading(true);
       setError(null);
       await openDatabase(); // Ensure database is initialized
-      const data = await getAllConsumptionRecords();
+      const data = await getConsumptionRecordsForDoneContent();
       setRecords(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load records");
