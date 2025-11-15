@@ -84,7 +84,7 @@ export default function RecordInfo() {
     }
 
     // Navigate to recordDetailEdit with all data
-    router.push(`/recordDetailEdit?${urlParams.toString()}`);
+    router.push(`/recordDetailEdit/new?${urlParams.toString()}`);
   };
 
   const handleCancel = () => {

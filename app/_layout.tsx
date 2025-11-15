@@ -74,7 +74,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="recordDetailEdit"
+          name="recordDetailEdit/[recordId]"
           options={{
             title: "Edit Record",
           }}

@@ -1,3 +1,4 @@
+import { ContentInfoCard } from "@/components/ContentInfoCard";
 import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
 import {
   deleteConsumptionRecord,
@@ -7,7 +8,6 @@ import { getContentItemById } from "@/db/contentOperations";
 import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { ContentItem } from "@/types/content";
-import { getImageUrl } from "@/utils/images";
 import { Feather } from "@expo/vector-icons";
 import {
   useFocusEffect,
@@ -19,7 +19,6 @@ import { useCallback, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Image,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -33,7 +32,6 @@ export default function RecordDetail() {
   const [item, setItem] = useState<ContentItem | null>(null);
   const [record, setRecord] = useState<ConsumptionRecord | null>(null);
   const [loading, setLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   // Set header right button (three-dot menu)
@@ -50,7 +48,7 @@ export default function RecordDetail() {
   const handleEdit = () => {
     setShowMenu(false);
     if (record) {
-      router.push(`/recordDetailEdit?id=${item?.id}&recordId=${record.id}`);
+      router.push(`/recordDetailEdit/${record.id}?id=${item?.id}`);
     }
   };
 
@@ -118,9 +116,6 @@ export default function RecordDetail() {
     }, [recordId])
   );
 
-  const coverUrl = item ? getImageUrl(item) : undefined;
-  const showImage = coverUrl && !imageError;
-
   if (loading) {
     return (
       <View style={recordDetailStyles.loadingContainer}>
@@ -139,49 +134,12 @@ export default function RecordDetail() {
 
   return (
     <ScrollView style={recordDetailStyles.container}>
-      {/* Privacy and Stats Info */}
-      <View style={recordDetailStyles.infoBar}>
-        <Text style={recordDetailStyles.infoText}>
-          Private · 91 · 0 impressions
-        </Text>
-      </View>
-
       {/* Content Card */}
-      <TouchableOpacity
-        style={recordDetailStyles.contentCard}
+      <ContentInfoCard
+        item={item}
         onPress={() => router.push(`/contentDetail/${item.id}`)}
-        activeOpacity={0.7}
-      >
-        {/* Cover Image */}
-        {showImage ? (
-          <Image
-            source={{ uri: coverUrl }}
-            style={recordDetailStyles.coverImage}
-            resizeMode="cover"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <View style={recordDetailStyles.coverPlaceholder}>
-            <Text style={recordDetailStyles.coverPlaceholderText}>
-              {item.category.charAt(0)}
-            </Text>
-          </View>
-        )}
-
-        {/* Content Info */}
-        <View style={recordDetailStyles.contentInfo}>
-          <View style={recordDetailStyles.titleRow}>
-            <Text style={recordDetailStyles.title} numberOfLines={2}>
-              {item.title}
-            </Text>
-            <Feather name="chevron-right" size={20} color="#666" />
-          </View>
-          <Text style={recordDetailStyles.meta}>
-            {item.category}
-            {item.year && ` · ${item.year}`}
-          </Text>
-        </View>
-      </TouchableOpacity>
+        showChevron
+      />
 
       {/* Status Button */}
       <View style={recordDetailStyles.statusContainer}>
