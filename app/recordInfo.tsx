@@ -1,12 +1,10 @@
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-import { createConsumptionRecord } from "@/db/consumptionOperations";
-import { createContentItem } from "@/db/contentOperations";
 import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, ContentStatus } from "@/types/content";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function RecordInfo() {
   const router = useRouter();
@@ -40,80 +38,53 @@ export default function RecordInfo() {
   const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
   const [rating, setRating] = useState(0);
   const [dateConsumed, setDateConsumed] = useState(new Date());
-  const [saving, setSaving] = useState(false);
 
-  const handleSave = async () => {
-    try {
-      setSaving(true);
+  const handleNext = () => {
+    // Build URL params with all content data and consumption data
+    const urlParams = new URLSearchParams({
+      // Base content fields
+      title: params.title,
+      category: params.category,
+      ...(params.year && { year: params.year }),
+      ...(params.images && { images: params.images }),
+      ...(params.link && { link: params.link }),
+      ...(params.externalId && { externalId: params.externalId }),
+      // Consumption record fields
+      status,
+      rating: rating.toString(),
+      dateConsumed: dateConsumed.toISOString(),
+    });
 
-      // Build base content item
-      const contentData: any = {
-        title: params.title,
-        category: params.category as ContentCategory,
-        status,
-        year: params.year ? parseInt(params.year, 10) : undefined,
-        images: params.images,
-        link: params.link,
-        externalId: params.externalId,
-      };
+    // Add category-specific fields
+    const category = params.category as ContentCategory;
 
-      // Add category-specific fields
-      const category = params.category as ContentCategory;
-
-      if (category === ContentCategory.BOOK) {
-        contentData.author = params.author;
-        contentData.wordCount = params.wordCount
-          ? parseInt(params.wordCount, 10)
-          : undefined;
-        contentData.tags = params.tags;
-      } else if (category === ContentCategory.TV_MOVIE) {
-        contentData.subtype = params.subtype;
-        contentData.directors = params.directors;
-        contentData.casts = params.casts;
-        contentData.genres = params.genres;
-        contentData.episodesCount = params.episodesCount
-          ? parseInt(params.episodesCount, 10)
-          : undefined;
-        contentData.countries = params.countries;
-      } else if (category === ContentCategory.PODCAST) {
-        contentData.hosts = params.hosts;
-        contentData.episodesCount = params.episodesCount
-          ? parseInt(params.episodesCount, 10)
-          : undefined;
-        contentData.genres = params.genres;
-        contentData.feedUrl = params.feedUrl;
-      } else if (category === ContentCategory.DRAMA) {
-        contentData.subtype = params.subtype;
-        contentData.directors = params.directors;
-        contentData.casts = params.casts;
-        contentData.performers = params.performers;
-        contentData.venue = params.venue;
-        contentData.duration = params.duration
-          ? parseInt(params.duration, 10)
-          : undefined;
-      }
-
-      // Create new content item
-      const newItem = await createContentItem(contentData);
-
-      // If status is done, create a consumption record
-      if (status === ContentStatus.DONE) {
-        await createConsumptionRecord({
-          contentItemId: newItem.id,
-          rating: rating > 0 ? rating : undefined,
-          notes: undefined,
-          dateConsumed: dateConsumed.toISOString(),
-        });
-      }
-
-      // Navigate to index page
-      router.replace("/");
-    } catch (error) {
-      Alert.alert("Error", "Failed to save entry. Please try again.");
-      console.error("Error saving entry:", error);
-    } finally {
-      setSaving(false);
+    if (category === ContentCategory.BOOK) {
+      if (params.author) urlParams.append("author", params.author);
+      if (params.wordCount) urlParams.append("wordCount", params.wordCount);
+      if (params.tags) urlParams.append("tags", params.tags);
+    } else if (category === ContentCategory.TV_MOVIE) {
+      if (params.subtype) urlParams.append("subtype", params.subtype);
+      if (params.directors) urlParams.append("directors", params.directors);
+      if (params.casts) urlParams.append("casts", params.casts);
+      if (params.genres) urlParams.append("genres", params.genres);
+      if (params.episodesCount) urlParams.append("episodesCount", params.episodesCount);
+      if (params.countries) urlParams.append("countries", params.countries);
+    } else if (category === ContentCategory.PODCAST) {
+      if (params.hosts) urlParams.append("hosts", params.hosts);
+      if (params.episodesCount) urlParams.append("episodesCount", params.episodesCount);
+      if (params.genres) urlParams.append("genres", params.genres);
+      if (params.feedUrl) urlParams.append("feedUrl", params.feedUrl);
+    } else if (category === ContentCategory.DRAMA) {
+      if (params.subtype) urlParams.append("subtype", params.subtype);
+      if (params.directors) urlParams.append("directors", params.directors);
+      if (params.casts) urlParams.append("casts", params.casts);
+      if (params.performers) urlParams.append("performers", params.performers);
+      if (params.venue) urlParams.append("venue", params.venue);
+      if (params.duration) urlParams.append("duration", params.duration);
     }
+
+    // Navigate to recordDetailEdit with all data
+    router.push(`/recordDetailEdit?${urlParams.toString()}`);
   };
 
   const handleCancel = () => {
@@ -219,12 +190,10 @@ export default function RecordInfo() {
             </>
           )}
 
-          {/* Save Button */}
+          {/* Next Button */}
           <PrimaryButton
-            text="Save"
-            loadingText="Saving..."
-            loading={saving}
-            onPress={handleSave}
+            text="Next"
+            onPress={handleNext}
           />
 
           {/* Cancel Button */}

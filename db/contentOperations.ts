@@ -148,6 +148,32 @@ export async function deleteContentItem(id: number): Promise<boolean> {
 }
 
 /**
+ * Find existing content item by title, category, and subtype
+ * Used to check for duplicates before creating new content
+ */
+export async function findExistingContentItem(
+  title: string,
+  category: ContentCategory,
+  subtype?: string
+): Promise<ContentItem | null> {
+  const db = await getDatabase();
+
+  let query = "SELECT * FROM content_items WHERE LOWER(title) = LOWER(?) AND category = ?";
+  const params: any[] = [title.trim(), category];
+
+  // Add subtype check for TV/Movie and Drama categories
+  if (subtype && (category === ContentCategory.TV_MOVIE || category === ContentCategory.DRAMA)) {
+    query += " AND subtype = ?";
+    params.push(subtype);
+  }
+
+  query += " LIMIT 1";
+
+  const row = await db.getFirstAsync<ContentItem>(query, params);
+  return row || null;
+}
+
+/**
  * Search content items by title or creator
  */
 export async function searchContentItems(

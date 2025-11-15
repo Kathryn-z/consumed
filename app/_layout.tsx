@@ -67,6 +67,18 @@ export default function RootLayout() {
             title: "New Record",
           }}
         />
+        <Stack.Screen
+          name="recordDetail"
+          options={{
+            title: "Record Detail",
+          }}
+        />
+        <Stack.Screen
+          name="recordDetailEdit"
+          options={{
+            title: "Edit Record",
+          }}
+        />
       </Stack>
     </>
   );

@@ -572,8 +572,8 @@ export default function ContentInfo() {
           {/* Save Button (for editing) */}
           {isEditing && (
             <PrimaryButton
-              text="Update Entry"
-              loadingText="Updating..."
+              text="Save"
+              loadingText="Saving..."
               loading={saving}
               onPress={handleSave}
             />
