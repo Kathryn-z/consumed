@@ -1,10 +1,16 @@
 import { getContentItemById } from "@/db/contentOperations";
-import { contentCardStyles } from "@/styles/components/contentCard";
+import { recordCardStyles } from "@/styles/components/recordCard";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { ContentItem } from "@/types/content";
 import { getImageUrl } from "@/utils/images";
-import { useState, useEffect } from "react";
-import { Image, Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface RecordCardProps {
   record: ConsumptionRecord;
@@ -30,70 +36,40 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
     loadContentItem();
   }, [record.contentItemId]);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+  // Get subtype if available
+  const getSubtype = () => {
+    const itemAny = item as any;
+    return itemAny?.subtype || null;
   };
 
-  // Get creator/author label based on category
-  const getCreatorInfo = () => {
-    const itemAny = item as any;
+  // Get category display text
+  const getCategoryDisplay = () => {
+    if (!item) return "";
+    const subtype = getSubtype();
+    return subtype ? subtype : item.category;
+  };
 
-    if (!item) {
-      return null;
+  // Render rating stars
+  const renderRatingStars = () => {
+    const rating = record.rating || 0;
+    const maxRating = 5;
+    const stars = [];
+
+    for (let i = 1; i <= maxRating; i++) {
+      stars.push(
+        <Text key={i} style={recordCardStyles.star}>
+          {i <= rating ? "★" : "☆"}
+        </Text>
+      );
     }
 
-    if (item.category === "Book" && itemAny.author) {
-      return itemAny.author;
-    }
-
-    if (item.category === "TV/Movie" && itemAny.directors) {
-      try {
-        const directorsArray = JSON.parse(itemAny.directors);
-        return directorsArray.map((d: any) => d.name || d).join(", ");
-      } catch {
-        return itemAny.directors;
-      }
-    }
-
-    if (item.category === "Drama" && itemAny.directors) {
-      try {
-        const directorsArray = JSON.parse(itemAny.directors);
-        return Array.isArray(directorsArray)
-          ? directorsArray.map((d: any) => d.name || d).join(", ")
-          : itemAny.directors;
-      } catch {
-        return itemAny.directors;
-      }
-    }
-
-    if (item.category === "Podcast" && itemAny.hosts) {
-      try {
-        const hostsArray = JSON.parse(itemAny.hosts);
-        return Array.isArray(hostsArray)
-          ? hostsArray.join(", ")
-          : itemAny.hosts;
-      } catch {
-        return itemAny.hosts;
-      }
-    }
-
-    // Fallback to legacy creator field
-    if (itemAny.creator) {
-      return itemAny.creator;
-    }
-
-    return null;
+    return stars;
   };
 
   // Show loading state while fetching content item
   if (loading) {
     return (
-      <View style={contentCardStyles.container}>
+      <View style={recordCardStyles.container}>
         <ActivityIndicator size="small" color="#007AFF" />
       </View>
     );
@@ -102,57 +78,67 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
   // Show error state if item not found
   if (!item) {
     return (
-      <View style={contentCardStyles.container}>
-        <Text style={contentCardStyles.title}>Content not found</Text>
+      <View style={recordCardStyles.container}>
+        <Text style={recordCardStyles.title}>Content not found</Text>
       </View>
     );
   }
 
   const coverUrl = getImageUrl(item);
-  const creatorInfo = getCreatorInfo();
   const showImage = coverUrl && !imageError;
 
   return (
     <TouchableOpacity
-      style={contentCardStyles.container}
+      style={recordCardStyles.container}
       onPress={() => onPress?.(record)}
       activeOpacity={0.7}
     >
-      {/* Cover Image or Placeholder */}
-      <View style={contentCardStyles.imageContainer}>
-        {showImage ? (
-          <Image
-            source={{ uri: coverUrl }}
-            style={contentCardStyles.image}
-            resizeMode="cover"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <View style={contentCardStyles.placeholder}>
-            <Text style={contentCardStyles.placeholderText}>
-              {item.category.charAt(0)}
-            </Text>
-          </View>
-        )}
+      {/* Top Row: Image and Content Info */}
+      <View style={recordCardStyles.topRow}>
+        {/* Cover Image or Placeholder */}
+        <View style={recordCardStyles.imageContainer}>
+          {showImage ? (
+            <Image
+              source={{ uri: coverUrl }}
+              style={recordCardStyles.image}
+              resizeMode="cover"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <View style={recordCardStyles.placeholder}>
+              <Text style={recordCardStyles.placeholderText}>
+                {item.category.charAt(0)}
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* Content Info */}
+        <View style={recordCardStyles.content}>
+          <Text style={recordCardStyles.title} numberOfLines={2}>
+            {item.title}
+          </Text>
+          <Text style={recordCardStyles.categoryRow}>
+            {getCategoryDisplay()}
+          </Text>
+
+          {/* Rating Stars */}
+          {record.rating && record.rating > 0 && (
+            <View style={recordCardStyles.starsContainer}>
+              {renderRatingStars()}
+            </View>
+          )}
+        </View>
       </View>
 
-      {/* Content Info */}
-      <View style={contentCardStyles.info}>
-        <Text style={contentCardStyles.title} numberOfLines={2}>
-          {item.title}
+      {/* Notes - Below the image */}
+      {record.notes ? (
+        <Text style={recordCardStyles.notes} numberOfLines={2}>
+          {record.notes}
         </Text>
-        <Text style={contentCardStyles.category}>{item.category}</Text>
-        {item.year && <Text style={contentCardStyles.year}>{item.year}</Text>}
-        {creatorInfo && (
-          <Text style={contentCardStyles.creator} numberOfLines={1}>
-            {creatorInfo}
-          </Text>
-        )}
-        {/* Record Added Date */}
-        <Text style={contentCardStyles.date}>
-          {formatDate(record.dateConsumed)}
-        </Text>
-      </View>
+      ) : (
+        <Text style={recordCardStyles.notesPlaceholder}></Text>
+      )}
     </TouchableOpacity>
   );
 }

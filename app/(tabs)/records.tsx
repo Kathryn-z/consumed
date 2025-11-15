@@ -1,4 +1,4 @@
-import { RecordCard } from "@/components/RecordCard";
+import { TimelineRecordCard } from "@/components/TimelineRecordCard";
 import { useRecords } from "@/hooks/useRecords";
 import { indexStyles } from "@/styles/screens/index";
 import { recordsStyles } from "@/styles/screens/records";
@@ -40,7 +40,7 @@ export default function Records() {
               data={records}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <RecordCard record={item} onPress={handleRecordPress} />
+                <TimelineRecordCard record={item} onPress={handleRecordPress} />
               )}
               scrollEnabled={false}
               contentContainerStyle={indexStyles.listContent}
