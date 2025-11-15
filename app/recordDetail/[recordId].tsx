@@ -149,7 +149,7 @@ export default function RecordDetail() {
       {/* Content Card */}
       <TouchableOpacity
         style={recordDetailStyles.contentCard}
-        onPress={() => router.push(`/contentDetail?id=${item.id}`)}
+        onPress={() => router.push(`/contentDetail/${item.id}`)}
         activeOpacity={0.7}
       >
         {/* Cover Image */}

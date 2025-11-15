@@ -33,7 +33,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
 
 export default function ContentDetail() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { contentId } = useLocalSearchParams<{ contentId: string }>();
   const router = useRouter();
   const navigation = useNavigation();
   const [item, setItem] = useState<ContentItem | null>(null);
@@ -53,11 +53,11 @@ export default function ContentDetail() {
         </TouchableOpacity>
       ),
     });
-  }, [navigation, id]);
+  }, [navigation, contentId]);
 
   const handleEdit = () => {
     setShowMenu(false);
-    router.push(`/contentInfo?id=${id}`);
+    router.push(`/contentInfo?id=${contentId}`);
   };
 
   const handleDelete = () => {
@@ -75,7 +75,7 @@ export default function ContentDetail() {
           style: "destructive",
           onPress: async () => {
             try {
-              await deleteContentItem(parseInt(id, 10));
+              await deleteContentItem(parseInt(contentId, 10));
               router.back();
             } catch (error) {
               console.error("Error deleting content:", error);
@@ -111,17 +111,17 @@ export default function ContentDetail() {
   useFocusEffect(
     useCallback(() => {
       async function loadData() {
-        if (!id) return;
+        if (!contentId) return;
 
         try {
           setLoading(true);
           setImageError(false); // Reset image error state when loading new item
-          const contentItem = await getContentItemById(parseInt(id, 10));
+          const contentItem = await getContentItemById(parseInt(contentId, 10));
           setItem(contentItem);
 
           // Load consumption records
           const records = await getConsumptionRecordsByContentId(
-            parseInt(id, 10)
+            parseInt(contentId, 10)
           );
           setConsumptionRecords(records);
         } catch (error) {
@@ -132,7 +132,7 @@ export default function ContentDetail() {
       }
 
       loadData();
-    }, [id])
+    }, [contentId])
   );
 
   if (loading) {

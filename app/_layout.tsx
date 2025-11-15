@@ -45,7 +45,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="contentDetail"
+          name="contentDetail/[contentId]"
           options={{
             title: "Content Details",
           }}

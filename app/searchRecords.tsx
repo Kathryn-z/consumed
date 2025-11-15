@@ -45,7 +45,7 @@ export default function SearchRecords() {
   }, [items, searchQuery]);
 
   const handleItemPress = (item: any) => {
-    router.push(`/contentDetail?id=${item.id}`);
+    router.push(`/contentDetail/${item.id}`);
   };
 
   return (
