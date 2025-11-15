@@ -1,4 +1,5 @@
 import PrimaryButton from "@/components/buttons/PrimaryButton";
+import { ContentInfoCard } from "@/components/ContentInfoCard";
 import {
   createConsumptionRecord,
   getConsumptionRecordById,
@@ -13,7 +14,6 @@ import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { recordDetailEditStyles } from "@/styles/screens/recordDetailEdit";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { ContentCategory, ContentItem, ContentStatus } from "@/types/content";
-import { getImageUrl } from "@/utils/images";
 import {
   useFocusEffect,
   useLocalSearchParams,
@@ -24,7 +24,6 @@ import { useCallback, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Image,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -33,9 +32,9 @@ import {
 
 export default function RecordDetailEdit() {
   const params = useLocalSearchParams<{
+    recordId: string;
     // Edit mode params
     id?: string;
-    recordId?: string;
     // Create mode params (from recordInfo)
     title?: string;
     category?: string;
@@ -66,110 +65,39 @@ export default function RecordDetailEdit() {
     feedUrl?: string;
   }>();
 
-  const { id, recordId } = params;
+  const { recordId, id } = params;
   const router = useRouter();
   const navigation = useNavigation();
 
   // Determine if we're in edit mode or create mode
-  const isEditMode = !!recordId;
-  const isCreateMode = !!params.title;
+  const isEditMode = recordId !== "new";
+  const isCreateMode = recordId === "new";
 
   const [item, setItem] = useState<ContentItem | null>(null);
   const [record, setRecord] = useState<ConsumptionRecord | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
   // Form fields
-  const [dateConsumed, setDateConsumed] = useState(new Date());
-  const [rating, setRating] = useState(0);
-  const [notes, setNotes] = useState("");
+  const [newRecordData, setNewRecordData] = useState({
+    dateConsumed: new Date(),
+    rating: 0,
+    notes: "",
+  });
 
-  // Set header right button (Save)
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <PrimaryButton
-          text="Save"
-          onPress={handleSave}
-          loading={saving}
-          buttonStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
-          textStyle={{ fontSize: 16 }}
-        />
-      ),
-    });
-  }, [navigation, saving]);
-
-  // Load data
-  useFocusEffect(
-    useCallback(() => {
-      const loadData = async () => {
-        try {
-          setLoading(true);
-
-          if (isEditMode && id && recordId) {
-            // Edit mode: load existing content and record from database
-            const [contentItem, consumptionRecord] = await Promise.all([
-              getContentItemById(parseInt(id, 10)),
-              getConsumptionRecordById(parseInt(recordId, 10)),
-            ]);
-
-            setItem(contentItem);
-            setRecord(consumptionRecord);
-
-            if (consumptionRecord) {
-              setDateConsumed(new Date(consumptionRecord.dateConsumed));
-              setRating(consumptionRecord.rating || 0);
-              setNotes(consumptionRecord.notes || "");
-            }
-          } else if (isCreateMode && params.title) {
-            // Create mode: initialize from params
-            if (params.dateConsumed) {
-              setDateConsumed(new Date(params.dateConsumed));
-            }
-            if (params.rating) {
-              setRating(parseInt(params.rating, 10));
-            }
-
-            // Create a temporary ContentItem object for display
-            const tempItem: any = {
-              id: 0,
-              title: params.title,
-              category: params.category as ContentCategory,
-              status: (params.status as ContentStatus) || ContentStatus.TODO,
-              year: params.year ? parseInt(params.year, 10) : undefined,
-              images: params.images,
-              dateAdded: new Date().toISOString(),
-            };
-
-            setItem(tempItem);
-          }
-        } catch (error) {
-          console.error("Error loading data:", error);
-          Alert.alert("Error", "Failed to load record details.");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      loadData();
-    }, [id, recordId, isEditMode, isCreateMode])
-  );
-
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     try {
       setSaving(true);
 
-      if (isEditMode && record) {
+      if (recordId !== "new" && record) {
         // Edit mode: update existing consumption record
         await updateConsumptionRecord(record.id, {
-          dateConsumed: dateConsumed.toISOString(),
-          rating: rating > 0 ? rating : undefined,
-          notes: notes.trim() || undefined,
+          dateConsumed: newRecordData.dateConsumed.toISOString(),
+          rating: newRecordData.rating > 0 ? newRecordData.rating : undefined,
+          notes: newRecordData.notes.trim() || undefined,
         });
-
         router.back();
-      } else if (isCreateMode && params.title && params.category) {
+      } else if (recordId === "new" && params.title && params.category) {
         // Create mode: check for existing content, create if needed, then create consumption record
         const category = params.category as ContentCategory;
 
@@ -239,9 +167,9 @@ export default function RecordDetailEdit() {
         // Create consumption record
         await createConsumptionRecord({
           contentItemId: contentItem.id,
-          rating: rating > 0 ? rating : undefined,
-          notes: notes.trim() || undefined,
-          dateConsumed: dateConsumed.toISOString(),
+          rating: newRecordData.rating > 0 ? newRecordData.rating : undefined,
+          notes: newRecordData.notes.trim() || undefined,
+          dateConsumed: newRecordData.dateConsumed.toISOString(),
         });
 
         // Navigate to home
@@ -253,20 +181,101 @@ export default function RecordDetailEdit() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [recordId, record, newRecordData, params, router]);
 
-  const handleEditContent = () => {
-    router.push(`/contentInfo?id=${id}`);
-  };
+  // Set header right button (Save)
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <PrimaryButton
+          text="Save"
+          onPress={handleSave}
+          loading={saving}
+          buttonStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
+          textStyle={{ fontSize: 16 }}
+        />
+      ),
+    });
+  }, [navigation, saving, handleSave]);
+
+  // Load data
+  useFocusEffect(
+    useCallback(() => {
+      const loadData = async () => {
+        try {
+          setLoading(true);
+
+          if (isEditMode) {
+            // Edit mode: load existing content and record from database
+            const consumptionRecord = await getConsumptionRecordById(
+              parseInt(recordId, 10)
+            );
+
+            if (!consumptionRecord) {
+              Alert.alert("Error", "Record not found.");
+              router.back();
+              return;
+            }
+
+            const contentItem = await getContentItemById(
+              consumptionRecord.contentItemId
+            );
+
+            setItem(contentItem);
+            setRecord(consumptionRecord);
+
+            if (consumptionRecord) {
+              setNewRecordData({
+                dateConsumed: new Date(consumptionRecord.dateConsumed),
+                rating: consumptionRecord.rating || 0,
+                notes: consumptionRecord.notes || "",
+              });
+            }
+          } else if (isCreateMode && params.title) {
+            // Create mode: initialize from params
+            if (params.dateConsumed || params.rating) {
+              setNewRecordData({
+                dateConsumed: params.dateConsumed
+                  ? new Date(params.dateConsumed)
+                  : new Date(),
+                rating: params.rating ? parseInt(params.rating, 10) : 0,
+                notes: "",
+              });
+            }
+
+            // Create a temporary ContentItem object for display
+            const tempItem: any = {
+              id: 0,
+              title: params.title,
+              category: params.category as ContentCategory,
+              status: (params.status as ContentStatus) || ContentStatus.TODO,
+              year: params.year ? parseInt(params.year, 10) : undefined,
+              images: params.images,
+              dateAdded: new Date().toISOString(),
+            };
+
+            setItem(tempItem);
+          }
+        } catch (error) {
+          console.error("Error loading data:", error);
+          Alert.alert("Error", "Failed to load record details.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      loadData();
+    }, [recordId])
+  );
 
   const handleStarPress = (starIndex: number) => {
-    setRating(starIndex);
+    setNewRecordData((prev) => ({ ...prev, rating: starIndex }));
   };
 
   const renderStars = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
-      const starDisplay = rating >= i ? "★" : "☆";
+      const starDisplay = newRecordData.rating >= i ? "★" : "☆";
 
       stars.push(
         <TouchableOpacity
@@ -280,9 +289,6 @@ export default function RecordDetailEdit() {
     }
     return stars;
   };
-
-  const coverUrl = item ? getImageUrl(item) : undefined;
-  const showImage = coverUrl && !imageError;
 
   if (loading) {
     return (
@@ -303,38 +309,15 @@ export default function RecordDetailEdit() {
     return (
       <ScrollView style={recordDetailEditStyles.container}>
         {/* Content Card */}
-        <TouchableOpacity
-          style={recordDetailEditStyles.contentCard}
-          onPress={() => router.push(`/contentDetail/${id}`)}
-          activeOpacity={0.7}
-        >
-          {/* Cover Image */}
-          {showImage ? (
-            <Image
-              source={{ uri: coverUrl }}
-              style={recordDetailEditStyles.coverImage}
-              resizeMode="cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <View style={recordDetailEditStyles.coverPlaceholder}>
-              <Text>{item.category.charAt(0)}</Text>
-            </View>
-          )}
-
-          {/* Content Info */}
-          <View style={recordDetailEditStyles.contentInfo}>
-            <View style={recordDetailStyles.titleRow}>
-              <Text style={recordDetailStyles.title} numberOfLines={2}>
-                {item.title}
-              </Text>
-            </View>
-            <Text style={recordDetailStyles.meta}>
-              {item.category}
-              {item.year && ` · ${item.year}`}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <ContentInfoCard
+          item={item}
+          onPress={
+            isEditMode && item.id
+              ? () => router.push(`/contentDetail/${item.id}`)
+              : undefined
+          }
+          disabled={!isEditMode}
+        />
 
         {/* Status Button */}
         <View style={recordDetailStyles.statusContainer}>
@@ -347,4 +330,6 @@ export default function RecordDetailEdit() {
       </ScrollView>
     );
   }
+
+  return null;
 }
