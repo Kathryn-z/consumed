@@ -1,10 +1,16 @@
-import { useState, useMemo, useCallback } from "react";
-import { Text, View, TextInput, TouchableOpacity, ScrollView, FlatList, ActivityIndicator } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect, useRouter } from "expo-router";
-import { searchRecordsStyles } from "@/styles/screens/searchRecords";
-import { useContent } from "@/hooks/useContent";
 import { ContentCard } from "@/components/ContentCard";
+import { useContent } from "@/hooks/useContent";
+import { searchRecordsStyles } from "@/styles/screens/searchRecords";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useMemo, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function SearchRecords() {
   const router = useRouter();
@@ -38,20 +44,14 @@ export default function SearchRecords() {
     );
   }, [items, searchQuery]);
 
-  const handleCancel = () => {
-    router.back();
-  };
-
   const handleItemPress = (item: any) => {
     router.push(`/contentDetail?id=${item.id}`);
   };
 
   return (
-    <SafeAreaView style={searchRecordsStyles.container}>
+    <View style={searchRecordsStyles.container}>
       <ScrollView style={searchRecordsStyles.content}>
-        <Text style={searchRecordsStyles.title}>Search Your Records</Text>
-
-        {/* Search Bar with Cancel Button */}
+        {/* Search Bar */}
         <View style={searchRecordsStyles.searchBarContainer}>
           <TextInput
             style={searchRecordsStyles.searchBar}
@@ -61,13 +61,6 @@ export default function SearchRecords() {
             returnKeyType="search"
             autoFocus
           />
-          <TouchableOpacity
-            style={searchRecordsStyles.cancelButton}
-            onPress={handleCancel}
-            activeOpacity={0.7}
-          >
-            <Text style={searchRecordsStyles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Search Results */}
@@ -99,6 +92,6 @@ export default function SearchRecords() {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

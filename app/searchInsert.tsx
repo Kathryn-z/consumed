@@ -15,7 +15,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SearchInsert() {
   const router = useRouter();
@@ -96,23 +95,10 @@ export default function SearchInsert() {
     }
   };
 
-  const handleCancel = () => {
-    router.back();
-  };
-
   return (
-    <SafeAreaView style={searchInsertStyles.container}>
+    <View style={searchInsertStyles.container}>
       <ScrollView style={searchInsertStyles.content}>
-        {/* Category Indicator */}
-        {category && (
-          <View style={searchInsertStyles.categoryIndicator}>
-            <Text style={searchInsertStyles.categoryIndicatorText}>
-              Searching in: {category}
-            </Text>
-          </View>
-        )}
-
-        {/* Search Bar with Cancel Button */}
+        {/* Search Bar*/}
         <View style={searchInsertStyles.searchBarContainer}>
           <TextInput
             style={searchInsertStyles.searchBar}
@@ -122,13 +108,6 @@ export default function SearchInsert() {
             returnKeyType="search"
             onSubmitEditing={handleSearch}
           />
-          <TouchableOpacity
-            style={searchInsertStyles.cancelButton}
-            onPress={handleCancel}
-            activeOpacity={0.7}
-          >
-            <Text style={searchInsertStyles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Search Results Area */}
@@ -216,6 +195,6 @@ export default function SearchInsert() {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -7,7 +7,20 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar style="auto" />
-      <Stack>
+      <Stack
+        screenOptions={({ navigation }) => ({
+          headerShown: true,
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: -5 }}
+            >
+              <Ionicons name="chevron-back-outline" size={28} />
+            </TouchableOpacity>
+          ),
+        })}
+      >
         <Stack.Screen
           name="(tabs)"
           options={{
@@ -16,65 +29,38 @@ export default function RootLayout() {
         />
         <Stack.Screen
           name="searchInsert"
-          options={{
-            title: "Search Content",
-            headerShown: false,
+          options={({ route }) => {
+            const params = route.params as { category?: string };
+            const category = params?.category;
+            let title = "Search";
+            if (category === "TV/Movie") title = "Search TV / Movie";
+            else if (category) title = `Search ${category}`;
+            return { title };
           }}
         />
         <Stack.Screen
           name="searchRecords"
           options={{
             title: "Search Records",
-            headerShown: false,
           }}
         />
         <Stack.Screen
           name="contentDetail"
-          options={({ navigation }) => ({
+          options={{
             title: "Content Details",
-            headerShown: true,
-            headerShadowVisible: false,
-            headerLeft: () => (
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={{ marginLeft: -5 }}
-              >
-                <Ionicons name="chevron-back-outline" size={28} />
-              </TouchableOpacity>
-            ),
-          })}
+          }}
         />
         <Stack.Screen
           name="customEntry"
-          options={({ navigation }) => ({
+          options={{
             title: "Custom Entry",
-            headerShown: true,
-            headerShadowVisible: false,
-            headerLeft: () => (
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={{ marginLeft: -5 }}
-              >
-                <Ionicons name="chevron-back-outline" size={28} />
-              </TouchableOpacity>
-            ),
-          })}
+          }}
         />
         <Stack.Screen
           name="customEntryRecord"
-          options={({ navigation }) => ({
+          options={{
             title: "Record Consumption",
-            headerShown: true,
-            headerShadowVisible: false,
-            headerLeft: () => (
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={{ marginLeft: -5 }}
-              >
-                <Ionicons name="chevron-back-outline" size={28} />
-              </TouchableOpacity>
-            ),
-          })}
+          }}
         />
       </Stack>
     </>
