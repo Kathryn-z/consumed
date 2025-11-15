@@ -18,7 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 type TabType = "done" | "todo";
 
-export default function SearchInsert() {
+export default function Search() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] =
     useState<ContentCategory | null>(null);

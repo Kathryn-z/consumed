@@ -1,6 +1,9 @@
-import { ConsumptionRecord, CreateConsumptionRecordInput } from "@/types/content";
-import { getDatabase } from "./database";
+import {
+  ConsumptionRecord,
+  CreateConsumptionRecordInput,
+} from "@/types/consumptionRecord";
 import { updateContentItem } from "./contentOperations";
+import { getDatabase } from "./database";
 
 /**
  * Create a new consumption record
@@ -14,7 +17,12 @@ export async function createConsumptionRecord(
   const result = await db.runAsync(
     `INSERT INTO consumption_records (contentItemId, rating, notes, dateConsumed)
      VALUES (?, ?, ?, ?)`,
-    [input.contentItemId, input.rating || null, input.notes || null, input.dateConsumed]
+    [
+      input.contentItemId,
+      input.rating || null,
+      input.notes || null,
+      input.dateConsumed,
+    ]
   );
 
   // Update the ContentItem's rating to match the most recent consumption
@@ -46,7 +54,9 @@ export async function getConsumptionRecordsByContentId(
 /**
  * Get a single consumption record by ID
  */
-export async function getConsumptionRecordById(id: number): Promise<ConsumptionRecord | null> {
+export async function getConsumptionRecordById(
+  id: number
+): Promise<ConsumptionRecord | null> {
   const db = await getDatabase();
   const row = await db.getFirstAsync<ConsumptionRecord>(
     "SELECT * FROM consumption_records WHERE id = ?",
@@ -88,7 +98,9 @@ export async function updateConsumptionRecord(
 
   // If rating was updated and this is the most recent record, update ContentItem
   if (record && updates.rating !== undefined) {
-    const mostRecentRecord = await getMostRecentConsumptionRecord(record.contentItemId);
+    const mostRecentRecord = await getMostRecentConsumptionRecord(
+      record.contentItemId
+    );
     if (mostRecentRecord?.id === record.id) {
       await updateContentItem(record.contentItemId, { rating: updates.rating });
     }
@@ -112,7 +124,10 @@ export async function deleteConsumptionRecord(id: number): Promise<boolean> {
   const wasMostRecent =
     (await getMostRecentConsumptionRecord(contentItemId))?.id === id;
 
-  const result = await db.runAsync("DELETE FROM consumption_records WHERE id = ?", [id]);
+  const result = await db.runAsync(
+    "DELETE FROM consumption_records WHERE id = ?",
+    [id]
+  );
 
   // If we deleted the most recent record, update ContentItem's rating
   if (result.changes > 0 && wasMostRecent) {
@@ -140,7 +155,9 @@ export async function getMostRecentConsumptionRecord(
 /**
  * Get consumption count for a content item
  */
-export async function getConsumptionCount(contentItemId: number): Promise<number> {
+export async function getConsumptionCount(
+  contentItemId: number
+): Promise<number> {
   const db = await getDatabase();
   const result = await db.getFirstAsync<{ count: number }>(
     "SELECT COUNT(*) as count FROM consumption_records WHERE contentItemId = ?",

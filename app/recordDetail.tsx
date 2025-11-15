@@ -1,6 +1,9 @@
 import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
-import { getMostRecentConsumptionRecord } from "@/db/consumptionOperations";
-import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
+import {
+  deleteConsumptionRecord,
+  getConsumptionRecordById,
+} from "@/db/consumptionOperations";
+import { getContentItemById } from "@/db/contentOperations";
 import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { ContentItem } from "@/types/content";
@@ -47,15 +50,15 @@ export default function RecordDetail() {
   const handleEdit = () => {
     setShowMenu(false);
     if (record) {
-      router.push(`/recordDetailEdit?id=${id}&recordId=${record.id}`);
+      router.push(`/recordDetailEdit?id=${item?.id}&recordId=${record.id}`);
     }
   };
 
   const handleDelete = () => {
     setShowMenu(false);
     Alert.alert(
-      "Delete Content",
-      "Are you sure you want to delete this content? This will also delete all consumption records.",
+      "Delete Record",
+      "Are you sure you want to delete this record?",
       [
         {
           text: "Cancel",
@@ -66,13 +69,15 @@ export default function RecordDetail() {
           style: "destructive",
           onPress: async () => {
             try {
-              await deleteContentItem(parseInt(id, 10));
-              router.back();
+              if (record) {
+                await deleteConsumptionRecord(record.id);
+                router.back();
+              }
             } catch (error) {
-              console.error("Error deleting content:", error);
+              console.error("Error deleting record:", error);
               Alert.alert(
                 "Error",
-                "Failed to delete content. Please try again."
+                "Failed to delete record. Please try again."
               );
             }
           },
@@ -81,21 +86,26 @@ export default function RecordDetail() {
     );
   };
 
-  // Load content item and consumption record
+  // Load consumption record and content item
   useFocusEffect(
     useCallback(() => {
       const loadData = async () => {
         try {
           setLoading(true);
           if (id) {
-            const contentItem = await getContentItemById(parseInt(id, 10));
-            setItem(contentItem);
-
-            // Load the most recent consumption record
-            const consumptionRecord = await getMostRecentConsumptionRecord(
+            // First, fetch the consumption record by record ID
+            const consumptionRecord = await getConsumptionRecordById(
               parseInt(id, 10)
             );
             setRecord(consumptionRecord);
+
+            // Then fetch the content item using the record's contentItemId
+            if (consumptionRecord) {
+              const contentItem = await getContentItemById(
+                consumptionRecord.contentItemId
+              );
+              setItem(contentItem);
+            }
           }
         } catch (error) {
           console.error("Error loading record details:", error);
@@ -119,7 +129,7 @@ export default function RecordDetail() {
     );
   }
 
-  if (!item) {
+  if (!record || !item) {
     return (
       <View style={recordDetailStyles.loadingContainer}>
         <Text>Record not found</Text>
@@ -139,7 +149,7 @@ export default function RecordDetail() {
       {/* Content Card */}
       <TouchableOpacity
         style={recordDetailStyles.contentCard}
-        onPress={() => router.push(`/contentDetail?id=${id}`)}
+        onPress={() => router.push(`/contentDetail?id=${item.id}`)}
         activeOpacity={0.7}
       >
         {/* Cover Image */}
