@@ -19,7 +19,7 @@ export default function Records() {
   );
 
   const handleRecordPress = (record: any) => {
-    router.push(`/recordDetail?id=${record.id}`);
+    router.push(`/recordDetail/${record.id}`);
   };
 
   return (
