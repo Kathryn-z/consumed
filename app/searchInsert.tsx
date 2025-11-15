@@ -84,7 +84,7 @@ export default function SearchInsert() {
       episodesCount: result.trackCount?.toString() || "",
     });
 
-    router.push(`/customEntryRecord?${params.toString()}`);
+    router.push(`/recordInfo?${params.toString()}`);
   };
 
   const handleContentInfo = () => {

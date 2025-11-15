@@ -62,9 +62,9 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="customEntryRecord"
+          name="recordInfo"
           options={{
-            title: "Record Consumption",
+            title: "New Record",
           }}
         />
       </Stack>

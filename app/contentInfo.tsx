@@ -178,7 +178,7 @@ export default function CustomEntry() {
     }
 
     const params = new URLSearchParams(baseParams);
-    router.push(`/customEntryRecord?${params.toString()}`);
+    router.push(`/recordInfo?${params.toString()}`);
   };
 
   const handleSave = async () => {
