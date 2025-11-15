@@ -1,6 +1,7 @@
 import { getContentItemById, updateContentItem } from "@/db/contentOperations";
 import { customEntryStyles } from "@/styles/screens/customEntry";
-import { CATEGORIES, ContentCategory, TVMovieSubtype, DramaSubtype } from "@/types/content";
+import { ContentCategory, DramaSubtype, TVMovieSubtype } from "@/types/content";
+import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -11,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 
 export default function CustomEntry() {
   const router = useRouter();
@@ -34,7 +34,9 @@ export default function CustomEntry() {
   const [tags, setTags] = useState("");
 
   // TV/Movie fields
-  const [tvMovieSubtype, setTvMovieSubtype] = useState<TVMovieSubtype | null>(null);
+  const [tvMovieSubtype, setTvMovieSubtype] = useState<TVMovieSubtype | null>(
+    null
+  );
   const [directors, setDirectors] = useState("");
   const [casts, setCasts] = useState("");
   const [genres, setGenres] = useState("");
@@ -75,7 +77,9 @@ export default function CustomEntry() {
           if (item.images) {
             try {
               const imagesObj = JSON.parse(item.images);
-              setImages(imagesObj.medium || imagesObj.large || imagesObj.small || "");
+              setImages(
+                imagesObj.medium || imagesObj.large || imagesObj.small || ""
+              );
             } catch {
               setImages(item.images);
             }
@@ -220,11 +224,15 @@ export default function CustomEntry() {
         updates.directors = directors.trim() || undefined;
         updates.casts = casts.trim() || undefined;
         updates.genres = genres.trim() || undefined;
-        updates.episodesCount = episodesCount ? parseInt(episodesCount, 10) : undefined;
+        updates.episodesCount = episodesCount
+          ? parseInt(episodesCount, 10)
+          : undefined;
         updates.countries = countries.trim() || undefined;
       } else if (category === ContentCategory.PODCAST) {
         updates.hosts = hosts.trim() || undefined;
-        updates.episodesCount = episodesCount ? parseInt(episodesCount, 10) : undefined;
+        updates.episodesCount = episodesCount
+          ? parseInt(episodesCount, 10)
+          : undefined;
       } else if (category === ContentCategory.DRAMA) {
         updates.subtype = dramaSubtype;
         updates.directors = dramaDirectors.trim() || undefined;
@@ -266,41 +274,6 @@ export default function CustomEntry() {
               onChangeText={setTitle}
             />
           </View>
-
-          {/* Category Selection - Only show if not passed as parameter */}
-          {params.category ? (
-            <View style={customEntryStyles.inputGroup}>
-              <Text style={customEntryStyles.label}>Category</Text>
-              <View style={customEntryStyles.readOnlyField}>
-                <Text style={customEntryStyles.readOnlyText}>{category}</Text>
-              </View>
-            </View>
-          ) : (
-            <View style={customEntryStyles.inputGroup}>
-              <Text style={customEntryStyles.label}>Category *</Text>
-              <View style={customEntryStyles.filterContainer}>
-                {CATEGORIES.map((cat) => (
-                  <TouchableOpacity
-                    key={cat}
-                    style={[
-                      customEntryStyles.chip,
-                      category === cat && customEntryStyles.chipActive,
-                    ]}
-                    onPress={() => setCategory(cat)}
-                  >
-                    <Text
-                      style={[
-                        customEntryStyles.chipText,
-                        category === cat && customEntryStyles.chipTextActive,
-                      ]}
-                    >
-                      {cat}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-          )}
 
           {/* Author Input - only for Book */}
           {category === ContentCategory.BOOK && (
@@ -412,7 +385,8 @@ export default function CustomEntry() {
                       key={subtype}
                       style={[
                         customEntryStyles.chip,
-                        tvMovieSubtype === subtype && customEntryStyles.chipActive,
+                        tvMovieSubtype === subtype &&
+                          customEntryStyles.chipActive,
                       ]}
                       onPress={() => setTvMovieSubtype(subtype)}
                     >
@@ -522,7 +496,8 @@ export default function CustomEntry() {
                       key={subtype}
                       style={[
                         customEntryStyles.chip,
-                        dramaSubtype === subtype && customEntryStyles.chipActive,
+                        dramaSubtype === subtype &&
+                          customEntryStyles.chipActive,
                       ]}
                       onPress={() => setDramaSubtype(subtype)}
                     >

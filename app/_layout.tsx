@@ -52,8 +52,13 @@ export default function RootLayout() {
         />
         <Stack.Screen
           name="customEntry"
-          options={{
-            title: "Custom Entry",
+          options={({ route }) => {
+            const params = route.params as { category?: string };
+            const category = params?.category;
+            let title = "";
+            if (category === "TV/Movie") title = "TV / Movie";
+            else if (category) title = `${category}`;
+            return { title };
           }}
         />
         <Stack.Screen
