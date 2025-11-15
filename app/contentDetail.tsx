@@ -15,24 +15,21 @@ import {
 } from "expo-router";
 import {
   useCallback,
-  useEffect,
   useLayoutEffect,
-  useRef,
   useState,
 } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Animated,
   Image,
   Linking,
-  Modal,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
 
 export default function ContentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -45,31 +42,6 @@ export default function ContentDetail() {
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const slideAnim = useRef(new Animated.Value(300)).current;
-
-  // Animate menu slide-up when shown
-  useEffect(() => {
-    if (showMenu) {
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        useNativeDriver: true,
-        tension: 65,
-        friction: 11,
-      }).start();
-    }
-  }, [showMenu, slideAnim]);
-
-  // Handle menu dismissal with slide down animation
-  const handleDismissMenu = () => {
-    Animated.timing(slideAnim, {
-      toValue: 300,
-      duration: 200,
-      useNativeDriver: true,
-    }).start(() => {
-      setShowMenu(false);
-      slideAnim.setValue(300);
-    });
-  };
 
   // Set header right button (three-dot menu)
   useLayoutEffect(() => {
@@ -83,12 +55,12 @@ export default function ContentDetail() {
   }, [navigation, id]);
 
   const handleEdit = () => {
-    handleDismissMenu();
+    setShowMenu(false);
     router.push(`/customEntry?id=${id}`);
   };
 
   const handleDelete = () => {
-    handleDismissMenu();
+    setShowMenu(false);
     Alert.alert(
       "Delete Content",
       "Are you sure you want to delete this content? This will also delete all consumption records.",
@@ -578,60 +550,23 @@ export default function ContentDetail() {
       </ScrollView>
 
       {/* Bottom Menu Modal */}
-      {showMenu && (
-        <Modal
-          visible={showMenu}
-          transparent={true}
-          animationType="none"
-          onRequestClose={handleDismissMenu}
-          statusBarTranslucent={false}
-        >
-          <TouchableOpacity
-            style={contentDetailStyles.modalOverlay}
-            activeOpacity={1}
-            onPress={handleDismissMenu}
-          >
-            <Animated.View
-              style={[
-                contentDetailStyles.menuContainer,
-                { transform: [{ translateY: slideAnim }] },
-              ]}
-            >
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={(e) => e.stopPropagation()}
-              >
-                {/* Edit Option */}
-                <TouchableOpacity
-                  style={contentDetailStyles.menuItem}
-                  onPress={handleEdit}
-                  activeOpacity={0.8}
-                >
-                  <Text style={contentDetailStyles.menuIcon}>✏️</Text>
-                  <Text style={contentDetailStyles.menuText}>Edit</Text>
-                </TouchableOpacity>
-
-                {/* Delete Option */}
-                <TouchableOpacity
-                  style={contentDetailStyles.menuItem}
-                  onPress={handleDelete}
-                  activeOpacity={0.8}
-                >
-                  <Text style={contentDetailStyles.menuIcon}>🗑️</Text>
-                  <Text
-                    style={[
-                      contentDetailStyles.menuText,
-                      contentDetailStyles.deleteText,
-                    ]}
-                  >
-                    Delete
-                  </Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </Animated.View>
-          </TouchableOpacity>
-        </Modal>
-      )}
+      <BottomMenuModal
+        visible={showMenu}
+        onDismiss={() => setShowMenu(false)}
+        options={[
+          {
+            icon: "✏️",
+            label: "Edit",
+            onPress: handleEdit,
+          },
+          {
+            icon: "🗑️",
+            label: "Delete",
+            onPress: handleDelete,
+            isDestructive: true,
+          },
+        ]}
+      />
     </View>
   );
 }
