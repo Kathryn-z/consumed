@@ -2,12 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors, pageStyles, spacing } from "../common";
 
 export const recordDetailEditStyles = StyleSheet.create({
-  container: {
-    ...pageStyles.container,
-  },
-  scrollContent: {
-    ...pageStyles.scrollContent,
-  },
+  ...pageStyles,
   starsContainer: {
     flexDirection: "row",
     paddingHorizontal: spacing.md,

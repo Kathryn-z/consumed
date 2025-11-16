@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { cardStyles, imageStyles, spacing, textStyles } from "../../common";
 
 export const recordCardStyles = StyleSheet.create({
+  ...imageStyles,
   container: {
     ...cardStyles.cardContainer,
   },
@@ -9,7 +10,6 @@ export const recordCardStyles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: spacing.sm,
   },
-  ...imageStyles,
   content: {
     flex: 1,
     marginLeft: spacing.md,

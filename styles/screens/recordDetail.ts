@@ -10,12 +10,8 @@ import {
 } from "../common";
 
 export const recordDetailStyles = StyleSheet.create({
-  container: {
-    ...pageStyles.container,
-  },
-  scrollContent: {
-    ...pageStyles.scrollContent,
-  },
+  ...pageStyles,
+  ...imageStyles,
   loadingContainer: {
     ...pageStyles.loadingContainer,
     backgroundColor: colors.background.page,
@@ -25,22 +21,6 @@ export const recordDetailStyles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     gap: spacing.sm,
-  },
-  coverImage: {
-    width: 60,
-    height: 80,
-    borderRadius: 4,
-  },
-  coverPlaceholder: {
-    width: 60,
-    height: 80,
-    borderRadius: 4,
-    backgroundColor: "#E0E0E0",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  coverPlaceholderText: {
-    ...imageStyles.imagePlaceholderText,
   },
   contentInfo: {
     flex: 1,

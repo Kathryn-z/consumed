@@ -2,10 +2,10 @@ import { StyleSheet } from "react-native";
 import { cardStyles, imageStyles, spacing } from "../../common";
 
 export const contentCardStyles = StyleSheet.create({
+  ...imageStyles,
   container: {
     ...cardStyles.cardContainerWithShadow,
   },
-  ...imageStyles,
   info: {
     flex: 1,
     marginLeft: spacing.md,

@@ -1,9 +1,9 @@
+import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { ContentItem } from "@/types/content";
 import { getImageUrl } from "@/utils/images";
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { recordDetailStyles } from "@/styles/screens/recordDetail";
 
 interface ContentInfoCardProps {
   item: ContentItem;
@@ -31,20 +31,22 @@ export function ContentInfoCard({
       disabled={disabled}
     >
       {/* Cover Image */}
-      {showImage ? (
-        <Image
-          source={{ uri: coverUrl }}
-          style={recordDetailStyles.coverImage}
-          resizeMode="cover"
-          onError={() => setImageError(true)}
-        />
-      ) : (
-        <View style={recordDetailStyles.coverPlaceholder}>
-          <Text style={recordDetailStyles.coverPlaceholderText}>
-            {item.category.charAt(0)}
-          </Text>
-        </View>
-      )}
+      <View style={recordDetailStyles.imageContainerSmall}>
+        {showImage ? (
+          <Image
+            source={{ uri: coverUrl }}
+            style={recordDetailStyles.imageSizePct}
+            resizeMode="cover"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <View style={recordDetailStyles.imagePlaceholder}>
+            <Text style={recordDetailStyles.imagePlaceholderText}>
+              {item.category.charAt(0)}
+            </Text>
+          </View>
+        )}
+      </View>
 
       {/* Content Info */}
       <View style={recordDetailStyles.contentInfo}>
@@ -52,7 +54,9 @@ export function ContentInfoCard({
           <Text style={recordDetailStyles.title} numberOfLines={2}>
             {item.title}
           </Text>
-          {showChevron && <Feather name="chevron-right" size={20} color="#666" />}
+          {showChevron && (
+            <Feather name="chevron-right" size={20} color="#666" />
+          )}
         </View>
         <Text style={recordDetailStyles.meta}>
           {item.category}

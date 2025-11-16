@@ -103,15 +103,21 @@ export const pageStyles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    padding: spacing.md,
   },
   scrollContent: {
-    padding: spacing.md,
+    padding: spacing.sm,
     paddingBottom: spacing.lg,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  loadingText: {
+    marginTop: spacing.md,
+    fontSize: 16,
+    color: colors.text.secondary,
   },
   errorContainer: {
     flex: 1,
@@ -120,6 +126,17 @@ export const pageStyles = StyleSheet.create({
     padding: spacing.md,
   },
   errorText: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    textAlign: "center",
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: spacing.xl,
+  },
+  emptyText: {
     fontSize: 16,
     color: colors.text.secondary,
     textAlign: "center",

@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../common";
+import { pageStyles, spacing } from "../common";
 
 export const searchRecordsStyles = StyleSheet.create({
+  ...pageStyles,
   searchBarContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -19,23 +20,10 @@ export const searchRecordsStyles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    ...pageStyles.loadingContainer,
     paddingVertical: spacing.xl,
   },
   listContent: {
     paddingBottom: spacing.md,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: spacing.xl,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: colors.text.secondary,
-    textAlign: "center",
   },
 });

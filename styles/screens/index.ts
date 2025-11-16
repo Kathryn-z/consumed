@@ -2,13 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors, pageStyles, spacing } from "../common";
 
 export const indexStyles = StyleSheet.create({
-  container: {
-    ...pageStyles.container,
-  },
-  content: {
-    ...pageStyles.content,
-    padding: spacing.md,
-  },
+  ...pageStyles,
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -99,21 +93,7 @@ export const indexStyles = StyleSheet.create({
     color: colors.text.primary,
     fontWeight: "600",
   },
-  loadingContainer: {
-    ...pageStyles.loadingContainer,
-  },
   listContent: {
     paddingBottom: spacing.md,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: spacing.xl,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: colors.text.secondary,
-    textAlign: "center",
   },
 });

@@ -3,6 +3,7 @@ import { colors, imageStyles, pageStyles, spacing } from "../common";
 
 export const contentDetailStyles = StyleSheet.create({
   ...pageStyles,
+  ...imageStyles,
   imageContainer: {
     width: "100%",
     height: 300,
@@ -11,7 +12,6 @@ export const contentDetailStyles = StyleSheet.create({
     backgroundColor: "#f0f0f0",
     marginBottom: spacing.md,
   },
-  ...imageStyles,
   infoContainer: {
     gap: spacing.md,
   },

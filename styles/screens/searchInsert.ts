@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors, pageStyles, spacing } from "../common";
 
 export const searchInsertStyles = StyleSheet.create({
+  ...pageStyles,
   searchBarContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -25,22 +26,6 @@ export const searchInsertStyles = StyleSheet.create({
   noResultsText: {
     fontSize: 16,
     color: colors.text.secondary,
-    textAlign: "center",
-    marginBottom: spacing.lg,
-    lineHeight: 24,
-  },
-  loadingContainer: {
-    ...pageStyles.loadingContainer,
-    paddingVertical: spacing.xl * 2,
-  },
-  loadingText: {
-    marginTop: spacing.md,
-    fontSize: 16,
-    color: colors.text.secondary,
-  },
-  errorText: {
-    fontSize: 16,
-    color: "#FF3B30",
     textAlign: "center",
     marginBottom: spacing.lg,
     lineHeight: 24,
