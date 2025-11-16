@@ -221,12 +221,19 @@ export const cardStyles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
-  cardHeaderContainer: {
+  headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: spacing.xs,
   },
+  // Content
+  infoContent: {
+    flex: 1,
+    marginLeft: spacing.md,
+    justifyContent: "flex-start",
+  },
+  // Text
   cardTitle: {
     fontSize: 16,
     fontWeight: "600",

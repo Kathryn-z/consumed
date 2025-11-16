@@ -1,4 +1,4 @@
-import PrimaryButton from "@/components/buttons/PrimaryButton";
+import PrimaryButton from "@/components/shared/buttons/PrimaryButton";
 import { getContentItemById, updateContentItem } from "@/db/contentOperations";
 import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, DramaSubtype, TVMovieSubtype } from "@/types/content";

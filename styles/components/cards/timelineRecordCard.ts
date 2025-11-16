@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { cardStyles, colors, dividerStyles, spacing } from "../../common";
 
 export const timelineRecordCardStyles = StyleSheet.create({
+  ...cardStyles,
   container: {
     flexDirection: "row",
     marginBottom: spacing.md,
@@ -17,12 +18,6 @@ export const timelineRecordCardStyles = StyleSheet.create({
     ...cardStyles.cardInfoPrimary,
     fontWeight: "600",
     color: colors.text.primary,
-  },
-  monthDay: {
-    ...cardStyles.cardTitle,
-  },
-  weekday: {
-    ...cardStyles.cardInfoPrimary,
   },
   divider: {
     ...dividerStyles.divider,

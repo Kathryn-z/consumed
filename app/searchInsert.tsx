@@ -1,5 +1,5 @@
-import PrimaryButton from "@/components/buttons/PrimaryButton";
 import { SearchedContentCard } from "@/components/cards/contentCards/SearchedContentCard";
+import PrimaryButton from "@/components/shared/buttons/PrimaryButton";
 import SearchBar from "@/components/shared/SearchBar";
 import {
   ItunesPodcastResult,

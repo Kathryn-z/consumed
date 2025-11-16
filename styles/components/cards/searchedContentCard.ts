@@ -2,19 +2,9 @@ import { StyleSheet } from "react-native";
 import { cardStyles, imageStyles, spacing } from "../../common";
 
 export const searchedContentCardStyles = StyleSheet.create({
-  resultItem: {
-    ...cardStyles.cardContainerWithShadow,
-  },
+  ...cardStyles,
   resultImage: {
     ...imageStyles.imageContainerSquare,
-  },
-  resultInfo: {
-    flex: 1,
-    marginLeft: spacing.md,
-    justifyContent: "flex-start",
-  },
-  resultTitle: {
-    ...cardStyles.cardTitle,
   },
   resultArtist: {
     ...cardStyles.cardInfoPrimary,
@@ -23,8 +13,5 @@ export const searchedContentCardStyles = StyleSheet.create({
   resultGenre: {
     ...cardStyles.cardInfoPrimary,
     fontStyle: "italic",
-  },
-  resultMeta: {
-    ...cardStyles.cardInfoSecondary,
   },
 });

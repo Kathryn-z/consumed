@@ -49,7 +49,7 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
   // Show loading state while fetching content item
   if (loading) {
     return (
-      <View style={recordCardStyles.container}>
+      <View style={recordCardStyles.cardContainer}>
         <ActivityIndicator size="small" color="#007AFF" />
       </View>
     );
@@ -58,8 +58,8 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
   // Show error state if item not found
   if (!item) {
     return (
-      <View style={recordCardStyles.container}>
-        <Text style={recordCardStyles.title}>Content not found</Text>
+      <View style={recordCardStyles.cardContainer}>
+        <Text style={recordCardStyles.cardTitle}>Content not found</Text>
       </View>
     );
   }
@@ -69,7 +69,7 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
 
   return (
     <TouchableOpacity
-      style={recordCardStyles.container}
+      style={recordCardStyles.cardContainer}
       onPress={() => onPress?.(record)}
       activeOpacity={0.7}
     >
@@ -84,13 +84,11 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
         />
 
         {/* Content Info */}
-        <View style={recordCardStyles.content}>
-          <Text style={recordCardStyles.title} numberOfLines={2}>
+        <View style={recordCardStyles.infoContent}>
+          <Text style={recordCardStyles.cardTitle} numberOfLines={2}>
             {item.title}
           </Text>
-          <Text style={recordCardStyles.categoryRow}>
-            {getCategoryDisplay()}
-          </Text>
+          <Text style={recordCardStyles.category}>{getCategoryDisplay()}</Text>
 
           {/* Status/Rating Chip */}
           <View>

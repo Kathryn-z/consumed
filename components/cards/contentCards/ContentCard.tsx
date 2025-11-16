@@ -68,7 +68,7 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
 
   return (
     <TouchableOpacity
-      style={contentCardStyles.container}
+      style={contentCardStyles.cardContainerWithShadow}
       onPress={() => onPress?.(item)}
       activeOpacity={0.7}
     >
@@ -82,17 +82,19 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
 
       {/* Content Info */}
       <View style={contentCardStyles.info}>
-        <Text style={contentCardStyles.title} numberOfLines={2}>
+        <Text style={contentCardStyles.cardTitle} numberOfLines={2}>
           {item.title}
         </Text>
         <Text style={contentCardStyles.category}>{item.category}</Text>
-        {item.year && <Text style={contentCardStyles.year}>{item.year}</Text>}
+        {item.year && (
+          <Text style={contentCardStyles.cardInfoPrimary}>{item.year}</Text>
+        )}
         {creatorInfo && (
-          <Text style={contentCardStyles.creator} numberOfLines={1}>
+          <Text style={contentCardStyles.cardInfoPrimary} numberOfLines={1}>
             {creatorInfo}
           </Text>
         )}
-        <Text style={contentCardStyles.date}>
+        <Text style={contentCardStyles.cardInfoSecondary}>
           {formatDateToString(item.dateAdded)}
         </Text>
       </View>

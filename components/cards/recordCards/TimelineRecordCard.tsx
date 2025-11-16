@@ -20,10 +20,12 @@ export function TimelineRecordCard({
       {/* Left side: Date information */}
       <View style={timelineRecordCardStyles.dateSection}>
         <Text style={timelineRecordCardStyles.year}>{dateInfo.year}</Text>
-        <Text style={timelineRecordCardStyles.monthDay}>
+        <Text style={timelineRecordCardStyles.cardTitle}>
           {dateInfo.monthDay}
         </Text>
-        <Text style={timelineRecordCardStyles.weekday}>{dateInfo.weekday}</Text>
+        <Text style={timelineRecordCardStyles.cardInfoPrimary}>
+          {dateInfo.weekday}
+        </Text>
       </View>
 
       {/* Divider */}

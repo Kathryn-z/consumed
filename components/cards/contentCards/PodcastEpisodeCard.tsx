@@ -11,18 +11,18 @@ interface PodcastEpisodeCardProps {
 export function PodcastEpisodeCard({ episode }: PodcastEpisodeCardProps) {
   return (
     <View style={podcastEpisodeCardStyles.container}>
-      <View style={podcastEpisodeCardStyles.header}>
+      <View style={podcastEpisodeCardStyles.headerContent}>
         {episode.trackNumber && (
           <Text style={podcastEpisodeCardStyles.episodeNumber}>
             #{episode.trackNumber}
           </Text>
         )}
-        <Text style={podcastEpisodeCardStyles.date}>
+        <Text style={podcastEpisodeCardStyles.cardInfoSecondary}>
           {formatDateToString(episode.releaseDate)}
         </Text>
       </View>
 
-      <Text style={podcastEpisodeCardStyles.title} numberOfLines={2}>
+      <Text style={podcastEpisodeCardStyles.cardTitle} numberOfLines={2}>
         {episode.trackName}
       </Text>
 

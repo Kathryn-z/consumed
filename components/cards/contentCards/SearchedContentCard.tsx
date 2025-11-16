@@ -13,7 +13,7 @@ export function SearchedContentCard({
 }: SearchedContentCardProps) {
   return (
     <TouchableOpacity
-      style={searchedContentCardStyles.resultItem}
+      style={searchedContentCardStyles.cardContainerWithShadow}
       onPress={() => onPress(result)}
       activeOpacity={0.7}
     >
@@ -24,8 +24,8 @@ export function SearchedContentCard({
         style={searchedContentCardStyles.resultImage}
         resizeMode="cover"
       />
-      <View style={searchedContentCardStyles.resultInfo}>
-        <Text style={searchedContentCardStyles.resultTitle} numberOfLines={2}>
+      <View style={searchedContentCardStyles.infoContent}>
+        <Text style={searchedContentCardStyles.cardTitle} numberOfLines={2}>
           {result.collectionName}
         </Text>
         <Text style={searchedContentCardStyles.resultArtist} numberOfLines={1}>
@@ -37,7 +37,7 @@ export function SearchedContentCard({
           </Text>
         )}
         {result.trackCount && (
-          <Text style={searchedContentCardStyles.resultMeta}>
+          <Text style={searchedContentCardStyles.cardInfoSecondary}>
             {result.trackCount} episodes
           </Text>
         )}
