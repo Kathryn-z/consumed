@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../common";
+import { colors, spacing } from "../common";
 
 export const recordDetailEditStyles = StyleSheet.create({
   container: {
@@ -20,7 +20,7 @@ export const recordDetailEditStyles = StyleSheet.create({
   },
   privacyText: {
     fontSize: 14,
-    color: "#007AFF",
+    color: colors.text.highlight,
   },
   contentCard: {
     flexDirection: "row",

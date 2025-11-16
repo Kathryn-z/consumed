@@ -4,7 +4,7 @@ import { colors, commonStyles, spacing } from "../common";
 export const searchInsertStyles = StyleSheet.create({
   ...commonStyles,
   categoryIndicator: {
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.selected,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
     borderRadius: 8,
@@ -38,7 +38,7 @@ export const searchInsertStyles = StyleSheet.create({
   },
   cancelButtonText: {
     fontSize: 16,
-    color: "#007AFF",
+    color: colors.text.highlight,
     fontWeight: "500",
   },
   resultsContainer: {

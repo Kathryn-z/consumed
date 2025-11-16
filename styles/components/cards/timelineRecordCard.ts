@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../../common";
+import { colors, commonStyles, spacing } from "../../common";
 
 export const timelineRecordCardStyles = StyleSheet.create({
   container: {
@@ -20,19 +20,17 @@ export const timelineRecordCardStyles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   monthDay: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: spacing.xs,
+    ...commonStyles.cardTitle,
   },
   weekday: {
-    fontSize: 14,
-    color: colors.text.secondary,
+    ...commonStyles.cardInfoPrimary,
   },
   divider: {
     width: 2,
     backgroundColor: "#E0E0E0",
     marginRight: spacing.xs,
+    marginTop: spacing.sm,
+    marginBottom: spacing.sm,
   },
   cardSection: {
     flex: 1,

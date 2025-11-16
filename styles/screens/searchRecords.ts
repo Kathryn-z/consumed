@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { commonStyles, spacing, colors } from "../common";
+import { colors, commonStyles, spacing } from "../common";
 
 export const searchRecordsStyles = StyleSheet.create({
   ...commonStyles,
@@ -25,7 +25,7 @@ export const searchRecordsStyles = StyleSheet.create({
   },
   cancelButtonText: {
     fontSize: 16,
-    color: "#007AFF",
+    color: colors.text.highlight,
     fontWeight: "500",
   },
   loadingContainer: {

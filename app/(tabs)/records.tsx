@@ -31,7 +31,7 @@ export default function Records() {
   return (
     <SafeAreaView style={recordsStyles.container}>
       <View style={recordsStyles.content}>
-        <Text style={recordsStyles.title}>My Records</Text>
+        <Text style={recordsStyles.pageTitle}>My Records</Text>
         <Text style={recordsStyles.description}>
           View all your rated and recorded content.
         </Text>

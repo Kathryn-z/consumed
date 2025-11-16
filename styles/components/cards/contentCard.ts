@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../../common";
+import { commonStyles, spacing } from "../../common";
 
 export const contentCardStyles = StyleSheet.create({
   container: {
@@ -43,29 +43,18 @@ export const contentCardStyles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: spacing.xs,
+    ...commonStyles.cardTitle,
   },
   category: {
-    fontSize: 12,
-    color: "#007AFF",
-    fontWeight: "500",
-    marginBottom: spacing.xs,
+    ...commonStyles.category,
   },
   year: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    marginBottom: spacing.xs,
+    ...commonStyles.cardInfoPrimary,
   },
   creator: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    marginBottom: spacing.xs,
+    ...commonStyles.cardInfoPrimary,
   },
   date: {
-    fontSize: 12,
-    color: "#999",
+    ...commonStyles.cardInfoSecondary,
   },
 });

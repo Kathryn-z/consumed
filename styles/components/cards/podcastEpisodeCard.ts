@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../../common";
+import { colors, commonStyles, spacing } from "../../common";
 
 export const podcastEpisodeCardStyles = StyleSheet.create({
   container: {
@@ -15,25 +15,16 @@ export const podcastEpisodeCardStyles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   episodeNumber: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#007AFF",
+    ...commonStyles.highlightText,
   },
   date: {
-    fontSize: 12,
-    color: colors.text.secondary,
+    ...commonStyles.cardInfoSecondary,
   },
   title: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: spacing.xs,
+    ...commonStyles.cardInfoPrimary,
   },
   description: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    lineHeight: 20,
-    marginBottom: spacing.xs,
+    ...commonStyles.longText,
   },
   footer: {
     flexDirection: "row",

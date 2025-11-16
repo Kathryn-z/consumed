@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../../common";
+import { commonStyles, spacing } from "../../common";
 
 export const searchedContentCardStyles = StyleSheet.create({
   resultItem: {
@@ -26,25 +26,17 @@ export const searchedContentCardStyles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   resultTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: spacing.xs,
+    ...commonStyles.cardTitle,
   },
   resultArtist: {
-    fontSize: 14,
-    color: colors.text.secondary,
+    ...commonStyles.cardInfoPrimary,
     marginBottom: spacing.xs / 2,
   },
   resultGenre: {
-    fontSize: 13,
-    color: colors.text.secondary,
+    ...commonStyles.cardInfoPrimary,
     fontStyle: "italic",
-    marginBottom: spacing.xs / 2,
   },
   resultMeta: {
-    fontSize: 13,
-    color: colors.text.secondary,
-    marginTop: spacing.xs / 2,
+    ...commonStyles.cardInfoSecondary,
   },
 });

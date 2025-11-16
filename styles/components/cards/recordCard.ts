@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../../common";
+import { commonStyles, spacing } from "../../common";
 
 export const recordCardStyles = StyleSheet.create({
   container: {
@@ -12,8 +12,8 @@ export const recordCardStyles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   imageContainer: {
-    width: 80,
-    height: 100,
+    width: 60,
+    height: 90,
     borderRadius: 8,
     overflow: "hidden",
     backgroundColor: "#f0f0f0",
@@ -40,25 +40,12 @@ export const recordCardStyles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   title: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: colors.text.primary,
-    marginBottom: spacing.xs,
+    ...commonStyles.cardTitle,
   },
   categoryRow: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    marginBottom: spacing.sm,
+    ...commonStyles.category,
   },
   notes: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    lineHeight: 20,
-  },
-  notesPlaceholder: {
-    fontSize: 14,
-    color: "#999",
-    fontStyle: "italic",
-    lineHeight: 20,
+    ...commonStyles.longText,
   },
 });

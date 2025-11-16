@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../common";
+import { colors, spacing } from "../common";
 
 export const contentInfoStyles = StyleSheet.create({
   container: {
@@ -52,7 +52,7 @@ export const contentInfoStyles = StyleSheet.create({
   },
   button: {
     height: 50,
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.selected,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -91,8 +91,8 @@ export const contentInfoStyles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   chipActive: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
+    backgroundColor: colors.selected,
+    borderColor: colors.selected,
   },
   chipText: {
     fontSize: 14,

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { commonStyles, spacing, colors } from "../common";
+import { colors, commonStyles, spacing } from "../common";
 
 export const indexStyles = StyleSheet.create({
   ...commonStyles,
@@ -24,8 +24,8 @@ export const indexStyles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   chipActive: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
+    backgroundColor: colors.selected,
+    borderColor: colors.selected,
   },
   chipText: {
     fontSize: 14,
@@ -42,7 +42,7 @@ export const indexStyles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.selected,
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,

@@ -117,7 +117,7 @@ export const contentDetailStyles = StyleSheet.create({
   editButton: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.selected,
     borderRadius: 8,
   },
   editButtonText: {
@@ -159,8 +159,8 @@ export const contentDetailStyles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   chipActive: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
+    backgroundColor: colors.selected,
+    borderColor: colors.selected,
   },
   chipText: {
     fontSize: 14,
@@ -172,7 +172,7 @@ export const contentDetailStyles = StyleSheet.create({
   },
   button: {
     height: 50,
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.selected,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -277,12 +277,12 @@ export const contentDetailStyles = StyleSheet.create({
     backgroundColor: "#f0f7ff",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#007AFF",
+    borderColor: colors.selected,
     alignSelf: "flex-start",
   },
   linkButtonText: {
     fontSize: 15,
-    color: "#007AFF",
+    color: colors.text.highlight,
     fontWeight: "500",
   },
 });

@@ -119,7 +119,7 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
           {record.notes}
         </Text>
       ) : (
-        <Text style={recordCardStyles.notesPlaceholder}></Text>
+        <Text></Text>
       )}
     </TouchableOpacity>
   );
