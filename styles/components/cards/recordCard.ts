@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { commonStyles, spacing } from "../../common";
+import { cardStyles, imageStyles, spacing, textStyles } from "../../common";
 
 export const recordCardStyles = StyleSheet.create({
   container: {
@@ -12,27 +12,16 @@ export const recordCardStyles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   imageContainer: {
-    width: 60,
-    height: 90,
-    borderRadius: 8,
-    overflow: "hidden",
-    backgroundColor: "#f0f0f0",
+    ...imageStyles.imageContainerSmall,
   },
   image: {
-    width: "100%",
-    height: "100%",
+    ...imageStyles.imageSizePct,
   },
   placeholder: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#e0e0e0",
-    justifyContent: "center",
-    alignItems: "center",
+    ...imageStyles.imagePlaceholder,
   },
   placeholderText: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#999",
+    ...imageStyles.imagePlaceholderText,
   },
   content: {
     flex: 1,
@@ -40,12 +29,12 @@ export const recordCardStyles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   title: {
-    ...commonStyles.cardTitle,
+    ...cardStyles.cardTitle,
   },
   categoryRow: {
-    ...commonStyles.category,
+    ...cardStyles.category,
   },
   notes: {
-    ...commonStyles.longText,
+    ...textStyles.longTextSecondary,
   },
 });

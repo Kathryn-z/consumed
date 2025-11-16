@@ -4,7 +4,7 @@ import { colors, spacing } from "../common";
 export const recordDetailEditStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.background.page,
   },
   header: {
     flexDirection: "row",

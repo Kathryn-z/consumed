@@ -1,16 +1,16 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../common";
+import { cardStyles, colors, spacing, textStyles } from "../common";
 
 export const recordDetailStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.background.page,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.background.page,
   },
   infoBar: {
     paddingHorizontal: spacing.md,
@@ -56,22 +56,18 @@ export const recordDetailStyles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 16,
-    fontWeight: "500",
-    color: colors.text.primary,
-    marginRight: spacing.xs,
+    ...cardStyles.cardTitle,
   },
   meta: {
-    fontSize: 13,
-    color: colors.text.secondary,
+    ...cardStyles.cardInfoPrimary,
+    marginBottom: 0,
   },
   dateContainer: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
   },
   dateText: {
-    fontSize: 14,
-    color: colors.text.secondary,
+    ...cardStyles.cardInfoPrimary,
   },
   statusContainer: {
     paddingHorizontal: spacing.md,
@@ -82,8 +78,6 @@ export const recordDetailStyles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   notesText: {
-    fontSize: 15,
-    color: colors.text.primary,
-    lineHeight: 22,
+    ...textStyles.longTextPrimary,
   },
 });

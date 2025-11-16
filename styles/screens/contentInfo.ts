@@ -4,7 +4,7 @@ import { colors, spacing } from "../common";
 export const contentInfoStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.background.page,
   },
   content: {
     flex: 1,

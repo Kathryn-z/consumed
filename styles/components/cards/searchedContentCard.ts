@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { commonStyles, spacing } from "../../common";
+import { cardStyles, imageStyles, spacing } from "../../common";
 
 export const searchedContentCardStyles = StyleSheet.create({
   resultItem: {
@@ -15,10 +15,7 @@ export const searchedContentCardStyles = StyleSheet.create({
     shadowRadius: 2,
   },
   resultImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
-    backgroundColor: "#f0f0f0",
+    ...imageStyles.imageContainerSquare,
   },
   resultInfo: {
     flex: 1,
@@ -26,17 +23,17 @@ export const searchedContentCardStyles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   resultTitle: {
-    ...commonStyles.cardTitle,
+    ...cardStyles.cardTitle,
   },
   resultArtist: {
-    ...commonStyles.cardInfoPrimary,
+    ...cardStyles.cardInfoPrimary,
     marginBottom: spacing.xs / 2,
   },
   resultGenre: {
-    ...commonStyles.cardInfoPrimary,
+    ...cardStyles.cardInfoPrimary,
     fontStyle: "italic",
   },
   resultMeta: {
-    ...commonStyles.cardInfoSecondary,
+    ...cardStyles.cardInfoSecondary,
   },
 });

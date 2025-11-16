@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { commonStyles, spacing } from "../../common";
+import { cardStyles, imageStyles, spacing } from "../../common";
 
 export const contentCardStyles = StyleSheet.create({
   container: {
@@ -15,27 +15,16 @@ export const contentCardStyles = StyleSheet.create({
     elevation: 2,
   },
   imageContainer: {
-    width: 80,
-    height: 120,
-    borderRadius: 8,
-    overflow: "hidden",
-    backgroundColor: "#f0f0f0",
+    ...imageStyles.imageContainerLarge,
   },
   image: {
-    width: "100%",
-    height: "100%",
+    ...imageStyles.imageSizePct,
   },
   placeholder: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#e0e0e0",
-    justifyContent: "center",
-    alignItems: "center",
+    ...imageStyles.imagePlaceholder,
   },
   placeholderText: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#999",
+    ...imageStyles.imagePlaceholderText,
   },
   info: {
     flex: 1,
@@ -43,18 +32,18 @@ export const contentCardStyles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    ...commonStyles.cardTitle,
+    ...cardStyles.cardTitle,
   },
   category: {
-    ...commonStyles.category,
+    ...cardStyles.category,
   },
   year: {
-    ...commonStyles.cardInfoPrimary,
+    ...cardStyles.cardInfoPrimary,
   },
   creator: {
-    ...commonStyles.cardInfoPrimary,
+    ...cardStyles.cardInfoPrimary,
   },
   date: {
-    ...commonStyles.cardInfoSecondary,
+    ...cardStyles.cardInfoSecondary,
   },
 });
