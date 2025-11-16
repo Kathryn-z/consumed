@@ -1,28 +1,15 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../common";
+import { colors, pageStyles, spacing } from "../common";
 
 export const contentInfoStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.background.page,
+    ...pageStyles.container,
   },
   content: {
-    flex: 1,
+    ...pageStyles.content,
   },
   scrollContent: {
-    padding: spacing.md,
-    paddingBottom: spacing.lg,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: spacing.sm,
-    color: colors.text.primary,
-  },
-  description: {
-    fontSize: 16,
-    color: colors.text.secondary,
-    marginBottom: spacing.md,
+    ...pageStyles.scrollContent,
   },
   formContainer: {
     gap: spacing.md,
@@ -35,11 +22,6 @@ export const contentInfoStyles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     fontSize: 16,
     backgroundColor: "#fff",
-  },
-  textArea: {
-    height: 100,
-    textAlignVertical: "top",
-    paddingTop: spacing.md,
   },
   label: {
     fontSize: 16,
@@ -69,13 +51,6 @@ export const contentInfoStyles = StyleSheet.create({
   },
   cancelButtonText: {
     color: "#333",
-  },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    overflow: "hidden",
   },
   filterContainer: {
     flexDirection: "row",
@@ -132,18 +107,5 @@ export const contentInfoStyles = StyleSheet.create({
     padding: 5,
     justifyContent: "center",
     alignItems: "center",
-  },
-  readOnlyField: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 10,
-    paddingHorizontal: spacing.md,
-    backgroundColor: "#f5f5f5",
-    justifyContent: "center",
-  },
-  readOnlyText: {
-    fontSize: 16,
-    color: colors.text.secondary,
   },
 });

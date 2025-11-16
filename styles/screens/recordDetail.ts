@@ -1,28 +1,24 @@
 import { StyleSheet } from "react-native";
-import { cardStyles, colors, spacing, textStyles } from "../common";
+import {
+  cardStyles,
+  chipStyles,
+  colors,
+  imageStyles,
+  pageStyles,
+  spacing,
+  textStyles,
+} from "../common";
 
 export const recordDetailStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.background.page,
+    ...pageStyles.container,
   },
   scrollContent: {
-    padding: spacing.md,
-    paddingBottom: spacing.lg,
+    ...pageStyles.scrollContent,
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    ...pageStyles.loadingContainer,
     backgroundColor: colors.background.page,
-  },
-  infoBar: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  infoText: {
-    fontSize: 13,
-    color: colors.text.secondary,
   },
   contentCard: {
     flexDirection: "row",
@@ -44,9 +40,7 @@ export const recordDetailStyles = StyleSheet.create({
     alignItems: "center",
   },
   coverPlaceholderText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#999",
+    ...imageStyles.imagePlaceholderText,
   },
   contentInfo: {
     flex: 1,
@@ -67,19 +61,16 @@ export const recordDetailStyles = StyleSheet.create({
     marginBottom: 0,
   },
   dateContainer: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+    ...chipStyles.dateChip,
   },
   dateText: {
     ...cardStyles.cardInfoPrimary,
   },
   statusContainer: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+    ...chipStyles.dateChip,
   },
   notesContainer: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    ...chipStyles.dateChip,
   },
   notesText: {
     ...textStyles.longTextPrimary,

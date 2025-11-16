@@ -119,6 +119,36 @@ export const imageStyles = StyleSheet.create({
   },
 });
 
+export const pageStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background.page,
+  },
+  content: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: spacing.md,
+    paddingBottom: spacing.lg,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: spacing.md,
+  },
+  errorText: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    textAlign: "center",
+  },
+});
+
 export const modalStyles = StyleSheet.create({
   modalOverlay: {
     flex: 1,

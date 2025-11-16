@@ -1,33 +1,24 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../common";
+import { colors, imageStyles, pageStyles, spacing } from "../common";
 
 export const contentDetailStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.background.page,
+    ...pageStyles.container,
   },
   content: {
-    flex: 1,
+    ...pageStyles.content,
   },
   scrollContent: {
-    padding: spacing.md,
-    paddingBottom: spacing.lg,
+    ...pageStyles.scrollContent,
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    ...pageStyles.loadingContainer,
   },
   errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: spacing.md,
+    ...pageStyles.errorContainer,
   },
   errorText: {
-    fontSize: 16,
-    color: colors.text.secondary,
-    textAlign: "center",
+    ...pageStyles.errorText,
   },
   imageContainer: {
     width: "100%",
@@ -38,20 +29,13 @@ export const contentDetailStyles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   image: {
-    width: "100%",
-    height: "100%",
+    ...imageStyles.imageSizePct,
   },
   placeholder: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#e0e0e0",
-    justifyContent: "center",
-    alignItems: "center",
+    ...imageStyles.imagePlaceholder,
   },
   placeholderText: {
-    fontSize: 80,
-    fontWeight: "bold",
-    color: "#999",
+    ...imageStyles.imagePlaceholderText,
   },
   infoContainer: {
     gap: spacing.md,
@@ -102,94 +86,6 @@ export const contentDetailStyles = StyleSheet.create({
     fontSize: 20,
     color: "#FFD700",
   },
-  notesSection: {
-    gap: spacing.sm,
-    marginTop: spacing.sm,
-  },
-  notes: {
-    fontSize: 16,
-    color: colors.text.primary,
-    lineHeight: 24,
-    backgroundColor: "#f5f5f5",
-    padding: spacing.md,
-    borderRadius: 8,
-  },
-  editButton: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.selected,
-    borderRadius: 8,
-  },
-  editButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  formContainer: {
-    gap: spacing.md,
-  },
-  inputGroup: {
-    marginBottom: spacing.sm,
-  },
-  input: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    paddingHorizontal: spacing.md,
-    fontSize: 16,
-    backgroundColor: "#fff",
-  },
-  textArea: {
-    height: 100,
-    textAlignVertical: "top",
-    paddingTop: spacing.md,
-  },
-  filterContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing.sm,
-  },
-  chip: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
-  },
-  chipActive: {
-    backgroundColor: colors.selected,
-    borderColor: colors.selected,
-  },
-  chipText: {
-    fontSize: 14,
-    color: "#333",
-  },
-  chipTextActive: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  button: {
-    height: 50,
-    backgroundColor: colors.selected,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: spacing.md,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  cancelButton: {
-    backgroundColor: "#f5f5f5",
-    marginTop: spacing.sm,
-  },
-  cancelButtonText: {
-    color: "#333",
-  },
   historySection: {
     marginTop: spacing.lg,
     gap: spacing.md,
@@ -227,46 +123,6 @@ export const contentDetailStyles = StyleSheet.create({
     color: colors.text.primary,
     lineHeight: 22,
     marginTop: spacing.xs,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-end",
-  },
-  menuContainer: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingBottom: 40,
-    paddingTop: spacing.md,
-    paddingHorizontal: spacing.md,
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-    borderRadius: 12,
-    marginBottom: spacing.sm,
-    backgroundColor: "#f9f9f9",
-  },
-  menuIcon: {
-    fontSize: 20,
-    marginRight: spacing.md,
-  },
-  menuText: {
-    fontSize: 17,
-    color: colors.text.primary,
-    fontWeight: "500",
-  },
-  deleteText: {
-    color: "#FF3B30",
-  },
-  cancelMenuItem: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginTop: spacing.sm,
   },
   linkButton: {
     flexDirection: "row",

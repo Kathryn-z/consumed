@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
-import { colors, commonStyles, spacing } from "../common";
+import { colors, spacing } from "../common";
 
 export const searchRecordsStyles = StyleSheet.create({
-  ...commonStyles,
   searchBarContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -18,15 +17,6 @@ export const searchRecordsStyles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     fontSize: 16,
     backgroundColor: "#f5f5f5",
-  },
-  cancelButton: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  cancelButtonText: {
-    fontSize: 16,
-    color: colors.text.highlight,
-    fontWeight: "500",
   },
   loadingContainer: {
     flex: 1,

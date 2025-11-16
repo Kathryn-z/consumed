@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, commonStyles, spacing } from "../common";
+import { colors, commonStyles, pageStyles, spacing } from "../common";
 
 export const indexStyles = StyleSheet.create({
   ...commonStyles,
@@ -94,10 +94,7 @@ export const indexStyles = StyleSheet.create({
     fontWeight: "600",
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: spacing.xl,
+    ...pageStyles.loadingContainer,
   },
   listContent: {
     paddingBottom: spacing.md,
@@ -112,55 +109,5 @@ export const indexStyles = StyleSheet.create({
     fontSize: 16,
     color: colors.text.secondary,
     textAlign: "center",
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-end",
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingBottom: 40,
-    paddingTop: spacing.lg,
-    paddingHorizontal: spacing.md,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: spacing.md,
-    textAlign: "center",
-  },
-  categoryButtons: {
-    gap: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  categoryButton: {
-    backgroundColor: "#f9f9f9",
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  categoryButtonText: {
-    fontSize: 17,
-    fontWeight: "500",
-    color: colors.text.primary,
-  },
-  modalCancelButton: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  modalCancelButtonText: {
-    fontSize: 17,
-    fontWeight: "500",
-    color: colors.text.secondary,
   },
 });
