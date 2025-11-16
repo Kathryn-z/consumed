@@ -58,6 +58,14 @@ export const textStyles = StyleSheet.create({
 });
 
 export const imageStyles = StyleSheet.create({
+  imageContainerContentDetail: {
+    width: "100%",
+    height: 300,
+    borderRadius: 12,
+    overflow: "hidden",
+    backgroundColor: "#f0f0f0",
+    marginBottom: spacing.md,
+  },
   imageContainerLarge: {
     width: 80,
     height: 120,

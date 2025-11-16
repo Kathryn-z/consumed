@@ -1,6 +1,7 @@
 import { RecordCard } from "@/components/cards/recordCards/RecordCard";
 import { timelineRecordCardStyles } from "@/styles/components/cards/timelineRecordCard";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
+import { formatDate } from "@/utils/dateFormat";
 import { Text, View } from "react-native";
 
 interface TimelineRecordCardProps {
@@ -12,16 +13,6 @@ export function TimelineRecordCard({
   record,
   onPress,
 }: TimelineRecordCardProps) {
-  // Format the date consumed
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return {
-      year: date.getFullYear(),
-      monthDay: `${String(date.getMonth() + 1).padStart(2, "0")}.${String(date.getDate()).padStart(2, "0")}`,
-      weekday: date.toLocaleDateString("en-US", { weekday: "short" }),
-    };
-  };
-
   const dateInfo = formatDate(record.dateConsumed);
 
   return (

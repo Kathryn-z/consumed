@@ -1,9 +1,11 @@
+import CoverImage from "@/components/shared/CoverImage";
+import { imageStyles } from "@/styles/common";
 import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { ContentItem } from "@/types/content";
 import { getImageUrl } from "@/utils/images";
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface ContentInfoCardProps {
   item: ContentItem;
@@ -19,9 +21,8 @@ export function ContentInfoCard({
   disabled = false,
 }: ContentInfoCardProps) {
   const [imageError, setImageError] = useState(false);
-
   const coverUrl = getImageUrl(item);
-  const showImage = coverUrl && !imageError;
+  const showImage = (coverUrl && !imageError) as boolean;
 
   return (
     <TouchableOpacity
@@ -30,23 +31,13 @@ export function ContentInfoCard({
       activeOpacity={0.7}
       disabled={disabled}
     >
-      {/* Cover Image */}
-      <View style={recordDetailStyles.imageContainerSmall}>
-        {showImage ? (
-          <Image
-            source={{ uri: coverUrl }}
-            style={recordDetailStyles.imageSizePct}
-            resizeMode="cover"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <View style={recordDetailStyles.imagePlaceholder}>
-            <Text style={recordDetailStyles.imagePlaceholderText}>
-              {item.category.charAt(0)}
-            </Text>
-          </View>
-        )}
-      </View>
+      <CoverImage
+        coverUrl={coverUrl}
+        category={item.category}
+        showImage={showImage}
+        setImageError={setImageError}
+        containerStyle={imageStyles.imageContainerSmall}
+      />
 
       {/* Content Info */}
       <View style={recordDetailStyles.contentInfo}>

@@ -1,9 +1,12 @@
 import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
+import CoverImage from "@/components/shared/CoverImage";
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
+import { imageStyles } from "@/styles/common";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { ContentCategory, ContentItem } from "@/types/content";
+import { formatDateToString } from "@/utils/dateFormat";
 import { getImageUrl } from "@/utils/images";
 import { Feather } from "@expo/vector-icons";
 import {
@@ -16,7 +19,6 @@ import { useCallback, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Image,
   Linking,
   ScrollView,
   Text,
@@ -148,17 +150,8 @@ export default function ContentDetail() {
     );
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   const coverUrl = getImageUrl(item);
-  const showImage = coverUrl && !imageError;
+  const showImage = (coverUrl && !imageError) as boolean;
 
   return (
     <View style={contentDetailStyles.container}>
@@ -166,23 +159,13 @@ export default function ContentDetail() {
         style={contentDetailStyles.content}
         contentContainerStyle={contentDetailStyles.scrollContent}
       >
-        {/* Cover Image or Placeholder */}
-        <View style={contentDetailStyles.imageContainer}>
-          {showImage ? (
-            <Image
-              source={{ uri: coverUrl }}
-              style={contentDetailStyles.imageSizePct}
-              resizeMode="cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <View style={contentDetailStyles.imagePlaceholder}>
-              <Text style={contentDetailStyles.imagePlaceholderText}>
-                {item.category.charAt(0)}
-              </Text>
-            </View>
-          )}
-        </View>
+        <CoverImage
+          coverUrl={coverUrl}
+          category={item.category}
+          showImage={showImage}
+          setImageError={setImageError}
+          containerStyle={imageStyles.imageContainerContentDetail}
+        />
 
         {/* Content Information */}
         <View style={contentDetailStyles.infoContainer}>
@@ -479,7 +462,7 @@ export default function ContentDetail() {
           <View style={contentDetailStyles.row}>
             <Text style={contentDetailStyles.label}>Added:</Text>
             <Text style={contentDetailStyles.value}>
-              {formatDate(item.dateAdded)}
+              {formatDateToString(item.dateAdded)}
             </Text>
           </View>
 
@@ -521,7 +504,7 @@ export default function ContentDetail() {
                 <View key={record.id} style={contentDetailStyles.recordCard}>
                   <View style={contentDetailStyles.recordHeader}>
                     <Text style={contentDetailStyles.recordDate}>
-                      {formatDate(record.dateConsumed)}
+                      {formatDateToString(record.dateConsumed)}
                     </Text>
                     {record.rating !== undefined && record.rating !== null && (
                       <View style={contentDetailStyles.ratingContainer}>

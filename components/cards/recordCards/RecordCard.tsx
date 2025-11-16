@@ -1,17 +1,13 @@
 import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
+import CoverImage from "@/components/shared/CoverImage";
 import { getContentItemById } from "@/db/contentOperations";
+import { imageStyles } from "@/styles/common";
 import { recordCardStyles } from "@/styles/components/cards/recordCard";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { ContentItem } from "@/types/content";
 import { getImageUrl } from "@/utils/images";
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 interface RecordCardProps {
   record: ConsumptionRecord;
@@ -69,7 +65,7 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
   }
 
   const coverUrl = getImageUrl(item);
-  const showImage = coverUrl && !imageError;
+  const showImage = (coverUrl && !imageError) as boolean;
 
   return (
     <TouchableOpacity
@@ -79,23 +75,13 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
     >
       {/* Top Row: Image and Content Info */}
       <View style={recordCardStyles.topRow}>
-        {/* Cover Image or Placeholder */}
-        <View style={recordCardStyles.imageContainerSmall}>
-          {showImage ? (
-            <Image
-              source={{ uri: coverUrl }}
-              style={recordCardStyles.imageSizePct}
-              resizeMode="cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <View style={recordCardStyles.imagePlaceholder}>
-              <Text style={recordCardStyles.imagePlaceholderText}>
-                {item.category.charAt(0)}
-              </Text>
-            </View>
-          )}
-        </View>
+        <CoverImage
+          coverUrl={coverUrl}
+          category={item.category}
+          showImage={showImage}
+          setImageError={setImageError}
+          containerStyle={imageStyles.imageContainerSmall}
+        />
 
         {/* Content Info */}
         <View style={recordCardStyles.content}>

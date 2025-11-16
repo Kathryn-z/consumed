@@ -1,8 +1,11 @@
+import CoverImage from "@/components/shared/CoverImage";
+import { imageStyles } from "@/styles/common";
 import { contentCardStyles } from "@/styles/components/cards/contentCard";
 import { ContentItem } from "@/types/content";
+import { formatDateToString } from "@/utils/dateFormat";
 import { getImageUrl } from "@/utils/images";
 import { useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface ContentCardProps {
   item: ContentItem;
@@ -11,15 +14,6 @@ interface ContentCardProps {
 
 export function ContentCard({ item, onPress }: ContentCardProps) {
   const [imageError, setImageError] = useState(false);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   // Get creator/author label based on category
   const getCreatorInfo = () => {
@@ -70,7 +64,7 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
 
   const coverUrl = getImageUrl(item);
   const creatorInfo = getCreatorInfo();
-  const showImage = coverUrl && !imageError;
+  const showImage = (coverUrl && !imageError) as boolean;
 
   return (
     <TouchableOpacity
@@ -78,23 +72,13 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
       onPress={() => onPress?.(item)}
       activeOpacity={0.7}
     >
-      {/* Cover Image or Placeholder */}
-      <View style={contentCardStyles.imageContainerLarge}>
-        {showImage ? (
-          <Image
-            source={{ uri: coverUrl }}
-            style={contentCardStyles.imageSizePct}
-            resizeMode="cover"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <View style={contentCardStyles.imagePlaceholder}>
-            <Text style={contentCardStyles.imagePlaceholderText}>
-              {item.category.charAt(0)}
-            </Text>
-          </View>
-        )}
-      </View>
+      <CoverImage
+        coverUrl={coverUrl}
+        category={item.category}
+        showImage={showImage}
+        setImageError={setImageError}
+        containerStyle={imageStyles.imageContainerLarge}
+      />
 
       {/* Content Info */}
       <View style={contentCardStyles.info}>
@@ -108,7 +92,9 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
             {creatorInfo}
           </Text>
         )}
-        <Text style={contentCardStyles.date}>{formatDate(item.dateAdded)}</Text>
+        <Text style={contentCardStyles.date}>
+          {formatDateToString(item.dateAdded)}
+        </Text>
       </View>
     </TouchableOpacity>
   );

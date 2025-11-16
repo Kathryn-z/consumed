@@ -3,7 +3,6 @@ import {
   cardStyles,
   chipStyles,
   colors,
-  imageStyles,
   pageStyles,
   spacing,
   textStyles,
@@ -11,7 +10,6 @@ import {
 
 export const recordDetailStyles = StyleSheet.create({
   ...pageStyles,
-  ...imageStyles,
   loadingContainer: {
     ...pageStyles.loadingContainer,
     backgroundColor: colors.background.page,

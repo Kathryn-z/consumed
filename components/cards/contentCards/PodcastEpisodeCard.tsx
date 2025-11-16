@@ -1,25 +1,14 @@
 import { ItunesPodcastEpisode } from "@/services/api/itunes";
 import { podcastEpisodeCardStyles } from "@/styles/components/cards/podcastEpisodeCard";
 import { formatEpisodeDuration } from "@/types/content";
+import { formatDateToString } from "@/utils/dateFormat";
 import { Text, View } from "react-native";
 
 interface PodcastEpisodeCardProps {
   episode: ItunesPodcastEpisode;
 }
 
-export function PodcastEpisodeCard({
-  episode,
-}: PodcastEpisodeCardProps) {
-  // Format release date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
+export function PodcastEpisodeCard({ episode }: PodcastEpisodeCardProps) {
   return (
     <View style={podcastEpisodeCardStyles.container}>
       <View style={podcastEpisodeCardStyles.header}>
@@ -29,7 +18,7 @@ export function PodcastEpisodeCard({
           </Text>
         )}
         <Text style={podcastEpisodeCardStyles.date}>
-          {formatDate(episode.releaseDate)}
+          {formatDateToString(episode.releaseDate)}
         </Text>
       </View>
 
