@@ -1,4 +1,5 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
+import SearchBar from "@/components/shared/SearchBar";
 import { useContent } from "@/hooks/useContent";
 import { searchRecordsStyles } from "@/styles/screens/searchRecords";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -8,7 +9,6 @@ import {
   FlatList,
   ScrollView,
   Text,
-  TextInput,
   View,
 } from "react-native";
 
@@ -51,17 +51,12 @@ export default function SearchRecords() {
   return (
     <View style={searchRecordsStyles.container}>
       <ScrollView style={searchRecordsStyles.content}>
-        {/* Search Bar */}
-        <View style={searchRecordsStyles.searchBarContainer}>
-          <TextInput
-            style={searchRecordsStyles.searchBar}
-            placeholder="Search by title, creator, or category..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            returnKeyType="search"
-            autoFocus
-          />
-        </View>
+        <SearchBar
+          placeholderText="Search by title, creator, or category..."
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          handleSearch={() => {}}
+        />
 
         {/* Search Results */}
         {loading ? (

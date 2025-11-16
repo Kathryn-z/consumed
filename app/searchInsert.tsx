@@ -1,5 +1,6 @@
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import { SearchedContentCard } from "@/components/cards/contentCards/SearchedContentCard";
+import SearchBar from "@/components/shared/SearchBar";
 import {
   ItunesPodcastResult,
   searchItunesPodcast,
@@ -8,13 +9,7 @@ import { searchInsertStyles } from "@/styles/screens/searchInsert";
 import { ContentCategory } from "@/types/content";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 
 export default function SearchInsert() {
   const router = useRouter();
@@ -87,17 +82,12 @@ export default function SearchInsert() {
   return (
     <View style={searchInsertStyles.container}>
       <ScrollView style={searchInsertStyles.content}>
-        {/* Search Bar*/}
-        <View style={searchInsertStyles.searchBarContainer}>
-          <TextInput
-            style={searchInsertStyles.searchBar}
-            placeholder={`Search for ${category || "content"}...`}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            returnKeyType="search"
-            onSubmitEditing={handleSearch}
-          />
-        </View>
+        <SearchBar
+          placeholderText={`Search for ${category || "content"}...`}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          handleSearch={handleSearch}
+        />
 
         {/* Search Results Area */}
         <View style={searchInsertStyles.resultsContainer}>
