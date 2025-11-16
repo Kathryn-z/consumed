@@ -1,6 +1,6 @@
 import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import { getContentItemById } from "@/db/contentOperations";
-import { recordCardStyles } from "@/styles/components/recordCard";
+import { recordCardStyles } from "@/styles/components/cards/recordCard";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { ContentItem } from "@/types/content";
 import { getImageUrl } from "@/utils/images";

@@ -1,5 +1,5 @@
-import { RecordCard } from "@/components/RecordCard";
-import { timelineRecordCardStyles } from "@/styles/components/timelineRecordCard";
+import { RecordCard } from "@/components/cards/recordCards/RecordCard";
+import { timelineRecordCardStyles } from "@/styles/components/cards/timelineRecordCard";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import { Text, View } from "react-native";
 

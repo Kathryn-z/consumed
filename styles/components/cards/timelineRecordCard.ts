@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, spacing } from "../common";
+import { colors, spacing } from "../../common";
 
 export const timelineRecordCardStyles = StyleSheet.create({
   container: {

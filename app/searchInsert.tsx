@@ -1,4 +1,5 @@
 import PrimaryButton from "@/components/buttons/PrimaryButton";
+import { SearchedContentCard } from "@/components/cards/contentCards/SearchedContentCard";
 import {
   ItunesPodcastResult,
   searchItunesPodcast,
@@ -9,11 +10,9 @@ import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   ScrollView,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -129,47 +128,11 @@ export default function SearchInsert() {
           ) : searchResults.length > 0 ? (
             <ScrollView>
               {searchResults.map((result) => (
-                <TouchableOpacity
+                <SearchedContentCard
                   key={result.trackId}
-                  style={searchInsertStyles.resultItem}
-                  onPress={() => handleResultPress(result)}
-                  activeOpacity={0.7}
-                >
-                  <Image
-                    source={{
-                      uri: result.artworkUrl100 || result.artworkUrl60,
-                    }}
-                    style={searchInsertStyles.resultImage}
-                    resizeMode="cover"
-                  />
-                  <View style={searchInsertStyles.resultInfo}>
-                    <Text
-                      style={searchInsertStyles.resultTitle}
-                      numberOfLines={2}
-                    >
-                      {result.collectionName}
-                    </Text>
-                    <Text
-                      style={searchInsertStyles.resultArtist}
-                      numberOfLines={1}
-                    >
-                      by {result.artistName}
-                    </Text>
-                    {result.genres && result.genres.length > 0 && (
-                      <Text
-                        style={searchInsertStyles.resultGenre}
-                        numberOfLines={1}
-                      >
-                        {result.genres.join(", ")}
-                      </Text>
-                    )}
-                    {result.trackCount && (
-                      <Text style={searchInsertStyles.resultMeta}>
-                        {result.trackCount} episodes
-                      </Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
+                  result={result}
+                  onPress={handleResultPress}
+                />
               ))}
             </ScrollView>
           ) : (

@@ -1,10 +1,16 @@
-import { TimelineRecordCard } from "@/components/TimelineRecordCard";
+import { TimelineRecordCard } from "@/components/cards/recordCards/TimelineRecordCard";
 import { useRecords } from "@/hooks/useRecords";
 import { indexStyles } from "@/styles/screens/index";
 import { recordsStyles } from "@/styles/screens/records";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback } from "react";
-import { ActivityIndicator, FlatList, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Records() {

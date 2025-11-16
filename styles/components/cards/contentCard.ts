@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../common";
+import { colors, spacing } from "../../common";
 
 export const contentCardStyles = StyleSheet.create({
   container: {

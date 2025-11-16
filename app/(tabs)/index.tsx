@@ -1,4 +1,4 @@
-import { ContentCard } from "@/components/ContentCard";
+import { ContentCard } from "@/components/cards/contentCards/ContentCard";
 import { CategorySelectionModal } from "@/components/modals/CategorySelectionModal";
 import { useContent } from "@/hooks/useContent";
 import { indexStyles } from "@/styles/screens/index";

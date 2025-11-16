@@ -1,5 +1,5 @@
-import { podcastEpisodeCardStyles } from "@/styles/components/podcastEpisodeCard";
 import { ItunesPodcastEpisode } from "@/services/api/itunes";
+import { podcastEpisodeCardStyles } from "@/styles/components/cards/podcastEpisodeCard";
 import { formatEpisodeDuration } from "@/types/podcastEpisode";
 import { Text, TouchableOpacity, View } from "react-native";
 

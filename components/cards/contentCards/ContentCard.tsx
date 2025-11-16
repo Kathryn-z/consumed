@@ -1,8 +1,8 @@
+import { contentCardStyles } from "@/styles/components/cards/contentCard";
 import { ContentItem } from "@/types/content";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import { contentCardStyles } from "@/styles/components/contentCard";
 import { getImageUrl } from "@/utils/images";
 import { useState } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 interface ContentCardProps {
   item: ContentItem;
@@ -41,7 +41,9 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
     if (item.category === "Drama" && itemAny.directors) {
       try {
         const directorsArray = JSON.parse(itemAny.directors);
-        return Array.isArray(directorsArray) ? directorsArray.map((d: any) => d.name || d).join(", ") : itemAny.directors;
+        return Array.isArray(directorsArray)
+          ? directorsArray.map((d: any) => d.name || d).join(", ")
+          : itemAny.directors;
       } catch {
         return itemAny.directors;
       }
@@ -50,7 +52,9 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
     if (item.category === "Podcast" && itemAny.hosts) {
       try {
         const hostsArray = JSON.parse(itemAny.hosts);
-        return Array.isArray(hostsArray) ? hostsArray.join(", ") : itemAny.hosts;
+        return Array.isArray(hostsArray)
+          ? hostsArray.join(", ")
+          : itemAny.hosts;
       } catch {
         return itemAny.hosts;
       }
@@ -98,9 +102,7 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
           {item.title}
         </Text>
         <Text style={contentCardStyles.category}>{item.category}</Text>
-        {item.year && (
-          <Text style={contentCardStyles.year}>{item.year}</Text>
-        )}
+        {item.year && <Text style={contentCardStyles.year}>{item.year}</Text>}
         {creatorInfo && (
           <Text style={contentCardStyles.creator} numberOfLines={1}>
             {creatorInfo}

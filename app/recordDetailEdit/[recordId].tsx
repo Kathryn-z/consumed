@@ -1,4 +1,4 @@
-import { ContentInfoCard } from "@/components/ContentInfoCard";
+import { ContentInfoCard } from "@/components/cards/contentCards/ContentInfoCard";
 import { DateConsumedChip } from "@/components/chips/DateConsumedChip";
 import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import {

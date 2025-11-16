@@ -1,4 +1,4 @@
-import { ContentCard } from "@/components/ContentCard";
+import { ContentCard } from "@/components/cards/contentCards/ContentCard";
 import { useContent } from "@/hooks/useContent";
 import { searchRecordsStyles } from "@/styles/screens/searchRecords";
 import { useFocusEffect, useRouter } from "expo-router";

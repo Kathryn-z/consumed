@@ -1,4 +1,4 @@
-import { PodcastEpisodeCard } from "@/components/PodcastEpisodeCard";
+import { PodcastEpisodeCard } from "@/components/cards/contentCards/PodcastEpisodeCard";
 import { usePodcastEpisodes } from "@/hooks/usePodcastEpisodes";
 import { ItunesPodcastEpisode } from "@/services/api/itunes";
 import { podcastEpisodeListStyles } from "@/styles/components/podcastEpisodeList";
@@ -7,8 +7,8 @@ import {
   ActivityIndicator,
   FlatList,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 interface PodcastEpisodeListProps {
