@@ -2,15 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors, pageStyles, spacing } from "../common";
 
 export const contentInfoStyles = StyleSheet.create({
-  container: {
-    ...pageStyles.container,
-  },
-  content: {
-    ...pageStyles.content,
-  },
-  scrollContent: {
-    ...pageStyles.scrollContent,
-  },
+  ...pageStyles,
   formContainer: {
     gap: spacing.md,
   },

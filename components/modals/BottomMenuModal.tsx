@@ -1,11 +1,6 @@
-import { useEffect, useRef } from "react";
-import {
-  Animated,
-  Modal,
-  Text,
-  TouchableOpacity,
-} from "react-native";
 import { bottomMenuModalStyles } from "@/styles/components/modals/bottomMenuModal";
+import { useEffect, useRef } from "react";
+import { Animated, Modal, Text, TouchableOpacity } from "react-native";
 
 export interface MenuOption {
   icon: string;
@@ -67,7 +62,7 @@ export function BottomMenuModal({
       >
         <Animated.View
           style={[
-            bottomMenuModalStyles.menuContainer,
+            bottomMenuModalStyles.modalContent,
             { transform: [{ translateY: slideAnim }] },
           ]}
         >

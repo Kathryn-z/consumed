@@ -79,17 +79,17 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
       activeOpacity={0.7}
     >
       {/* Cover Image or Placeholder */}
-      <View style={contentCardStyles.imageContainer}>
+      <View style={contentCardStyles.imageContainerLarge}>
         {showImage ? (
           <Image
             source={{ uri: coverUrl }}
-            style={contentCardStyles.image}
+            style={contentCardStyles.imageSizePct}
             resizeMode="cover"
             onError={() => setImageError(true)}
           />
         ) : (
-          <View style={contentCardStyles.placeholder}>
-            <Text style={contentCardStyles.placeholderText}>
+          <View style={contentCardStyles.imagePlaceholder}>
+            <Text style={contentCardStyles.imagePlaceholderText}>
               {item.category.charAt(0)}
             </Text>
           </View>

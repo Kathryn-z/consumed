@@ -1,4 +1,7 @@
-import { statusRatingChipStyles } from "@/styles/components/chips/statusRatingChip";
+import {
+  STATUS_COLORS,
+  statusRatingChipStyles,
+} from "@/styles/components/chips/statusRatingChip";
 import { ContentStatus } from "@/types/content";
 import { Text, TouchableOpacity, View } from "react-native";
 
@@ -8,44 +11,40 @@ interface StatusRatingChipProps {
   onPress?: () => void;
 }
 
+export enum RatingStatus {
+  TODO = "todo",
+  DONE = "done",
+  RATED = "rated",
+}
+
 export function StatusRatingChip({
   status,
   rating,
   onPress,
 }: StatusRatingChipProps) {
   // Show rating chip if status is "done" and rating exists
-  if (status === "done" && rating) {
+  if (status == "done" && rating) {
+    const styles = statusRatingChipStyles(
+      STATUS_COLORS.rated.bg,
+      STATUS_COLORS.rated.text
+    );
     return (
-      <View style={statusRatingChipStyles.ratingChip}>
-        <Text style={statusRatingChipStyles.ratingText}>
-          {rating.toFixed(1)}
-        </Text>
-        <Text style={statusRatingChipStyles.ratingText}>★</Text>
+      <View style={styles.ratingChip}>
+        <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
+        <Text style={styles.ratingText}>★</Text>
       </View>
     );
   }
 
-  // Show todo button for todo status
-  if (status === "todo") {
-    return (
-      <TouchableOpacity
-        style={statusRatingChipStyles.todoButton}
-        onPress={onPress}
-        disabled={!onPress}
-      >
-        <Text style={statusRatingChipStyles.todoButtonText}>{status}</Text>
-      </TouchableOpacity>
-    );
-  }
-
-  // Show status button for done without rating or other statuses
+  const colorSet = STATUS_COLORS[status as ContentStatus] || STATUS_COLORS.done;
+  const styles = statusRatingChipStyles(colorSet.bg, colorSet.text);
   return (
     <TouchableOpacity
-      style={statusRatingChipStyles.statusButton}
+      style={styles.button}
       onPress={onPress}
       disabled={!onPress}
     >
-      <Text style={statusRatingChipStyles.statusButtonText}>{status}</Text>
+      <Text style={styles.text}>{status}</Text>
     </TouchableOpacity>
   );
 }

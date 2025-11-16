@@ -2,15 +2,7 @@ import { StyleSheet } from "react-native";
 import { buttonStyles, modalStyles } from "../../common";
 
 export const categorySelectionModalStyles = StyleSheet.create({
-  modalOverlay: {
-    ...modalStyles.modalOverlay,
-  },
-  modalContent: {
-    ...modalStyles.modalContent,
-  },
-  modalTitle: {
-    ...modalStyles.modalTitle,
-  },
+  ...modalStyles,
   categoryButtons: {
     ...buttonStyles.categoryButtonContainer,
   },

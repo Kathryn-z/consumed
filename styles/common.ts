@@ -37,29 +37,6 @@ export const spacing = {
   xl: 40,
 };
 
-// Common reusable styles
-export const commonStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.cardContainerWhite,
-  },
-  content: {
-    flex: 1,
-    padding: spacing.md,
-  },
-  // Page Level
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: "bold" as const,
-    marginBottom: spacing.sm,
-  },
-  description: {
-    fontSize: 16,
-    color: colors.text.secondary,
-    marginBottom: spacing.md,
-  },
-});
-
 export const textStyles = StyleSheet.create({
   longTextPrimary: {
     fontSize: 15,
@@ -146,6 +123,16 @@ export const pageStyles = StyleSheet.create({
     fontSize: 16,
     color: colors.text.secondary,
     textAlign: "center",
+  },
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: "bold" as const,
+    marginBottom: spacing.sm,
+  },
+  description: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    marginBottom: spacing.md,
   },
 });
 

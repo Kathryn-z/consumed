@@ -1,8 +1,14 @@
 import { StyleSheet } from "react-native";
-import { colors, commonStyles, pageStyles, spacing } from "../common";
+import { colors, pageStyles, spacing } from "../common";
 
 export const indexStyles = StyleSheet.create({
-  ...commonStyles,
+  container: {
+    ...pageStyles.container,
+  },
+  content: {
+    ...pageStyles.content,
+    padding: spacing.md,
+  },
   header: {
     flexDirection: "row",
     alignItems: "center",

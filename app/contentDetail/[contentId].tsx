@@ -1,12 +1,10 @@
+import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
 import { contentDetailStyles } from "@/styles/screens/contentDetail";
-import { getImageUrl } from "@/utils/images";
-import {
-  ContentItem,
-  ContentCategory,
-} from "@/types/content";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
+import { ContentCategory, ContentItem } from "@/types/content";
+import { getImageUrl } from "@/utils/images";
 import { Feather } from "@expo/vector-icons";
 import {
   useFocusEffect,
@@ -14,11 +12,7 @@ import {
   useNavigation,
   useRouter,
 } from "expo-router";
-import {
-  useCallback,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -30,7 +24,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
 
 export default function ContentDetail() {
   const { contentId } = useLocalSearchParams<{ contentId: string }>();
@@ -178,13 +171,13 @@ export default function ContentDetail() {
           {showImage ? (
             <Image
               source={{ uri: coverUrl }}
-              style={contentDetailStyles.image}
+              style={contentDetailStyles.imageSizePct}
               resizeMode="cover"
               onError={() => setImageError(true)}
             />
           ) : (
-            <View style={contentDetailStyles.placeholder}>
-              <Text style={contentDetailStyles.placeholderText}>
+            <View style={contentDetailStyles.imagePlaceholder}>
+              <Text style={contentDetailStyles.imagePlaceholderText}>
                 {item.category.charAt(0)}
               </Text>
             </View>
@@ -240,7 +233,9 @@ export default function ContentDetail() {
                     {(() => {
                       try {
                         const tagsArray = JSON.parse((item as any).tags);
-                        return Array.isArray(tagsArray) ? tagsArray.join(", ") : (item as any).tags;
+                        return Array.isArray(tagsArray)
+                          ? tagsArray.join(", ")
+                          : (item as any).tags;
                       } catch {
                         return (item as any).tags;
                       }
@@ -269,8 +264,12 @@ export default function ContentDetail() {
                   <Text style={contentDetailStyles.value}>
                     {(() => {
                       try {
-                        const directorsArray = JSON.parse((item as any).directors);
-                        return directorsArray.map((d: any) => d.name || d).join(", ");
+                        const directorsArray = JSON.parse(
+                          (item as any).directors
+                        );
+                        return directorsArray
+                          .map((d: any) => d.name || d)
+                          .join(", ");
                       } catch {
                         return (item as any).directors;
                       }
@@ -286,7 +285,9 @@ export default function ContentDetail() {
                     {(() => {
                       try {
                         const castsArray = JSON.parse((item as any).casts);
-                        return castsArray.map((c: any) => c.name || c).join(", ");
+                        return castsArray
+                          .map((c: any) => c.name || c)
+                          .join(", ");
                       } catch {
                         return (item as any).casts;
                       }
@@ -302,7 +303,9 @@ export default function ContentDetail() {
                     {(() => {
                       try {
                         const genresArray = JSON.parse((item as any).genres);
-                        return Array.isArray(genresArray) ? genresArray.join(", ") : (item as any).genres;
+                        return Array.isArray(genresArray)
+                          ? genresArray.join(", ")
+                          : (item as any).genres;
                       } catch {
                         return (item as any).genres;
                       }
@@ -326,8 +329,12 @@ export default function ContentDetail() {
                   <Text style={contentDetailStyles.value}>
                     {(() => {
                       try {
-                        const countriesArray = JSON.parse((item as any).countries);
-                        return Array.isArray(countriesArray) ? countriesArray.join(", ") : (item as any).countries;
+                        const countriesArray = JSON.parse(
+                          (item as any).countries
+                        );
+                        return Array.isArray(countriesArray)
+                          ? countriesArray.join(", ")
+                          : (item as any).countries;
                       } catch {
                         return (item as any).countries;
                       }
@@ -348,7 +355,9 @@ export default function ContentDetail() {
                     {(() => {
                       try {
                         const hostsArray = JSON.parse((item as any).hosts);
-                        return Array.isArray(hostsArray) ? hostsArray.join(", ") : (item as any).hosts;
+                        return Array.isArray(hostsArray)
+                          ? hostsArray.join(", ")
+                          : (item as any).hosts;
                       } catch {
                         return (item as any).hosts;
                       }
@@ -386,8 +395,14 @@ export default function ContentDetail() {
                   <Text style={contentDetailStyles.value}>
                     {(() => {
                       try {
-                        const directorsArray = JSON.parse((item as any).directors);
-                        return Array.isArray(directorsArray) ? directorsArray.map((d: any) => d.name || d).join(", ") : (item as any).directors;
+                        const directorsArray = JSON.parse(
+                          (item as any).directors
+                        );
+                        return Array.isArray(directorsArray)
+                          ? directorsArray
+                              .map((d: any) => d.name || d)
+                              .join(", ")
+                          : (item as any).directors;
                       } catch {
                         return (item as any).directors;
                       }
@@ -403,7 +418,9 @@ export default function ContentDetail() {
                     {(() => {
                       try {
                         const castsArray = JSON.parse((item as any).casts);
-                        return Array.isArray(castsArray) ? castsArray.map((c: any) => c.name || c).join(", ") : (item as any).casts;
+                        return Array.isArray(castsArray)
+                          ? castsArray.map((c: any) => c.name || c).join(", ")
+                          : (item as any).casts;
                       } catch {
                         return (item as any).casts;
                       }

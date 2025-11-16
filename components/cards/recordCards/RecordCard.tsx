@@ -80,17 +80,17 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
       {/* Top Row: Image and Content Info */}
       <View style={recordCardStyles.topRow}>
         {/* Cover Image or Placeholder */}
-        <View style={recordCardStyles.imageContainer}>
+        <View style={recordCardStyles.imageContainerSmall}>
           {showImage ? (
             <Image
               source={{ uri: coverUrl }}
-              style={recordCardStyles.image}
+              style={recordCardStyles.imageSizePct}
               resizeMode="cover"
               onError={() => setImageError(true)}
             />
           ) : (
-            <View style={recordCardStyles.placeholder}>
-              <Text style={recordCardStyles.placeholderText}>
+            <View style={recordCardStyles.imagePlaceholder}>
+              <Text style={recordCardStyles.imagePlaceholderText}>
                 {item.category.charAt(0)}
               </Text>
             </View>

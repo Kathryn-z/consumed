@@ -5,18 +5,7 @@ export const contentCardStyles = StyleSheet.create({
   container: {
     ...cardStyles.cardContainerWithShadow,
   },
-  imageContainer: {
-    ...imageStyles.imageContainerLarge,
-  },
-  image: {
-    ...imageStyles.imageSizePct,
-  },
-  placeholder: {
-    ...imageStyles.imagePlaceholder,
-  },
-  placeholderText: {
-    ...imageStyles.imagePlaceholderText,
-  },
+  ...imageStyles,
   info: {
     flex: 1,
     marginLeft: spacing.md,

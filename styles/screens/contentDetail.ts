@@ -2,24 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors, imageStyles, pageStyles, spacing } from "../common";
 
 export const contentDetailStyles = StyleSheet.create({
-  container: {
-    ...pageStyles.container,
-  },
-  content: {
-    ...pageStyles.content,
-  },
-  scrollContent: {
-    ...pageStyles.scrollContent,
-  },
-  loadingContainer: {
-    ...pageStyles.loadingContainer,
-  },
-  errorContainer: {
-    ...pageStyles.errorContainer,
-  },
-  errorText: {
-    ...pageStyles.errorText,
-  },
+  ...pageStyles,
   imageContainer: {
     width: "100%",
     height: 300,
@@ -28,15 +11,7 @@ export const contentDetailStyles = StyleSheet.create({
     backgroundColor: "#f0f0f0",
     marginBottom: spacing.md,
   },
-  image: {
-    ...imageStyles.imageSizePct,
-  },
-  placeholder: {
-    ...imageStyles.imagePlaceholder,
-  },
-  placeholderText: {
-    ...imageStyles.imagePlaceholderText,
-  },
+  ...imageStyles,
   infoContainer: {
     gap: spacing.md,
   },

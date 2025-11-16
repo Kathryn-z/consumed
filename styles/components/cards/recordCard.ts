@@ -9,18 +9,7 @@ export const recordCardStyles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: spacing.sm,
   },
-  imageContainer: {
-    ...imageStyles.imageContainerSmall,
-  },
-  image: {
-    ...imageStyles.imageSizePct,
-  },
-  placeholder: {
-    ...imageStyles.imagePlaceholder,
-  },
-  placeholderText: {
-    ...imageStyles.imagePlaceholderText,
-  },
+  ...imageStyles,
   content: {
     flex: 1,
     marginLeft: spacing.md,

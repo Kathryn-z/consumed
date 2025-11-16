@@ -1,7 +1,10 @@
 import { StyleSheet } from "react-native";
-import { commonStyles } from "../common";
+import { pageStyles, spacing } from "../common";
 
 export const profileStyles = StyleSheet.create({
-  ...commonStyles,
-  // Add screen-specific styles here as needed
+  ...pageStyles,
+  content: {
+    ...pageStyles.content,
+    padding: spacing.md,
+  },
 });

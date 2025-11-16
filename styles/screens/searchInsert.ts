@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
-import { colors, commonStyles, pageStyles, spacing } from "../common";
+import { colors, pageStyles, spacing } from "../common";
 
 export const searchInsertStyles = StyleSheet.create({
-  ...commonStyles,
   searchBarContainer: {
     flexDirection: "row",
     alignItems: "center",

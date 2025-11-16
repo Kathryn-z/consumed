@@ -1,32 +1,34 @@
+import { RatingStatus } from "@/components/chips/StatusRatingChip";
 import { StyleSheet } from "react-native";
 import { chipStyles, colors } from "../../common";
 
-export const statusRatingChipStyles = StyleSheet.create({
-  statusButton: {
-    ...chipStyles.chip,
-    backgroundColor: colors.background.chipDefault,
-  },
-  statusButtonText: {
-    ...chipStyles.chipText,
-    color: colors.text.chipStatus,
-  },
-  todoButton: {
-    ...chipStyles.chip,
-    backgroundColor: colors.background.chipTodo,
-  },
-  todoButtonText: {
-    ...chipStyles.chipText,
-    color: colors.text.chipTodo,
-  },
-  ratingChip: {
-    ...chipStyles.chip,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: colors.background.chipRating,
-    gap: 4,
-  },
-  ratingText: {
-    ...chipStyles.chipBoldText,
-    color: colors.text.chipRating,
-  },
-});
+type ColorSet = { bg: string; text: string };
+
+export const STATUS_COLORS: Record<RatingStatus, ColorSet> = {
+  todo: { bg: colors.background.chipTodo, text: colors.text.chipTodo },
+  done: { bg: colors.background.chipDefault, text: colors.text.chipStatus },
+  rated: { bg: colors.background.chipRating, text: colors.text.chipRating },
+};
+
+export const statusRatingChipStyles = (bgColor: string, textColor: string) =>
+  StyleSheet.create({
+    button: {
+      ...chipStyles.chip,
+      backgroundColor: bgColor,
+    },
+    text: {
+      ...chipStyles.chipText,
+      color: textColor,
+    },
+    ratingChip: {
+      ...chipStyles.chip,
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: bgColor,
+      gap: 4,
+    },
+    ratingText: {
+      ...chipStyles.chipBoldText,
+      color: textColor,
+    },
+  });
