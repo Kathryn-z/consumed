@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const DATABASE_NAME = "consumed.db";
-const SCHEMA_VERSION = 8; // Current schema version
+const SCHEMA_VERSION = 10; // Current schema version
 
 let db: SQLite.SQLiteDatabase | null = null;
 
@@ -68,96 +68,53 @@ async function addColumnIfNotExists(
 }
 
 /**
- * Migrate database from version 6 to version 7
- * Restructures content types: Book, TV/Movie, Podcast, Drama
- * Adds new fields for Douban API compatibility
+ * Migrate database from version 9 to version 10
+ * Creates podcast_episodes table and adds episodeId to consumption_records
  */
-async function migrateToV7(database: SQLite.SQLiteDatabase) {
-  console.log("Running migration to V7...");
+async function migrateToV10(database: SQLite.SQLiteDatabase) {
+  console.log("Running migration to V10...");
 
-  // Add new columns for restructured schema
-  const columnsToAdd = [
-    // ContentBase fields
-    { name: "images", type: "TEXT" },
-    { name: "pubdates", type: "TEXT" },
+  // Create podcast_episodes table
+  await database.execAsync(`
+    CREATE TABLE IF NOT EXISTS podcast_episodes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      podcastId INTEGER NOT NULL,
+      episodeNumber INTEGER,
+      title TEXT NOT NULL,
+      description TEXT,
+      releaseDate TEXT,
+      durationMillis INTEGER,
+      dateAdded TEXT NOT NULL,
+      CONSTRAINT fk_podcast
+        FOREIGN KEY (podcastId)
+        REFERENCES content_items(id)
+        ON DELETE CASCADE
+    );
+  `);
 
-    // Book fields
-    { name: "author", type: "TEXT" },
-    { name: "tags", type: "TEXT" },
+  // Create index for faster lookups
+  await database.execAsync(`
+    CREATE INDEX IF NOT EXISTS idx_podcast_episodes_podcast ON podcast_episodes(podcastId);
+  `);
 
-    // TVMovie fields
-    { name: "subtype", type: "TEXT" },
-    { name: "mobileUrl", type: "TEXT" },
-    { name: "directors", type: "TEXT" },
-    { name: "casts", type: "TEXT" },
-    { name: "genres", type: "TEXT" },
-    { name: "seasonsCount", type: "INTEGER" },
-    { name: "currentSeason", type: "INTEGER" },
-    { name: "episodesCount", type: "INTEGER" },
-    { name: "countries", type: "TEXT" },
+  // Add episodeId column to consumption_records
+  const columns = await database.getAllAsync<{ name: string }>(
+    "PRAGMA table_info(consumption_records)"
+  );
+  const existingColumns = new Set(columns.map((col) => col.name));
 
-    // Drama fields (shares directors and casts with TVMovie)
-    { name: "performers", type: "TEXT" },
-    { name: "venue", type: "TEXT" },
-    { name: "duration", type: "INTEGER" },
-  ];
-
-  for (const col of columnsToAdd) {
-    await addColumnIfNotExists(database, col.name, col.type);
+  if (!existingColumns.has("episodeId")) {
+    console.log("Adding episodeId column to consumption_records");
+    await database.execAsync(`
+      ALTER TABLE consumption_records ADD COLUMN episodeId INTEGER REFERENCES podcast_episodes(id) ON DELETE SET NULL
+    `);
+  } else {
+    console.log(
+      "Column episodeId already exists in consumption_records, skipping"
+    );
   }
 
-  // Migrate data from old columns to new ones
-  console.log("Migrating data from old columns to new columns...");
-
-  // Migrate cover/coverImage to images
-  await database.execAsync(`
-    UPDATE content_items
-    SET images = COALESCE(cover, coverImage)
-    WHERE images IS NULL AND (cover IS NOT NULL OR coverImage IS NOT NULL)
-  `);
-
-  // Migrate creator to author for Books
-  await database.execAsync(`
-    UPDATE content_items
-    SET author = creator
-    WHERE category = 'Book' AND author IS NULL AND creator IS NOT NULL
-  `);
-
-  // Migrate numberOfEpisodes to episodesCount
-  await database.execAsync(`
-    UPDATE content_items
-    SET episodesCount = numberOfEpisodes
-    WHERE episodesCount IS NULL AND numberOfEpisodes IS NOT NULL
-  `);
-
-  console.log("Migration to V7 complete!");
-}
-
-/**
- * Migrate database from version 7 to version 8
- * Renames creator field to hosts for Podcast and directors for Drama
- */
-async function migrateToV8(database: SQLite.SQLiteDatabase) {
-  console.log("Running migration to V8...");
-
-  // Add hosts column for Podcast
-  await addColumnIfNotExists(database, "hosts", "TEXT");
-
-  // Migrate creator to hosts for Podcasts
-  await database.execAsync(`
-    UPDATE content_items
-    SET hosts = creator
-    WHERE category = 'Podcast' AND hosts IS NULL AND creator IS NOT NULL
-  `);
-
-  // Migrate creator to directors for Drama
-  await database.execAsync(`
-    UPDATE content_items
-    SET directors = creator
-    WHERE category = 'Drama' AND directors IS NULL AND creator IS NOT NULL
-  `);
-
-  console.log("Migration to V8 complete!");
+  console.log("Migration to V10 complete!");
 }
 
 /**
@@ -210,6 +167,7 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
 
         -- Podcast fields
         hosts TEXT,
+        feedUrl TEXT,
 
         -- Legacy fields (for backward compatibility)
         creator TEXT,
@@ -230,6 +188,7 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
       CREATE TABLE IF NOT EXISTS consumption_records (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         contentItemId INTEGER NOT NULL,
+        episodeId INTEGER,
         rating REAL,
         notes TEXT,
         dateConsumed TEXT NOT NULL,
@@ -237,20 +196,38 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase) {
           FOREIGN KEY (contentItemId)
           REFERENCES content_items(id)
           ON DELETE CASCADE,
+        CONSTRAINT fk_episode
+          FOREIGN KEY (episodeId)
+          REFERENCES podcast_episodes(id)
+          ON DELETE SET NULL,
         CONSTRAINT valid_rating CHECK (rating IS NULL OR (rating >= 0 AND rating <= 5))
       );
 
       CREATE INDEX IF NOT EXISTS idx_consumption_content_item ON consumption_records(contentItemId);
       CREATE INDEX IF NOT EXISTS idx_consumption_date ON consumption_records(dateConsumed DESC);
+
+      CREATE TABLE IF NOT EXISTS podcast_episodes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        podcastId INTEGER NOT NULL,
+        episodeNumber INTEGER,
+        title TEXT NOT NULL,
+        description TEXT,
+        releaseDate TEXT,
+        durationMillis INTEGER,
+        dateAdded TEXT NOT NULL,
+        CONSTRAINT fk_podcast
+          FOREIGN KEY (podcastId)
+          REFERENCES content_items(id)
+          ON DELETE CASCADE
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_podcast_episodes_podcast ON podcast_episodes(podcastId);
     `);
 
     await setSchemaVersion(database, SCHEMA_VERSION);
   } else if (currentVersion < SCHEMA_VERSION) {
-    if (currentVersion < 7) {
-      await migrateToV7(database);
-    }
-    if (currentVersion < 8) {
-      await migrateToV8(database);
+    if (currentVersion < 10) {
+      await migrateToV10(database);
     }
     await setSchemaVersion(database, SCHEMA_VERSION);
   }

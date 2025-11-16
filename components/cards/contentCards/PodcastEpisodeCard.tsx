@@ -1,16 +1,14 @@
 import { ItunesPodcastEpisode } from "@/services/api/itunes";
 import { podcastEpisodeCardStyles } from "@/styles/components/cards/podcastEpisodeCard";
-import { formatEpisodeDuration } from "@/types/podcastEpisode";
-import { Text, TouchableOpacity, View } from "react-native";
+import { formatEpisodeDuration } from "@/types/content";
+import { Text, View } from "react-native";
 
 interface PodcastEpisodeCardProps {
   episode: ItunesPodcastEpisode;
-  onPress?: (episode: ItunesPodcastEpisode) => void;
 }
 
 export function PodcastEpisodeCard({
   episode,
-  onPress,
 }: PodcastEpisodeCardProps) {
   // Format release date
   const formatDate = (dateString: string) => {
@@ -23,11 +21,7 @@ export function PodcastEpisodeCard({
   };
 
   return (
-    <TouchableOpacity
-      style={podcastEpisodeCardStyles.container}
-      onPress={() => onPress?.(episode)}
-      activeOpacity={0.7}
-    >
+    <View style={podcastEpisodeCardStyles.container}>
       <View style={podcastEpisodeCardStyles.header}>
         {episode.trackNumber && (
           <Text style={podcastEpisodeCardStyles.episodeNumber}>
@@ -56,6 +50,6 @@ export function PodcastEpisodeCard({
           </Text>
         )}
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }

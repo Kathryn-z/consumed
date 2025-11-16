@@ -1,4 +1,5 @@
 import { ContentInfoCard } from "@/components/cards/contentCards/ContentInfoCard";
+import { PodcastEpisodeCard } from "@/components/cards/contentCards/PodcastEpisodeCard";
 import { DateConsumedChip } from "@/components/chips/DateConsumedChip";
 import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import {
@@ -11,10 +12,12 @@ import {
   findExistingContentItem,
   getContentItemById,
 } from "@/db/contentOperations";
+import { findOrCreatePodcastEpisode, getPodcastEpisodeById } from "@/db/podcastEpisodeOperations";
 import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { recordDetailEditStyles } from "@/styles/screens/recordDetailEdit";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
-import { ContentCategory, ContentItem, ContentStatus } from "@/types/content";
+import { ContentCategory, ContentItem, ContentStatus, PodcastEpisode } from "@/types/content";
+import { ItunesPodcastEpisode } from "@/services/api/itunes";
 import {
   useFocusEffect,
   useLocalSearchParams,
@@ -65,9 +68,10 @@ export default function RecordDetailEdit() {
     // Podcast fields
     hosts?: string;
     feedUrl?: string;
+    episodeData?: string; // JSON string of ItunesPodcastEpisode
   }>();
 
-  const { recordId, id } = params;
+  const { recordId } = params;
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -77,6 +81,7 @@ export default function RecordDetailEdit() {
 
   const [item, setItem] = useState<ContentItem | null>(null);
   const [record, setRecord] = useState<ConsumptionRecord | null>(null);
+  const [episode, setEpisode] = useState<PodcastEpisode | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -166,9 +171,25 @@ export default function RecordDetailEdit() {
           contentItem = await createContentItem(contentData);
         }
 
+        // Handle podcast episode if present
+        let episodeId: number | undefined;
+        if (params.episodeData && params.category === ContentCategory.PODCAST) {
+          const episodeData: ItunesPodcastEpisode = JSON.parse(params.episodeData);
+          const podcastEpisode = await findOrCreatePodcastEpisode({
+            podcastId: contentItem.id,
+            episodeNumber: episodeData.trackNumber,
+            title: episodeData.trackName,
+            description: episodeData.description,
+            releaseDate: episodeData.releaseDate,
+            durationMillis: episodeData.trackTimeMillis,
+          });
+          episodeId = podcastEpisode.id;
+        }
+
         // Create consumption record
         await createConsumptionRecord({
           contentItemId: contentItem.id,
+          episodeId,
           rating: newRecordData.rating > 0 ? newRecordData.rating : undefined,
           notes: newRecordData.notes.trim() || undefined,
           dateConsumed: newRecordData.dateConsumed.toISOString(),
@@ -229,6 +250,14 @@ export default function RecordDetailEdit() {
             setItem(contentItem);
             setRecord(consumptionRecord);
 
+            // Load episode data if this is a podcast with an episode
+            if (consumptionRecord.episodeId) {
+              const podcastEpisode = await getPodcastEpisodeById(
+                consumptionRecord.episodeId
+              );
+              setEpisode(podcastEpisode);
+            }
+
             if (consumptionRecord) {
               setNewRecordData({
                 dateConsumed: new Date(consumptionRecord.dateConsumed),
@@ -246,6 +275,23 @@ export default function RecordDetailEdit() {
                 rating: params.rating ? parseInt(params.rating, 10) : 0,
                 notes: "",
               });
+            }
+
+            // Parse episode data if present (for podcasts)
+            if (params.episodeData && params.category === ContentCategory.PODCAST) {
+              const episodeData: ItunesPodcastEpisode = JSON.parse(params.episodeData);
+              // Create a temporary PodcastEpisode object for display
+              const tempEpisode: PodcastEpisode = {
+                id: 0,
+                podcastId: 0,
+                episodeNumber: episodeData.trackNumber,
+                title: episodeData.trackName,
+                description: episodeData.description,
+                releaseDate: episodeData.releaseDate,
+                durationMillis: episodeData.trackTimeMillis,
+                dateAdded: new Date().toISOString(),
+              };
+              setEpisode(tempEpisode);
             }
 
             // Create a temporary ContentItem object for display
@@ -323,6 +369,25 @@ export default function RecordDetailEdit() {
           }
           disabled={!isEditMode}
         />
+
+        {/* Podcast Episode Card (if applicable) */}
+        {episode && item.category === ContentCategory.PODCAST && (
+          <View style={{ marginBottom: 16 }}>
+            <PodcastEpisodeCard
+              episode={{
+                trackId: 0,
+                collectionId: episode.podcastId,
+                trackName: episode.title,
+                collectionName: item.title,
+                artistName: "",
+                description: episode.description,
+                releaseDate: episode.releaseDate || "",
+                trackTimeMillis: episode.durationMillis,
+                trackNumber: episode.episodeNumber,
+              }}
+            />
+          </View>
+        )}
 
         {/* Date Consumed */}
         <DateConsumedChip dateConsumed={newRecordData.dateConsumed} />

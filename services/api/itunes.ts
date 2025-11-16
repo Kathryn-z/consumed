@@ -1,3 +1,5 @@
+import { XMLParser } from "fast-xml-parser";
+
 const ITUNES_API_BASE = "https://itunes.apple.com";
 
 export interface ItunesPodcastImage {
@@ -82,82 +84,146 @@ export async function searchItunesPodcast(
 }
 
 /**
- * Fetch episodes for a specific podcast using iTunes Lookup API
- * @param podcastId - The iTunes podcast collection ID
- * @param limit - Number of episodes to return (default: 20, max: 200)
- * @returns Promise with podcast and episode results
+ * Helper function to parse duration string (HH:MM:SS or MM:SS) to milliseconds
  */
-export async function fetchPodcastEpisodes(
-  podcastId: number | string,
-  limit: number = 20
-): Promise<ItunesEpisodeSearchResponse> {
-  const url = `${ITUNES_API_BASE}/lookup?id=${podcastId}&entity=podcastEpisode&limit=${limit}`;
-
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`iTunes API error: ${response.status}`);
+function parseDurationToMillis(duration: string): number {
+  const parts = duration.split(":").map(Number);
+  if (parts.length === 3) {
+    // HH:MM:SS
+    return (parts[0] * 3600 + parts[1] * 60 + parts[2]) * 1000;
+  } else if (parts.length === 2) {
+    // MM:SS
+    return (parts[0] * 60 + parts[1]) * 1000;
+  } else if (parts.length === 1) {
+    // Just seconds
+    return parts[0] * 1000;
   }
-
-  return await response.json();
+  return 0;
 }
 
 /**
- * Search for a specific podcast episode
+ * Helper function to clean up HTML and decode entities from RSS description
+ */
+function cleanDescription(html: string): string {
+  if (!html) return "";
+
+  let text = html;
+
+  // Remove HTML tags
+  text = text.replace(/<[^>]*>/g, " ");
+
+  // Decode common HTML entities
+  const entities: { [key: string]: string } = {
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&quot;": '"',
+    "&#39;": "'",
+    "&apos;": "'",
+    "&nbsp;": " ",
+  };
+
+  Object.entries(entities).forEach(([entity, char]) => {
+    text = text.replace(new RegExp(entity, "g"), char);
+  });
+
+  // Decode numeric HTML entities (e.g., &#8217; &#8220;)
+  text = text.replace(/&#(\d+);/g, (_match, dec) => {
+    return String.fromCharCode(parseInt(dec, 10));
+  });
+
+  // Collapse multiple spaces and trim
+  text = text.replace(/\s+/g, " ").trim();
+
+  return text;
+}
+
+/**
+ * Parse RSS feed XML and convert to ItunesPodcastEpisode array
+ */
+async function parseRSSFeed(
+  feedUrl: string,
+  podcastId: number | string,
+  limit?: number
+): Promise<ItunesPodcastEpisode[]> {
+  const response = await fetch(feedUrl);
+  if (!response.ok) {
+    throw new Error(`RSS feed fetch error: ${response.status}`);
+  }
+
+  const xmlText = await response.text();
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_",
+  });
+
+  const result = parser.parse(xmlText);
+  const channel = result.rss?.channel;
+
+  if (!channel) {
+    throw new Error("Invalid RSS feed format");
+  }
+
+  const podcastTitle = channel.title || "";
+  const podcastArtist = channel["itunes:author"] || "";
+  const items = Array.isArray(channel.item) ? channel.item : [channel.item];
+
+  // Parse each episode item
+  const episodes: ItunesPodcastEpisode[] = items
+    .filter((item: any) => item) // Filter out null/undefined items
+    .map((item: any) => {
+      const enclosure = item.enclosure;
+      const episodeUrl = enclosure?.["@_url"] || "";
+      const duration = item["itunes:duration"] || "";
+      const episodeNumber = item["itunes:episode"]
+        ? parseInt(item["itunes:episode"])
+        : undefined;
+
+      const rawDescription = item.description || item["itunes:summary"] || "";
+      const cleanedDescription = cleanDescription(rawDescription);
+
+      return {
+        trackId: 0, // RSS feeds don't have iTunes track IDs
+        collectionId: Number(podcastId),
+        trackName: item.title || "",
+        collectionName: podcastTitle,
+        artistName: podcastArtist,
+        description: cleanedDescription,
+        releaseDate: item.pubDate || "",
+        trackTimeMillis: duration ? parseDurationToMillis(duration) : undefined,
+        episodeUrl: episodeUrl,
+        episodeGuid: item.guid?.["#text"] || item.guid || "",
+        trackNumber: episodeNumber,
+        episodeContentType: enclosure?.["@_type"] || "audio",
+      } as ItunesPodcastEpisode;
+    });
+
+  // Apply limit if specified
+  return limit ? episodes.slice(0, limit) : episodes;
+}
+
+/**
+ * Find a specific podcast episode by episode number using RSS feed
  * @param podcastId - The iTunes podcast collection ID
  * @param episodeNumber - The episode number to find
- * @param limit - Number of episodes to fetch to search through (default: 200)
- * @returns Promise with the matching episode or null
+ * @param feedUrl - RSS feed URL for direct feed parsing
+ * @param limit - Number of episodes to fetch (default: 5)
+ * @returns Promise with the matching episode or null if not found
  */
 export async function findPodcastEpisodeByNumber(
   podcastId: number | string,
   episodeNumber: number,
-  limit: number = 200
+  feedUrl: string,
+  limit: number = 5
 ): Promise<ItunesPodcastEpisode | null> {
-  const response = await fetchPodcastEpisodes(podcastId, limit);
-
-  // Filter out the podcast collection info (first result) and find matching episode
-  const episodes = response.results.filter(
-    (item): item is ItunesPodcastEpisode =>
-      "trackName" in item && "episodeUrl" in item
-  );
-
-  const matchingEpisode = episodes.find(
-    (episode) => episode.trackNumber === episodeNumber
-  );
-
-  return matchingEpisode || null;
-}
-
-/**
- * Search for podcast episodes by title
- * @param searchTerm - The search term for episode title
- * @param limit - Number of results to return (default: 20, max: 200)
- * @returns Promise with episode search results
- */
-export async function searchPodcastEpisodes(
-  searchTerm: string,
-  limit: number = 20
-): Promise<ItunesEpisodeSearchResponse> {
-  const url = `${ITUNES_API_BASE}/search?term=${encodeURIComponent(
-    searchTerm
-  )}&media=podcast&entity=podcastEpisode&limit=${limit}`;
-
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`iTunes API error: ${response.status}`);
+  try {
+    const episodes = await parseRSSFeed(feedUrl, podcastId, limit);
+    const matchingEpisode = episodes.find(
+      (episode) => episode.trackNumber === episodeNumber
+    );
+    return matchingEpisode || null;
+  } catch (error) {
+    console.error("RSS feed parsing failed:", error);
+    return null;
   }
-
-  return await response.json();
 }

@@ -5,6 +5,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import PodcastEpisodeSelector from "@/components/selectors/PodcastEpisodeSelector";
+import { ItunesPodcastEpisode } from "@/services/api/itunes";
 
 export default function RecordInfo() {
   const router = useRouter();
@@ -38,6 +40,7 @@ export default function RecordInfo() {
   const [status, setStatus] = useState<ContentStatus>(ContentStatus.TODO);
   const [rating, setRating] = useState(0);
   const [dateConsumed, setDateConsumed] = useState(new Date());
+  const [selectedEpisode, setSelectedEpisode] = useState<ItunesPodcastEpisode | null>(null);
 
   const handleNext = () => {
     // Build URL params with all content data and consumption data
@@ -74,6 +77,20 @@ export default function RecordInfo() {
       if (params.episodesCount) urlParams.append("episodesCount", params.episodesCount);
       if (params.genres) urlParams.append("genres", params.genres);
       if (params.feedUrl) urlParams.append("feedUrl", params.feedUrl);
+
+      // Add selected episode data if available
+      if (selectedEpisode) {
+        urlParams.append("episodeData", JSON.stringify({
+          trackId: selectedEpisode.trackId,
+          trackName: selectedEpisode.trackName,
+          trackNumber: selectedEpisode.trackNumber,
+          description: selectedEpisode.description,
+          releaseDate: selectedEpisode.releaseDate,
+          trackTimeMillis: selectedEpisode.trackTimeMillis,
+          episodeUrl: selectedEpisode.episodeUrl,
+          episodeGuid: selectedEpisode.episodeGuid,
+        }));
+      }
     } else if (category === ContentCategory.DRAMA) {
       if (params.subtype) urlParams.append("subtype", params.subtype);
       if (params.directors) urlParams.append("directors", params.directors);
@@ -160,6 +177,18 @@ export default function RecordInfo() {
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* Podcast Episode Selector - only for podcasts with feedUrl */}
+          {params.category === ContentCategory.PODCAST && params.externalId && params.feedUrl && (
+            <View style={contentInfoStyles.inputGroup}>
+              <PodcastEpisodeSelector
+                podcastId={params.externalId}
+                podcastTitle={params.title}
+                feedUrl={params.feedUrl}
+                onEpisodeSelect={setSelectedEpisode}
+              />
+            </View>
+          )}
 
           {/* Show date consumed and rating only if status is DONE */}
           {status === ContentStatus.DONE && (

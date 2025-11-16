@@ -1,4 +1,5 @@
 import { ContentInfoCard } from "@/components/cards/contentCards/ContentInfoCard";
+import { PodcastEpisodeCard } from "@/components/cards/contentCards/PodcastEpisodeCard";
 import { DateConsumedChip } from "@/components/chips/DateConsumedChip";
 import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
@@ -7,9 +8,10 @@ import {
   getConsumptionRecordById,
 } from "@/db/consumptionOperations";
 import { getContentItemById } from "@/db/contentOperations";
+import { getPodcastEpisodeById } from "@/db/podcastEpisodeOperations";
 import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
-import { ContentItem } from "@/types/content";
+import { ContentCategory, ContentItem, PodcastEpisode } from "@/types/content";
 import { Feather } from "@expo/vector-icons";
 import {
   useFocusEffect,
@@ -33,6 +35,7 @@ export default function RecordDetail() {
   const navigation = useNavigation();
   const [item, setItem] = useState<ContentItem | null>(null);
   const [record, setRecord] = useState<ConsumptionRecord | null>(null);
+  const [episode, setEpisode] = useState<PodcastEpisode | null>(null);
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -105,6 +108,14 @@ export default function RecordDetail() {
                 consumptionRecord.contentItemId
               );
               setItem(contentItem);
+
+              // Load episode data if this is a podcast with an episode
+              if (consumptionRecord.episodeId) {
+                const podcastEpisode = await getPodcastEpisodeById(
+                  consumptionRecord.episodeId
+                );
+                setEpisode(podcastEpisode);
+              }
             }
           }
         } catch (error) {
@@ -142,6 +153,25 @@ export default function RecordDetail() {
         onPress={() => router.push(`/contentDetail/${item.id}`)}
         showChevron
       />
+
+      {/* Podcast Episode Card (if applicable) */}
+      {episode && item.category === ContentCategory.PODCAST && (
+        <View style={{ marginBottom: 16 }}>
+          <PodcastEpisodeCard
+            episode={{
+              trackId: 0,
+              collectionId: episode.podcastId,
+              trackName: episode.title,
+              collectionName: item.title,
+              artistName: "",
+              description: episode.description,
+              releaseDate: episode.releaseDate || "",
+              trackTimeMillis: episode.durationMillis,
+              trackNumber: episode.episodeNumber,
+            }}
+          />
+        </View>
+      )}
 
       {/* Date Consumed */}
       <DateConsumedChip dateConsumed={record.dateConsumed} />

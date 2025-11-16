@@ -15,10 +15,11 @@ export async function createConsumptionRecord(
   const db = await getDatabase();
 
   const result = await db.runAsync(
-    `INSERT INTO consumption_records (contentItemId, rating, notes, dateConsumed)
-     VALUES (?, ?, ?, ?)`,
+    `INSERT INTO consumption_records (contentItemId, episodeId, rating, notes, dateConsumed)
+     VALUES (?, ?, ?, ?, ?)`,
     [
       input.contentItemId,
+      input.episodeId || null,
       input.rating || null,
       input.notes || null,
       input.dateConsumed,

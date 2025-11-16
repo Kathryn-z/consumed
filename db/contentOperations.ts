@@ -16,9 +16,9 @@ export async function createContentItem(input: CreateContentInput): Promise<Cont
       author, wordCount, tags,
       subtype, mobileUrl, directors, casts, genres, seasonsCount, currentSeason, episodesCount, countries,
       performers, venue, duration,
-      hosts,
+      hosts, feedUrl,
       creator, coverImage, cover, actors, type, numberOfEpisodes
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.category,
@@ -51,6 +51,7 @@ export async function createContentItem(input: CreateContentInput): Promise<Cont
       inputAny.duration || null,
       // Podcast
       inputAny.hosts || null,
+      inputAny.feedUrl || null,
       // Legacy
       inputAny.creator || null,
       inputAny.coverImage || null,

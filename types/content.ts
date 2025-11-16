@@ -90,6 +90,8 @@ export interface Podcast extends ContentBase {
   category: ContentCategory.PODCAST;
   hosts?: string; // JSON string of hosts array
   episodesCount?: number;
+  feedUrl?: string; // RSS feed URL
+  genres?: string; // JSON string of genres array
 }
 
 /**
@@ -128,3 +130,41 @@ export const getCategoryDisplayName = (category: ContentCategory): string => {
 export const isValidCategory = (value: string): value is ContentCategory => {
   return Object.values(ContentCategory).includes(value as ContentCategory);
 };
+
+/**
+ * Podcast Episode interface
+ * Represents a single podcast episode that can be tracked separately
+ */
+export interface PodcastEpisode {
+  id: number;
+  podcastId: number; // Foreign key to Podcast ContentItem
+  episodeNumber?: number; // Episode number in the series
+  title: string; // Episode title
+  description?: string;
+  releaseDate?: string; // ISO string
+  durationMillis?: number; // Duration in milliseconds
+  dateAdded: string; // When this episode was added to our database
+}
+
+/**
+ * Episode creation input
+ */
+export type CreatePodcastEpisodeInput = Omit<PodcastEpisode, "id" | "dateAdded">;
+
+/**
+ * Helper function to format duration from milliseconds to readable string
+ */
+export function formatEpisodeDuration(millis?: number): string {
+  if (!millis) return "Unknown";
+
+  const seconds = Math.floor(millis / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+
+  if (hours > 0) {
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
+  }
+
+  return `${minutes}m`;
+}
