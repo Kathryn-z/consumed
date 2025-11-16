@@ -3,9 +3,7 @@ import { cardStyles, imageStyles, spacing, textStyles } from "../../common";
 
 export const recordCardStyles = StyleSheet.create({
   container: {
-    borderRadius: 12,
-    padding: spacing.sm,
-    marginBottom: spacing.sm,
+    ...cardStyles.cardContainer,
   },
   topRow: {
     flexDirection: "row",

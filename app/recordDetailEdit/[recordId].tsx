@@ -12,12 +12,20 @@ import {
   findExistingContentItem,
   getContentItemById,
 } from "@/db/contentOperations";
-import { findOrCreatePodcastEpisode, getPodcastEpisodeById } from "@/db/podcastEpisodeOperations";
+import {
+  findOrCreatePodcastEpisode,
+  getPodcastEpisodeById,
+} from "@/db/podcastEpisodeOperations";
+import { ItunesPodcastEpisode } from "@/services/api/itunes";
 import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { recordDetailEditStyles } from "@/styles/screens/recordDetailEdit";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
-import { ContentCategory, ContentItem, ContentStatus, PodcastEpisode } from "@/types/content";
-import { ItunesPodcastEpisode } from "@/services/api/itunes";
+import {
+  ContentCategory,
+  ContentItem,
+  ContentStatus,
+  PodcastEpisode,
+} from "@/types/content";
 import {
   useFocusEffect,
   useLocalSearchParams,
@@ -174,7 +182,9 @@ export default function RecordDetailEdit() {
         // Handle podcast episode if present
         let episodeId: number | undefined;
         if (params.episodeData && params.category === ContentCategory.PODCAST) {
-          const episodeData: ItunesPodcastEpisode = JSON.parse(params.episodeData);
+          const episodeData: ItunesPodcastEpisode = JSON.parse(
+            params.episodeData
+          );
           const podcastEpisode = await findOrCreatePodcastEpisode({
             podcastId: contentItem.id,
             episodeNumber: episodeData.trackNumber,
@@ -278,8 +288,13 @@ export default function RecordDetailEdit() {
             }
 
             // Parse episode data if present (for podcasts)
-            if (params.episodeData && params.category === ContentCategory.PODCAST) {
-              const episodeData: ItunesPodcastEpisode = JSON.parse(params.episodeData);
+            if (
+              params.episodeData &&
+              params.category === ContentCategory.PODCAST
+            ) {
+              const episodeData: ItunesPodcastEpisode = JSON.parse(
+                params.episodeData
+              );
               // Create a temporary PodcastEpisode object for display
               const tempEpisode: PodcastEpisode = {
                 id: 0,
@@ -358,70 +373,72 @@ export default function RecordDetailEdit() {
 
   if (item) {
     return (
-      <ScrollView style={recordDetailEditStyles.container}>
-        {/* Content Card */}
-        <ContentInfoCard
-          item={item}
-          onPress={
-            isEditMode && item.id
-              ? () => router.push(`/contentDetail/${item.id}`)
-              : undefined
-          }
-          disabled={!isEditMode}
-        />
+      <View style={recordDetailEditStyles.container}>
+        <ScrollView style={recordDetailEditStyles.scrollContent}>
+          {/* Content Card */}
+          <ContentInfoCard
+            item={item}
+            onPress={
+              isEditMode && item.id
+                ? () => router.push(`/contentDetail/${item.id}`)
+                : undefined
+            }
+            disabled={!isEditMode}
+          />
 
-        {/* Podcast Episode Card (if applicable) */}
-        {episode && item.category === ContentCategory.PODCAST && (
-          <View style={{ marginBottom: 16 }}>
-            <PodcastEpisodeCard
-              episode={{
-                trackId: 0,
-                collectionId: episode.podcastId,
-                trackName: episode.title,
-                collectionName: item.title,
-                artistName: "",
-                description: episode.description,
-                releaseDate: episode.releaseDate || "",
-                trackTimeMillis: episode.durationMillis,
-                trackNumber: episode.episodeNumber,
-              }}
+          {/* Podcast Episode Card (if applicable) */}
+          {episode && item.category === ContentCategory.PODCAST && (
+            <View style={{ marginBottom: 16 }}>
+              <PodcastEpisodeCard
+                episode={{
+                  trackId: 0,
+                  collectionId: episode.podcastId,
+                  trackName: episode.title,
+                  collectionName: item.title,
+                  artistName: "",
+                  description: episode.description,
+                  releaseDate: episode.releaseDate || "",
+                  trackTimeMillis: episode.durationMillis,
+                  trackNumber: episode.episodeNumber,
+                }}
+              />
+            </View>
+          )}
+
+          {/* Date Consumed */}
+          <DateConsumedChip dateConsumed={newRecordData.dateConsumed} />
+
+          {/* Status/Rating Chip */}
+          <View style={recordDetailStyles.statusContainer}>
+            <StatusRatingChip
+              status={item.status}
+              rating={newRecordData.rating}
             />
           </View>
-        )}
 
-        {/* Date Consumed */}
-        <DateConsumedChip dateConsumed={newRecordData.dateConsumed} />
+          {/* Rating Stars (Edit Mode) */}
+          {item.status === "done" && (
+            <View style={recordDetailEditStyles.starsContainer}>
+              {renderStars()}
+            </View>
+          )}
 
-        {/* Status/Rating Chip */}
-        <View style={recordDetailStyles.statusContainer}>
-          <StatusRatingChip
-            status={item.status}
-            rating={newRecordData.rating}
-          />
-        </View>
-
-        {/* Rating Stars (Edit Mode) */}
-        {item.status === "done" && (
-          <View style={recordDetailEditStyles.starsContainer}>
-            {renderStars()}
+          {/* Notes Input */}
+          <View style={recordDetailEditStyles.notesInputContainer}>
+            <TextInput
+              style={recordDetailEditStyles.notesInput}
+              value={newRecordData.notes}
+              onChangeText={(text) =>
+                setNewRecordData((prev) => ({ ...prev, notes: text }))
+              }
+              placeholder="Please add your content here. Keep it short and simple. And smile :)"
+              placeholderTextColor="#999"
+              multiline
+              textAlignVertical="top"
+            />
           </View>
-        )}
-
-        {/* Notes Input */}
-        <View style={recordDetailEditStyles.notesInputContainer}>
-          <TextInput
-            style={recordDetailEditStyles.notesInput}
-            value={newRecordData.notes}
-            onChangeText={(text) =>
-              setNewRecordData((prev) => ({ ...prev, notes: text }))
-            }
-            placeholder="Please add your content here. Keep it short and simple. And smile :)"
-            placeholderTextColor="#999"
-            multiline
-            textAlignVertical="top"
-          />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     );
   }
 

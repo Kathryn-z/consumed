@@ -1,48 +1,32 @@
 import { StyleSheet } from "react-native";
-import { spacing } from "../../common";
+import { chipStyles, colors } from "../../common";
 
 export const statusRatingChipStyles = StyleSheet.create({
   statusButton: {
-    alignSelf: "flex-start",
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    borderRadius: 12,
-    backgroundColor: "#d4d4d4ff",
+    ...chipStyles.chip,
+    backgroundColor: colors.background.chipDefault,
   },
   statusButtonText: {
-    fontSize: 13,
-    color: "#000000ff",
-    fontWeight: "500",
+    ...chipStyles.chipText,
+    color: colors.text.chipStatus,
   },
   todoButton: {
-    alignSelf: "flex-start",
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    borderRadius: 12,
-    backgroundColor: "#E8D4F8",
+    ...chipStyles.chip,
+    backgroundColor: colors.background.chipTodo,
   },
   todoButtonText: {
-    fontSize: 13,
-    color: "#9C27B0",
-    fontWeight: "500",
+    ...chipStyles.chipText,
+    color: colors.text.chipTodo,
   },
   ratingChip: {
-    alignSelf: "flex-start",
+    ...chipStyles.chip,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    borderRadius: 12,
-    backgroundColor: "#4CAF50",
+    backgroundColor: colors.background.chipRating,
     gap: 4,
   },
   ratingText: {
-    fontSize: 13,
-    color: "#FFFFFF",
-    fontWeight: "600",
-  },
-  ratingStar: {
-    fontSize: 13,
-    color: "#FFFFFF",
+    ...chipStyles.chipBoldText,
+    color: colors.text.chipRating,
   },
 });

@@ -146,66 +146,68 @@ export default function RecordDetail() {
   }
 
   return (
-    <ScrollView style={recordDetailStyles.container}>
-      {/* Content Card */}
-      <ContentInfoCard
-        item={item}
-        onPress={() => router.push(`/contentDetail/${item.id}`)}
-        showChevron
-      />
+    <View style={recordDetailStyles.container}>
+      <ScrollView style={recordDetailStyles.scrollContent}>
+        {/* Content Card */}
+        <ContentInfoCard
+          item={item}
+          onPress={() => router.push(`/contentDetail/${item.id}`)}
+          showChevron
+        />
 
-      {/* Podcast Episode Card (if applicable) */}
-      {episode && item.category === ContentCategory.PODCAST && (
-        <View style={{ marginBottom: 16 }}>
-          <PodcastEpisodeCard
-            episode={{
-              trackId: 0,
-              collectionId: episode.podcastId,
-              trackName: episode.title,
-              collectionName: item.title,
-              artistName: "",
-              description: episode.description,
-              releaseDate: episode.releaseDate || "",
-              trackTimeMillis: episode.durationMillis,
-              trackNumber: episode.episodeNumber,
-            }}
-          />
+        {/* Podcast Episode Card (if applicable) */}
+        {episode && item.category === ContentCategory.PODCAST && (
+          <View style={{ marginBottom: 16 }}>
+            <PodcastEpisodeCard
+              episode={{
+                trackId: 0,
+                collectionId: episode.podcastId,
+                trackName: episode.title,
+                collectionName: item.title,
+                artistName: "",
+                description: episode.description,
+                releaseDate: episode.releaseDate || "",
+                trackTimeMillis: episode.durationMillis,
+                trackNumber: episode.episodeNumber,
+              }}
+            />
+          </View>
+        )}
+
+        {/* Date Consumed */}
+        <DateConsumedChip dateConsumed={record.dateConsumed} />
+
+        {/* Status/Rating Chip */}
+        <View style={recordDetailStyles.statusContainer}>
+          <StatusRatingChip status={item.status} rating={record.rating} />
         </View>
-      )}
 
-      {/* Date Consumed */}
-      <DateConsumedChip dateConsumed={record.dateConsumed} />
+        {/* Notes */}
+        {record.notes && (
+          <View style={recordDetailStyles.notesContainer}>
+            <Text style={recordDetailStyles.notesText}>{record.notes}</Text>
+          </View>
+        )}
 
-      {/* Status/Rating Chip */}
-      <View style={recordDetailStyles.statusContainer}>
-        <StatusRatingChip status={item.status} rating={record.rating} />
-      </View>
-
-      {/* Notes */}
-      {record.notes && (
-        <View style={recordDetailStyles.notesContainer}>
-          <Text style={recordDetailStyles.notesText}>{record.notes}</Text>
-        </View>
-      )}
-
-      {/* Bottom Menu Modal */}
-      <BottomMenuModal
-        visible={showMenu}
-        onDismiss={() => setShowMenu(false)}
-        options={[
-          {
-            icon: "✏️",
-            label: "Edit",
-            onPress: handleEdit,
-          },
-          {
-            icon: "🗑️",
-            label: "Delete",
-            onPress: handleDelete,
-            isDestructive: true,
-          },
-        ]}
-      />
-    </ScrollView>
+        {/* Bottom Menu Modal */}
+        <BottomMenuModal
+          visible={showMenu}
+          onDismiss={() => setShowMenu(false)}
+          options={[
+            {
+              icon: "✏️",
+              label: "Edit",
+              onPress: handleEdit,
+            },
+            {
+              icon: "🗑️",
+              label: "Delete",
+              onPress: handleDelete,
+              isDestructive: true,
+            },
+          ]}
+        />
+      </ScrollView>
+    </View>
   );
 }

@@ -4,16 +4,27 @@ import { StyleSheet } from "react-native";
 export const colors = {
   background: {
     page: "#fff",
-    cardContainer: "#fff",
+    cardContainerWhite: "#fff",
+    cardContainerGrey: "#f9f9f9",
+    button: "#fff",
     imageContainer: "#f0f0f0",
     imagePlaceholder: "#e0e0e0",
+    chipDefault: "#d4d4d4ff",
+    chipTodo: "#E8D4F8",
+    chipRating: "#4CAF50",
   },
   text: {
     primary: "#000",
     secondary: "#666",
     tertiary: "#999",
     highlight: "#007AFF",
+    dangerous: "#FF3B30",
+    chipStatus: "#000",
+    chipTodo: "#9C27B0",
+    chipRating: "#fff",
   },
+  border: "#ddd",
+  shadow: "#000",
   selected: "#007AFF",
 };
 
@@ -30,7 +41,7 @@ export const spacing = {
 export const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.cardContainer,
+    backgroundColor: colors.background.cardContainerWhite,
   },
   content: {
     flex: 1,
@@ -50,7 +61,6 @@ export const commonStyles = StyleSheet.create({
 });
 
 export const textStyles = StyleSheet.create({
-  // Text
   longTextPrimary: {
     fontSize: 15,
     color: colors.text.primary,
@@ -109,7 +119,53 @@ export const imageStyles = StyleSheet.create({
   },
 });
 
+export const modalStyles = StyleSheet.create({
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 40,
+    paddingTop: spacing.lg,
+    paddingHorizontal: spacing.md,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: colors.text.primary,
+    marginBottom: spacing.md,
+    textAlign: "center",
+  },
+});
+
 export const cardStyles = StyleSheet.create({
+  cardContainer: {
+    borderRadius: 12,
+    padding: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+  cardContainerWithShadow: {
+    flexDirection: "row",
+    backgroundColor: colors.background.cardContainerWhite,
+    borderRadius: 12,
+    padding: spacing.sm,
+    marginBottom: spacing.sm,
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  cardHeaderContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: spacing.xs,
+  },
   cardTitle: {
     fontSize: 16,
     fontWeight: "600",
@@ -130,5 +186,82 @@ export const cardStyles = StyleSheet.create({
   cardInfoSecondary: {
     fontSize: 12,
     color: colors.text.tertiary,
+  },
+});
+
+export const chipStyles = StyleSheet.create({
+  chip: {
+    alignSelf: "flex-start",
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  dateChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+  },
+  chipText: {
+    fontSize: 13,
+    fontWeight: "500",
+  },
+  chipBoldText: {
+    fontSize: 13,
+    fontWeight: "600",
+  },
+});
+
+export const buttonStyles = StyleSheet.create({
+  categoryButtonContainer: {
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  categoryButton: {
+    backgroundColor: colors.background.button,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  categoryCancelButton: {
+    backgroundColor: colors.background.button,
+    borderWidth: 1,
+    borderColor: colors.border,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  menuButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    gap: spacing.md,
+  },
+  buttonText: {
+    fontSize: 17,
+    fontWeight: "500",
+    color: colors.text.primary,
+  },
+  buttonTextSecondary: {
+    fontSize: 17,
+    fontWeight: "500",
+    color: colors.text.primary,
+  },
+});
+
+export const iconStyles = StyleSheet.create({
+  menuIcon: {
+    fontSize: 20,
+  },
+});
+
+export const dividerStyles = StyleSheet.create({
+  divider: {
+    width: 2,
+    backgroundColor: colors.background.imagePlaceholder,
+    marginRight: spacing.xs,
+    marginTop: spacing.sm,
+    marginBottom: spacing.sm,
   },
 });

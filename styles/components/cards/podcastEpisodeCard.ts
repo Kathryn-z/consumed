@@ -3,16 +3,12 @@ import { cardStyles, colors, spacing, textStyles } from "../../common";
 
 export const podcastEpisodeCardStyles = StyleSheet.create({
   container: {
-    borderRadius: 12,
+    ...cardStyles.cardContainer,
     padding: spacing.md,
-    marginBottom: spacing.sm,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.background.cardContainerGrey,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: spacing.xs,
+    ...cardStyles.cardHeaderContainer,
   },
   episodeNumber: {
     ...textStyles.highlightText,

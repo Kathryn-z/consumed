@@ -1,35 +1,23 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../../common";
+import { buttonStyles, colors, iconStyles, modalStyles } from "../../common";
 
 export const bottomMenuModalStyles = StyleSheet.create({
   modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-end",
+    ...modalStyles.modalOverlay,
   },
   menuContainer: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingBottom: 40,
-    paddingTop: spacing.lg,
+    ...modalStyles.modalContent,
   },
   menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    gap: spacing.md,
+    ...buttonStyles.menuButton,
   },
   menuIcon: {
-    fontSize: 20,
+    ...iconStyles.menuIcon,
   },
   menuText: {
-    fontSize: 17,
-    fontWeight: "500",
-    color: colors.text.primary,
+    ...buttonStyles.buttonText,
   },
   deleteText: {
-    color: "#FF3B30",
+    color: colors.text.dangerous,
   },
 });

@@ -6,6 +6,10 @@ export const recordDetailEditStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background.page,
   },
+  scrollContent: {
+    padding: spacing.md,
+    paddingBottom: spacing.lg,
+  },
   header: {
     flexDirection: "row",
     alignItems: "center",

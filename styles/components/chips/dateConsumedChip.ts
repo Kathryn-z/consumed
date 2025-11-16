@@ -1,10 +1,9 @@
 import { StyleSheet } from "react-native";
-import { cardStyles, spacing } from "../../common";
+import { cardStyles, chipStyles } from "../../common";
 
 export const dateConsumedChipStyles = StyleSheet.create({
   container: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+    ...chipStyles.dateChip,
   },
   dateText: {
     ...cardStyles.cardInfoPrimary,

@@ -6,6 +6,10 @@ export const recordDetailStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background.page,
   },
+  scrollContent: {
+    padding: spacing.md,
+    paddingBottom: spacing.lg,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",

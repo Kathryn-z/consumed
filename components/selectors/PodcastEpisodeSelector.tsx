@@ -1,5 +1,8 @@
 import { PodcastEpisodeCard } from "@/components/cards/contentCards/PodcastEpisodeCard";
-import { ItunesPodcastEpisode, findPodcastEpisodeByNumber } from "@/services/api/itunes";
+import {
+  ItunesPodcastEpisode,
+  findPodcastEpisodeByNumber,
+} from "@/services/api/itunes";
 import { useState } from "react";
 import {
   ActivityIndicator,

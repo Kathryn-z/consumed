@@ -1,55 +1,29 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../../common";
+import { buttonStyles, modalStyles } from "../../common";
 
 export const categorySelectionModalStyles = StyleSheet.create({
   modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-end",
+    ...modalStyles.modalOverlay,
   },
   modalContent: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingBottom: 40,
-    paddingTop: spacing.lg,
-    paddingHorizontal: spacing.md,
+    ...modalStyles.modalContent,
   },
   modalTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: colors.text.primary,
-    marginBottom: spacing.md,
-    textAlign: "center",
+    ...modalStyles.modalTitle,
   },
   categoryButtons: {
-    gap: spacing.sm,
-    marginBottom: spacing.md,
+    ...buttonStyles.categoryButtonContainer,
   },
   categoryButton: {
-    backgroundColor: "#f9f9f9",
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 12,
-    alignItems: "center",
+    ...buttonStyles.categoryButton,
   },
   categoryButtonText: {
-    fontSize: 17,
-    fontWeight: "500",
-    color: colors.text.primary,
+    ...buttonStyles.buttonText,
   },
   modalCancelButton: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 12,
-    alignItems: "center",
+    ...buttonStyles.categoryCancelButton,
   },
   modalCancelButtonText: {
-    fontSize: 17,
-    fontWeight: "500",
-    color: colors.text.secondary,
+    ...buttonStyles.buttonTextSecondary,
   },
 });

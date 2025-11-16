@@ -20,7 +20,7 @@ export function StatusRatingChip({
         <Text style={statusRatingChipStyles.ratingText}>
           {rating.toFixed(1)}
         </Text>
-        <Text style={statusRatingChipStyles.ratingStar}>★</Text>
+        <Text style={statusRatingChipStyles.ratingText}>★</Text>
       </View>
     );
   }

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { cardStyles, colors, spacing } from "../../common";
+import { cardStyles, colors, dividerStyles, spacing } from "../../common";
 
 export const timelineRecordCardStyles = StyleSheet.create({
   container: {
@@ -25,11 +25,7 @@ export const timelineRecordCardStyles = StyleSheet.create({
     ...cardStyles.cardInfoPrimary,
   },
   divider: {
-    width: 2,
-    backgroundColor: "#E0E0E0",
-    marginRight: spacing.xs,
-    marginTop: spacing.sm,
-    marginBottom: spacing.sm,
+    ...dividerStyles.divider,
   },
   cardSection: {
     flex: 1,
