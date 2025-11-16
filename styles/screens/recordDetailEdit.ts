@@ -93,16 +93,27 @@ export const recordDetailEditStyles = StyleSheet.create({
     fontSize: 15,
     color: colors.text.secondary,
   },
-  notesSection: {
-    flex: 1,
+  starsContainer: {
+    flexDirection: "row",
     paddingHorizontal: spacing.md,
-    paddingTop: spacing.md,
+    paddingVertical: spacing.sm,
+    gap: spacing.xs,
+  },
+  notesInputContainer: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   notesInput: {
     fontSize: 15,
     color: colors.text.primary,
     textAlignVertical: "top",
     minHeight: 100,
+    padding: 0,
+  },
+  notesSection: {
+    flex: 1,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
   },
   notesPlaceholder: {
     fontSize: 15,
@@ -129,5 +140,16 @@ export const recordDetailEditStyles = StyleSheet.create({
   collectionText: {
     fontSize: 14,
     color: colors.text.secondary,
+  },
+  saveButton: {
+    backgroundColor: "#000000",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  saveButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });

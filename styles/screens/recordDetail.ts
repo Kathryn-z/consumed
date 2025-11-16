@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { spacing, colors } from "../common";
+import { colors, spacing } from "../common";
 
 export const recordDetailStyles = StyleSheet.create({
   container: {
@@ -65,20 +65,25 @@ export const recordDetailStyles = StyleSheet.create({
     fontSize: 13,
     color: colors.text.secondary,
   },
+  dateContainer: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+  },
+  dateText: {
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
   statusContainer: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
   },
-  statusButton: {
-    alignSelf: "flex-start",
+  notesContainer: {
     paddingHorizontal: spacing.md,
-    paddingVertical: 6,
-    borderRadius: 16,
-    backgroundColor: "#E8D4F8",
+    paddingVertical: spacing.sm,
   },
-  statusButtonText: {
-    fontSize: 13,
-    color: "#9C27B0",
-    fontWeight: "500",
+  notesText: {
+    fontSize: 15,
+    color: colors.text.primary,
+    lineHeight: 22,
   },
 });

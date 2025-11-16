@@ -1,5 +1,6 @@
-import PrimaryButton from "@/components/buttons/PrimaryButton";
 import { ContentInfoCard } from "@/components/ContentInfoCard";
+import { DateConsumedChip } from "@/components/chips/DateConsumedChip";
+import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import {
   createConsumptionRecord,
   getConsumptionRecordById,
@@ -26,6 +27,7 @@ import {
   Alert,
   ScrollView,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -187,13 +189,16 @@ export default function RecordDetailEdit() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <PrimaryButton
-          text="Save"
+        <TouchableOpacity
+          style={recordDetailEditStyles.saveButton}
           onPress={handleSave}
-          loading={saving}
-          buttonStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
-          textStyle={{ fontSize: 16 }}
-        />
+          disabled={saving}
+          activeOpacity={0.7}
+        >
+          <Text style={recordDetailEditStyles.saveButtonText}>
+            {saving ? "Saving..." : "Save"}
+          </Text>
+        </TouchableOpacity>
       ),
     });
   }, [navigation, saving, handleSave]);
@@ -319,13 +324,37 @@ export default function RecordDetailEdit() {
           disabled={!isEditMode}
         />
 
-        {/* Status Button */}
+        {/* Date Consumed */}
+        <DateConsumedChip dateConsumed={newRecordData.dateConsumed} />
+
+        {/* Status/Rating Chip */}
         <View style={recordDetailStyles.statusContainer}>
-          <TouchableOpacity style={recordDetailStyles.statusButton}>
-            <Text style={recordDetailStyles.statusButtonText}>
-              {item.status}
-            </Text>
-          </TouchableOpacity>
+          <StatusRatingChip
+            status={item.status}
+            rating={newRecordData.rating}
+          />
+        </View>
+
+        {/* Rating Stars (Edit Mode) */}
+        {item.status === "done" && (
+          <View style={recordDetailEditStyles.starsContainer}>
+            {renderStars()}
+          </View>
+        )}
+
+        {/* Notes Input */}
+        <View style={recordDetailEditStyles.notesInputContainer}>
+          <TextInput
+            style={recordDetailEditStyles.notesInput}
+            value={newRecordData.notes}
+            onChangeText={(text) =>
+              setNewRecordData((prev) => ({ ...prev, notes: text }))
+            }
+            placeholder="Please add your content here. Keep it short and simple. And smile :)"
+            placeholderTextColor="#999"
+            multiline
+            textAlignVertical="top"
+          />
         </View>
       </ScrollView>
     );

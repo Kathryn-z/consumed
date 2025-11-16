@@ -50,21 +50,6 @@ export const recordCardStyles = StyleSheet.create({
     color: colors.text.secondary,
     marginBottom: spacing.sm,
   },
-  starsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: spacing.sm,
-    backgroundColor: "#FFE57F",
-    alignSelf: "flex-start",
-    paddingHorizontal: spacing.xs,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  star: {
-    fontSize: 16,
-    color: "#FFA000",
-    marginRight: 2,
-  },
   notes: {
     fontSize: 14,
     color: colors.text.secondary,

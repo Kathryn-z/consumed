@@ -1,3 +1,4 @@
+import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import { getContentItemById } from "@/db/contentOperations";
 import { recordCardStyles } from "@/styles/components/recordCard";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
@@ -47,23 +48,6 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
     if (!item) return "";
     const subtype = getSubtype();
     return subtype ? subtype : item.category;
-  };
-
-  // Render rating stars
-  const renderRatingStars = () => {
-    const rating = record.rating || 0;
-    const maxRating = 5;
-    const stars = [];
-
-    for (let i = 1; i <= maxRating; i++) {
-      stars.push(
-        <Text key={i} style={recordCardStyles.star}>
-          {i <= rating ? "★" : "☆"}
-        </Text>
-      );
-    }
-
-    return stars;
   };
 
   // Show loading state while fetching content item
@@ -122,12 +106,10 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
             {getCategoryDisplay()}
           </Text>
 
-          {/* Rating Stars */}
-          {record.rating && record.rating > 0 && (
-            <View style={recordCardStyles.starsContainer}>
-              {renderRatingStars()}
-            </View>
-          )}
+          {/* Status/Rating Chip */}
+          <View>
+            <StatusRatingChip status={item.status} rating={record.rating} />
+          </View>
         </View>
       </View>
 

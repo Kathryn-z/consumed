@@ -1,4 +1,6 @@
 import { ContentInfoCard } from "@/components/ContentInfoCard";
+import { DateConsumedChip } from "@/components/chips/DateConsumedChip";
+import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
 import {
   deleteConsumptionRecord,
@@ -141,12 +143,20 @@ export default function RecordDetail() {
         showChevron
       />
 
-      {/* Status Button */}
+      {/* Date Consumed */}
+      <DateConsumedChip dateConsumed={record.dateConsumed} />
+
+      {/* Status/Rating Chip */}
       <View style={recordDetailStyles.statusContainer}>
-        <TouchableOpacity style={recordDetailStyles.statusButton}>
-          <Text style={recordDetailStyles.statusButtonText}>{item.status}</Text>
-        </TouchableOpacity>
+        <StatusRatingChip status={item.status} rating={record.rating} />
       </View>
+
+      {/* Notes */}
+      {record.notes && (
+        <View style={recordDetailStyles.notesContainer}>
+          <Text style={recordDetailStyles.notesText}>{record.notes}</Text>
+        </View>
+      )}
 
       {/* Bottom Menu Modal */}
       <BottomMenuModal
