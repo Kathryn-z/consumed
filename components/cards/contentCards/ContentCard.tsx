@@ -1,6 +1,5 @@
 import CoverImage from "@/components/shared/CoverImage";
-import { imageStyles } from "@/styles/common";
-import { contentCardStyles } from "@/styles/components/cards/contentCard";
+import { cardStyles, imageStyles } from "@/styles/common";
 import { ContentItem } from "@/types/content";
 import { formatDateToString } from "@/utils/dateFormat";
 import { getImageUrl } from "@/utils/images";
@@ -68,7 +67,7 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
 
   return (
     <TouchableOpacity
-      style={contentCardStyles.cardContainerWithShadow}
+      style={cardStyles.cardContainerWithShadow}
       onPress={() => onPress?.(item)}
       activeOpacity={0.7}
     >
@@ -81,20 +80,20 @@ export function ContentCard({ item, onPress }: ContentCardProps) {
       />
 
       {/* Content Info */}
-      <View style={contentCardStyles.info}>
-        <Text style={contentCardStyles.cardTitle} numberOfLines={2}>
+      <View style={cardStyles.infoContent}>
+        <Text style={cardStyles.cardTitle} numberOfLines={2}>
           {item.title}
         </Text>
-        <Text style={contentCardStyles.category}>{item.category}</Text>
+        <Text style={cardStyles.category}>{item.category}</Text>
         {item.year && (
-          <Text style={contentCardStyles.cardInfoPrimary}>{item.year}</Text>
+          <Text style={cardStyles.cardInfoPrimary}>{item.year}</Text>
         )}
         {creatorInfo && (
-          <Text style={contentCardStyles.cardInfoPrimary} numberOfLines={1}>
+          <Text style={cardStyles.cardInfoPrimary} numberOfLines={1}>
             {creatorInfo}
           </Text>
         )}
-        <Text style={contentCardStyles.cardInfoSecondary}>
+        <Text style={cardStyles.cardInfoSecondary}>
           {formatDateToString(item.dateAdded)}
         </Text>
       </View>

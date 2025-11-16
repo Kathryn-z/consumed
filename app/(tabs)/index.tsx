@@ -1,5 +1,5 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
-import { CategorySelectionModal } from "@/components/modals/CategorySelectionModal";
+import { CategorySelectionModal } from "@/components/modals/categorySelectionModal/CategorySelectionModal";
 import { useContent } from "@/hooks/useContent";
 import { indexStyles } from "@/styles/screens/index";
 import { CATEGORIES, ContentCategory, ContentStatus } from "@/types/content";

@@ -1,5 +1,11 @@
-import { contentInfoStyles } from "@/styles/screens/contentInfo";
-import { Text, TouchableOpacity, StyleProp, ViewStyle, TextStyle } from "react-native";
+import { buttonStyles } from "@/styles/common";
+import {
+  StyleProp,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 
 interface PrimaryButtonProps {
   onPress: () => void;
@@ -28,7 +34,7 @@ export default function PrimaryButton({
   return (
     <TouchableOpacity
       style={[
-        contentInfoStyles.button,
+        buttonStyles.primaryButton,
         loading && { opacity: 0.6 },
         buttonStyle,
       ]}
@@ -36,7 +42,7 @@ export default function PrimaryButton({
       activeOpacity={activeOpacity}
       disabled={isDisabled}
     >
-      <Text style={[contentInfoStyles.buttonText, textStyle]}>
+      <Text style={[buttonStyles.primaryButtonText, textStyle]}>
         {displayText}
       </Text>
     </TouchableOpacity>

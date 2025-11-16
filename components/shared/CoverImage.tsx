@@ -1,6 +1,7 @@
 import { imageStyles } from "@/styles/common";
+import { Image } from "expo-image";
 import React from "react";
-import { Image, StyleProp, Text, View, ViewStyle } from "react-native";
+import { StyleProp, Text, View, ViewStyle } from "react-native";
 
 interface CoverImageProps {
   coverUrl: string | undefined;
@@ -19,11 +20,11 @@ export default function CoverImage({
 }: CoverImageProps) {
   return (
     <View style={containerStyle}>
-      {showImage ? (
+      {showImage && coverUrl ? (
         <Image
-          source={{ uri: coverUrl }}
+          source={{ uri: coverUrl, cacheKey: coverUrl }}
           style={imageStyles.imageSizePct}
-          resizeMode="cover"
+          contentFit="cover"
           onError={() => setImageError(true)}
         />
       ) : (

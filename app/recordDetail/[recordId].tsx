@@ -2,7 +2,7 @@ import { ContentInfoCard } from "@/components/cards/contentCards/ContentInfoCard
 import { PodcastEpisodeCard } from "@/components/cards/contentCards/PodcastEpisodeCard";
 import { DateConsumedChip } from "@/components/chips/DateConsumedChip";
 import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
-import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
+import { BottomMenuModal } from "@/components/modals/bottomMenuModal/BottomMenuModal";
 import {
   deleteConsumptionRecord,
   getConsumptionRecordById,

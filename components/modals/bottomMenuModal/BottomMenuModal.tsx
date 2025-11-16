@@ -1,6 +1,7 @@
-import { bottomMenuModalStyles } from "@/styles/components/modals/bottomMenuModal";
+import BottomMenuButton from "@/components/modals/bottomMenuModal/BottomMenuButton";
+import { modalStyles } from "@/styles/common";
 import { useEffect, useRef } from "react";
-import { Animated, Modal, Text, TouchableOpacity } from "react-native";
+import { Animated, Modal, TouchableOpacity } from "react-native";
 
 export interface MenuOption {
   icon: string;
@@ -56,13 +57,13 @@ export function BottomMenuModal({
       statusBarTranslucent={false}
     >
       <TouchableOpacity
-        style={bottomMenuModalStyles.modalOverlay}
+        style={modalStyles.modalOverlay}
         activeOpacity={1}
         onPress={handleDismiss}
       >
         <Animated.View
           style={[
-            bottomMenuModalStyles.modalContent,
+            modalStyles.modalContent,
             { transform: [{ translateY: slideAnim }] },
           ]}
         >
@@ -71,24 +72,7 @@ export function BottomMenuModal({
             onPress={(e) => e.stopPropagation()}
           >
             {options.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={bottomMenuModalStyles.menuItem}
-                onPress={option.onPress}
-                activeOpacity={0.8}
-              >
-                <Text style={bottomMenuModalStyles.menuIcon}>
-                  {option.icon}
-                </Text>
-                <Text
-                  style={[
-                    bottomMenuModalStyles.menuText,
-                    option.isDestructive && bottomMenuModalStyles.deleteText,
-                  ]}
-                >
-                  {option.label}
-                </Text>
-              </TouchableOpacity>
+              <BottomMenuButton key={index} option={option} />
             ))}
           </TouchableOpacity>
         </Animated.View>

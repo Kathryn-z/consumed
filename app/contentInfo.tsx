@@ -1,5 +1,6 @@
 import PrimaryButton from "@/components/shared/buttons/PrimaryButton";
 import { getContentItemById, updateContentItem } from "@/db/contentOperations";
+import { buttonStyles } from "@/styles/common";
 import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, DramaSubtype, TVMovieSubtype } from "@/types/content";
 import { Feather } from "@expo/vector-icons";
@@ -586,8 +587,8 @@ export default function ContentInfo() {
           <PrimaryButton
             text="Cancel"
             onPress={handleCancel}
-            buttonStyle={contentInfoStyles.cancelButton}
-            textStyle={contentInfoStyles.cancelButtonText}
+            buttonStyle={buttonStyles.cancelButton}
+            textStyle={buttonStyles.cancelButtonText}
           />
         </View>
       </ScrollView>

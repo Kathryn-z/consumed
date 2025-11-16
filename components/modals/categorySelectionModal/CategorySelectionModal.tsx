@@ -1,14 +1,11 @@
+import {
+  CategorySelectionButton,
+  CategorySelectionCancelButton,
+} from "@/components/modals/categorySelectionModal/CategorySelectionButton";
+import { modalStyles } from "@/styles/common";
 import { CATEGORIES, ContentCategory } from "@/types/content";
 import { useEffect, useRef } from "react";
-import {
-  Animated,
-  Modal,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { categorySelectionModalStyles } from "@/styles/components/modals/categorySelectionModal";
+import { Animated, Modal, Text, TouchableOpacity, View } from "react-native";
 
 interface CategorySelectionModalProps {
   visible: boolean;
@@ -66,13 +63,13 @@ export function CategorySelectionModal({
       statusBarTranslucent={false}
     >
       <TouchableOpacity
-        style={categorySelectionModalStyles.modalOverlay}
+        style={modalStyles.modalOverlay}
         activeOpacity={1}
         onPress={handleDismiss}
       >
         <Animated.View
           style={[
-            categorySelectionModalStyles.modalContent,
+            modalStyles.modalContent,
             { transform: [{ translateY: slideAnim }] },
           ]}
         >
@@ -80,32 +77,17 @@ export function CategorySelectionModal({
             activeOpacity={1}
             onPress={(e) => e.stopPropagation()}
           >
-            <Text style={categorySelectionModalStyles.modalTitle}>
-              Select Category
-            </Text>
-            <View style={categorySelectionModalStyles.categoryButtons}>
+            <Text style={modalStyles.modalTitle}>Select Category</Text>
+            <View>
               {CATEGORIES.map((category) => (
-                <TouchableOpacity
+                <CategorySelectionButton
                   key={category}
-                  style={categorySelectionModalStyles.categoryButton}
-                  onPress={() => handleCategorySelect(category)}
-                  activeOpacity={0.8}
-                >
-                  <Text style={categorySelectionModalStyles.categoryButtonText}>
-                    {category}
-                  </Text>
-                </TouchableOpacity>
+                  category={category}
+                  handleCategorySelect={handleCategorySelect}
+                />
               ))}
             </View>
-            <TouchableOpacity
-              style={categorySelectionModalStyles.modalCancelButton}
-              onPress={handleDismiss}
-              activeOpacity={0.8}
-            >
-              <Text style={categorySelectionModalStyles.modalCancelButtonText}>
-                Cancel
-              </Text>
-            </TouchableOpacity>
+            <CategorySelectionCancelButton handleDismiss={handleDismiss} />
           </TouchableOpacity>
         </Animated.View>
       </TouchableOpacity>

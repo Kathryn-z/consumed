@@ -8,11 +8,6 @@ export const recordCardStyles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: spacing.sm,
   },
-  content: {
-    flex: 1,
-    marginLeft: spacing.md,
-    justifyContent: "flex-start",
-  },
   notes: {
     ...textStyles.longTextSecondary,
   },

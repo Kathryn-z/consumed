@@ -24,26 +24,6 @@ export const contentInfoStyles = StyleSheet.create({
   inputGroup: {
     marginBottom: spacing.sm,
   },
-  button: {
-    height: 50,
-    backgroundColor: colors.selected,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: spacing.md,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  cancelButton: {
-    backgroundColor: "#f5f5f5",
-    marginTop: spacing.sm,
-  },
-  cancelButtonText: {
-    color: "#333",
-  },
   filterContainer: {
     flexDirection: "row",
     flexWrap: "wrap",

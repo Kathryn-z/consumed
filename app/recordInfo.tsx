@@ -1,6 +1,7 @@
 import PodcastEpisodeSelector from "@/components/selectors/PodcastEpisodeSelector";
 import PrimaryButton from "@/components/shared/buttons/PrimaryButton";
 import { ItunesPodcastEpisode } from "@/services/api/itunes";
+import { buttonStyles } from "@/styles/common";
 import { contentInfoStyles } from "@/styles/screens/contentInfo";
 import { ContentCategory, ContentStatus } from "@/types/content";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -234,8 +235,8 @@ export default function RecordInfo() {
           <PrimaryButton
             text="Cancel"
             onPress={handleCancel}
-            buttonStyle={contentInfoStyles.cancelButton}
-            textStyle={contentInfoStyles.cancelButtonText}
+            buttonStyle={buttonStyles.cancelButton}
+            textStyle={buttonStyles.cancelButtonText}
           />
         </View>
       </ScrollView>

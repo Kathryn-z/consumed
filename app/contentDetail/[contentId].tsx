@@ -1,4 +1,4 @@
-import { BottomMenuModal } from "@/components/modals/BottomMenuModal";
+import { BottomMenuModal } from "@/components/modals/bottomMenuModal/BottomMenuModal";
 import CoverImage from "@/components/shared/CoverImage";
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
 import { deleteContentItem, getContentItemById } from "@/db/contentOperations";
