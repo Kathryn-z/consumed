@@ -6,8 +6,8 @@ import {
 } from "@/services/api/itunes";
 import { searchInsertStyles } from "@/styles/screens/searchInsert";
 import { ContentCategory } from "@/types/content";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -24,17 +24,6 @@ export default function SearchInsert() {
   const [searchResults, setSearchResults] = useState<ItunesPodcastResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Reset search when screen comes into focus
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        // Cleanup when screen loses focus
-        setSearchQuery("");
-        setSearchResults([]);
-      };
-    }, [])
-  );
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
