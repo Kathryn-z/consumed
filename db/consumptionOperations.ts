@@ -113,6 +113,7 @@ export async function updateConsumptionRecord(
 /**
  * Delete a consumption record
  * If this was the most recent record, updates ContentItem's rating to the next most recent
+ * If this was the only record for the content, deletes the content item
  */
 export async function deleteConsumptionRecord(id: number): Promise<boolean> {
   const db = await getDatabase();
@@ -130,10 +131,19 @@ export async function deleteConsumptionRecord(id: number): Promise<boolean> {
     [id]
   );
 
-  // If we deleted the most recent record, update ContentItem's rating
-  if (result.changes > 0 && wasMostRecent) {
-    const newMostRecent = await getMostRecentConsumptionRecord(contentItemId);
-    await updateContentItem(contentItemId, { rating: newMostRecent?.rating });
+  if (result.changes > 0) {
+    // Check if there are any remaining records for this content
+    const remainingCount = await getConsumptionCount(contentItemId);
+
+    if (remainingCount === 0) {
+      // No more records - delete the content item
+      const { deleteContentItem } = await import("./contentOperations");
+      await deleteContentItem(contentItemId);
+    } else if (wasMostRecent) {
+      // Still have records - update rating if this was the most recent
+      const newMostRecent = await getMostRecentConsumptionRecord(contentItemId);
+      await updateContentItem(contentItemId, { rating: newMostRecent?.rating });
+    }
   }
 
   return result.changes > 0;
