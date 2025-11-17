@@ -1,19 +1,12 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
 import { CategorySelectionModal } from "@/components/modals/categorySelectionModal/CategorySelectionModal";
+import { ScrollListWrapper } from "@/components/shared/ScrollList";
 import { useContent } from "@/hooks/useContent";
 import { indexStyles } from "@/styles/screens/index";
 import { CATEGORIES, ContentCategory, ContentStatus } from "@/types/content";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useMemo, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Animated,
-  FlatList,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type TabType = "done" | "todo";
@@ -85,7 +78,7 @@ export default function Search() {
 
   return (
     <SafeAreaView style={indexStyles.container}>
-      <ScrollView style={indexStyles.content}>
+      <View style={indexStyles.content}>
         {/* Header with Tab Switcher and Search Icon */}
         <View style={indexStyles.header}>
           <View style={indexStyles.tabSwitcher}>
@@ -159,32 +152,22 @@ export default function Search() {
         </View>
 
         {/* Content List */}
-        {loading ? (
-          <View style={indexStyles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        ) : filteredItems.length > 0 ? (
-          <FlatList
-            data={filteredItems}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <ContentCard item={item} onPress={handleItemPress} />
-            )}
-            scrollEnabled={false}
-            contentContainerStyle={indexStyles.listContent}
-          />
-        ) : (
-          <View style={indexStyles.emptyContainer}>
-            <Text style={indexStyles.emptyText}>
-              {selectedCategory
-                ? "No items found"
-                : activeTab === "done"
-                  ? "No completed content yet"
-                  : "No items to do yet"}
-            </Text>
-          </View>
-        )}
-      </ScrollView>
+        <ScrollListWrapper
+          loading={loading}
+          data={filteredItems}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <ContentCard item={item} onPress={handleItemPress} />
+          )}
+          emptyMessage={
+            selectedCategory
+              ? "No items found"
+              : activeTab === "done"
+                ? "No completed content yet"
+                : "No items to do yet"
+          }
+        />
+      </View>
 
       {/* Floating Action Button */}
       <TouchableOpacity

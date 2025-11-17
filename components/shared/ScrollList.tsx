@@ -1,54 +1,25 @@
 import PrimaryButton from "@/components/shared/buttons/PrimaryButton";
-import { colors, pageStyles, searchBarStyles } from "@/styles/common";
+import { colors, pageStyles } from "@/styles/common";
 import { JSX, default as React } from "react";
 import {
   ActivityIndicator,
   FlatList,
   ListRenderItem,
   Text,
-  TextInput,
   View,
 } from "react-native";
 
-interface SearchBarProps {
-  placeholderText: string;
-  searchQuery: string;
-  setSearchQuery: (text: string) => void;
-  handleSearch: () => void;
-}
-
-export function SearchBar({
-  placeholderText,
-  searchQuery,
-  setSearchQuery,
-  handleSearch,
-}: SearchBarProps) {
-  return (
-    <View style={searchBarStyles.searchBarContainer}>
-      <TextInput
-        style={searchBarStyles.searchBar}
-        placeholder={placeholderText}
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        returnKeyType="search"
-        onSubmitEditing={handleSearch}
-        autoFocus
-      />
-    </View>
-  );
-}
-
-interface SearchResultsListProps<T> {
+interface ScrollListProps<T> {
   data: T[];
   keyExtractor: (item: T) => string;
   renderItem: ListRenderItem<T>;
 }
 
-export function SearchResultsList<T>({
+export function ScrollListList<T>({
   data,
   keyExtractor,
   renderItem,
-}: SearchResultsListProps<T>) {
+}: ScrollListProps<T>) {
   return (
     <FlatList
       data={data}
@@ -69,7 +40,7 @@ export function Loading() {
   );
 }
 
-interface SearchResultsWrapperProps<T> {
+interface ScrollListWrapperProps<T> {
   loading: boolean;
   error?: string | null;
   data: T[];
@@ -80,7 +51,7 @@ interface SearchResultsWrapperProps<T> {
   buttonText?: string;
 }
 
-export function SearchResultsWrapper<T>({
+export function ScrollListWrapper<T>({
   loading,
   error,
   data,
@@ -89,7 +60,7 @@ export function SearchResultsWrapper<T>({
   emptyMessage,
   onButtonPress,
   buttonText,
-}: SearchResultsWrapperProps<T>) {
+}: ScrollListWrapperProps<T>) {
   if (loading) {
     return <Loading />;
   }
@@ -107,7 +78,7 @@ export function SearchResultsWrapper<T>({
 
   if (data.length > 0) {
     return (
-      <SearchResultsList
+      <ScrollListList
         data={data}
         keyExtractor={keyExtractor}
         renderItem={renderItem}

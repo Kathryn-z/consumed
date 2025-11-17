@@ -93,7 +93,4 @@ export const indexStyles = StyleSheet.create({
     color: colors.text.primary,
     fontWeight: "600",
   },
-  listContent: {
-    paddingBottom: spacing.md,
-  },
 });

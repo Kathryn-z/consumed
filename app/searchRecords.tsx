@@ -1,5 +1,6 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
-import { SearchBar, SearchResultsWrapper } from "@/components/shared/Search";
+import { ScrollListWrapper } from "@/components/shared/ScrollList";
+import { SearchBar } from "@/components/shared/SearchBar";
 import { useContent } from "@/hooks/useContent";
 import { pageStyles } from "@/styles/common";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -54,7 +55,7 @@ export default function SearchRecords() {
         />
 
         {/* Search Results */}
-        <SearchResultsWrapper
+        <ScrollListWrapper
           loading={loading}
           data={filteredItems}
           keyExtractor={(item) => item.id.toString()}

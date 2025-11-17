@@ -1,5 +1,7 @@
 import { SearchedContentCard } from "@/components/cards/contentCards/SearchedContentCard";
-import { SearchBar, SearchResultsWrapper } from "@/components/shared/Search";
+import { ScrollListWrapper } from "@/components/shared/ScrollList";
+import { SearchBar } from "@/components/shared/SearchBar";
+
 import {
   ItunesPodcastResult,
   searchItunesPodcast,
@@ -90,7 +92,7 @@ export default function SearchInsert() {
         />
 
         {/* Search Results */}
-        <SearchResultsWrapper
+        <ScrollListWrapper
           loading={searching}
           error={error}
           data={searchResults}
