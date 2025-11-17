@@ -1,16 +1,10 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
-import SearchBar from "@/components/shared/SearchBar";
+import { SearchBar, SearchResultsWrapper } from "@/components/shared/Search";
 import { useContent } from "@/hooks/useContent";
 import { searchRecordsStyles } from "@/styles/screens/searchRecords";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { View } from "react-native";
 
 export default function SearchRecords() {
   const router = useRouter();
@@ -50,7 +44,7 @@ export default function SearchRecords() {
 
   return (
     <View style={searchRecordsStyles.container}>
-      <ScrollView style={searchRecordsStyles.content}>
+      <View style={searchRecordsStyles.content}>
         <SearchBar
           placeholderText="Search by title, creator, or category..."
           searchQuery={searchQuery}
@@ -59,34 +53,16 @@ export default function SearchRecords() {
         />
 
         {/* Search Results */}
-        {loading ? (
-          <View style={searchRecordsStyles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        ) : searchQuery.trim() === "" ? (
-          <View style={searchRecordsStyles.emptyContainer}>
-            <Text style={searchRecordsStyles.emptyText}>
-              Start typing to search your saved content
-            </Text>
-          </View>
-        ) : filteredItems.length > 0 ? (
-          <FlatList
-            data={filteredItems}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <ContentCard item={item} onPress={handleItemPress} />
-            )}
-            scrollEnabled={false}
-            contentContainerStyle={searchRecordsStyles.listContent}
-          />
-        ) : (
-          <View style={searchRecordsStyles.emptyContainer}>
-            <Text style={searchRecordsStyles.emptyText}>
-              No records found matching "{searchQuery}"
-            </Text>
-          </View>
-        )}
-      </ScrollView>
+        <SearchResultsWrapper
+          loading={loading}
+          data={filteredItems}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <ContentCard item={item} onPress={handleItemPress} />
+          )}
+          emptyMessage={"No records found"}
+        />
+      </View>
     </View>
   );
 }

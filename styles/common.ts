@@ -160,6 +160,14 @@ export const pageStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background.page,
   },
+  searchBarContainer: {
+    flex: 1,
+    padding: spacing.md,
+  },
+  searchResultsContainer: {
+    flex: 1,
+    padding: spacing.sm,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
@@ -170,12 +178,6 @@ export const pageStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: spacing.md,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: spacing.xl,
   },
   // Content
   content: {

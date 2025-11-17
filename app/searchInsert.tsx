@@ -1,6 +1,5 @@
 import { SearchedContentCard } from "@/components/cards/contentCards/SearchedContentCard";
-import PrimaryButton from "@/components/shared/buttons/PrimaryButton";
-import SearchBar from "@/components/shared/SearchBar";
+import { SearchBar, SearchResultsWrapper } from "@/components/shared/Search";
 import {
   ItunesPodcastResult,
   searchItunesPodcast,
@@ -9,7 +8,7 @@ import { searchInsertStyles } from "@/styles/screens/searchInsert";
 import { ContentCategory } from "@/types/content";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function SearchInsert() {
   const router = useRouter();
@@ -81,7 +80,7 @@ export default function SearchInsert() {
 
   return (
     <View style={searchInsertStyles.container}>
-      <ScrollView style={searchInsertStyles.content}>
+      <View style={searchInsertStyles.content}>
         <SearchBar
           placeholderText={`Search for ${category || "content"}...`}
           searchQuery={searchQuery}
@@ -89,45 +88,20 @@ export default function SearchInsert() {
           handleSearch={handleSearch}
         />
 
-        {/* Search Results Area */}
-        <View style={searchInsertStyles.resultsContainer}>
-          {searching ? (
-            <View style={searchInsertStyles.loadingContainer}>
-              <ActivityIndicator size="large" color="#007AFF" />
-              <Text style={searchInsertStyles.loadingText}>Searching...</Text>
-            </View>
-          ) : error ? (
-            <View>
-              <Text style={searchInsertStyles.errorText}>{error}</Text>
-              <PrimaryButton
-                text="Enter Content Info"
-                onPress={handleContentInfo}
-              />
-            </View>
-          ) : searchResults.length > 0 ? (
-            <ScrollView>
-              {searchResults.map((result) => (
-                <SearchedContentCard
-                  key={result.trackId}
-                  result={result}
-                  onPress={handleResultPress}
-                />
-              ))}
-            </ScrollView>
-          ) : (
-            <View>
-              <Text style={searchInsertStyles.noResultsText}>
-                If there is no content in the search result, you can try custom
-                entry.
-              </Text>
-              <PrimaryButton
-                text="Enter Content Info"
-                onPress={handleContentInfo}
-              />
-            </View>
+        {/* Search Results */}
+        <SearchResultsWrapper
+          loading={searching}
+          error={error}
+          data={searchResults}
+          keyExtractor={(item) => item.trackId.toString()}
+          renderItem={({ item }) => (
+            <SearchedContentCard result={item} onPress={handleResultPress} />
           )}
-        </View>
-      </ScrollView>
+          emptyMessage="If there is no content in the search result, you can try custom entry."
+          onButtonPress={handleContentInfo}
+          buttonText="Enter Content Info"
+        />
+      </View>
     </View>
   );
 }
