@@ -15,7 +15,7 @@ interface ScrollListProps<T> {
   renderItem: ListRenderItem<T>;
 }
 
-export function ScrollListList<T>({
+export function ScrollList<T>({
   data,
   keyExtractor,
   renderItem,
@@ -78,7 +78,7 @@ export function ScrollListWrapper<T>({
 
   if (data.length > 0) {
     return (
-      <ScrollListList
+      <ScrollList
         data={data}
         keyExtractor={keyExtractor}
         renderItem={renderItem}

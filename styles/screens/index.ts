@@ -7,33 +7,13 @@ export const indexStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.sm,
-    marginBottom: spacing.md,
+    paddingBottom: spacing.sm,
   },
   filterContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  chip: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
-  },
-  chipActive: {
-    backgroundColor: colors.selected,
-    borderColor: colors.selected,
-  },
-  chipText: {
-    fontSize: 14,
-    color: "#333",
-  },
-  chipTextActive: {
-    color: "#fff",
-    fontWeight: "600",
+    marginBottom: spacing.sm,
   },
   fab: {
     position: "absolute",

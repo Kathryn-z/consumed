@@ -23,9 +23,17 @@ export default function Records() {
   };
 
   return (
-    <SafeAreaView style={recordsStyles.container}>
-      <View style={recordsStyles.content}>
+    <View style={recordsStyles.container}>
+      {/* header */}
+      <SafeAreaView
+        edges={["top", "left", "right"]}
+        style={recordsStyles.headerContent}
+      >
         <Text style={recordsStyles.pageTitle}>My Records</Text>
+      </SafeAreaView>
+
+      {/* Main Content */}
+      <View style={recordsStyles.content}>
         <Text style={recordsStyles.description}>
           View all your rated and recorded content.
         </Text>
@@ -41,6 +49,6 @@ export default function Records() {
           emptyMessage={"No records found"}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }

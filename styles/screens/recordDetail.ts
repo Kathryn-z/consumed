@@ -31,9 +31,6 @@ export const recordDetailStyles = StyleSheet.create({
     ...cardStyles.cardInfoPrimary,
     marginBottom: 0,
   },
-  notesContainer: {
-    ...pageStyles.noteContainer,
-  },
   notesText: {
     ...textStyles.longTextPrimary,
   },

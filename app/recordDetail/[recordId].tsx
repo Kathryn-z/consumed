@@ -174,18 +174,20 @@ export default function RecordDetail() {
           </View>
         )}
 
-        {/* Date Consumed */}
-        <DateConsumedChip dateConsumed={record.dateConsumed} />
+        <View style={recordDetailStyles.scrollContent}>
+          {/* Date Consumed */}
+          <DateConsumedChip dateConsumed={record.dateConsumed} />
 
-        {/* Status/Rating Chip */}
-        <StatusRatingChip status={item.status} rating={record.rating} />
+          {/* Status/Rating Chip */}
+          <StatusRatingChip status={item.status} rating={record.rating} />
 
-        {/* Notes */}
-        {record.notes && (
-          <View style={recordDetailStyles.notesContainer}>
-            <Text style={recordDetailStyles.notesText}>{record.notes}</Text>
-          </View>
-        )}
+          {/* Notes */}
+          {record.notes && (
+            <View>
+              <Text style={recordDetailStyles.notesText}>{record.notes}</Text>
+            </View>
+          )}
+        </View>
 
         {/* Bottom Menu Modal */}
         <BottomMenuModal

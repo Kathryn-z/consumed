@@ -12,6 +12,7 @@ export const colors = {
     chipDefault: "#d4d4d4ff",
     chipTodo: "#E8D4F8",
     chipRating: "#4CAF50",
+    chipSelected: "#000",
   },
   text: {
     primary: "#000",
@@ -19,9 +20,10 @@ export const colors = {
     tertiary: "#999",
     highlight: "#007AFF",
     dangerous: "#FF3B30",
-    chipStatus: "#000",
+    chipDone: "#000",
     chipTodo: "#9C27B0",
     chipRating: "#fff",
+    chipSelected: "#fff",
     button: "#fff",
   },
   border: "#ddd",
@@ -39,7 +41,7 @@ export const spacing = {
 
 export const fontSizes = {
   imagePlaceHolder: 32,
-  pageTitle: 24,
+  pageTitle: 22,
   modalTitle: 20,
   button: 17,
   primary: 16,
@@ -65,7 +67,7 @@ export const borderRadii = {
 };
 
 export const borderWidths = {
-  default: 1,
+  default: 1.5,
 };
 
 export const textStyles = StyleSheet.create({
@@ -171,17 +173,18 @@ export const pageStyles = StyleSheet.create({
     alignItems: "center",
     padding: spacing.md,
   },
-  noteContainer: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-  },
   // Content
+  headerContent: {
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: 0,
+  },
   content: {
-    flex: 1,
     padding: spacing.md,
+    paddingVertical: 0,
   },
   scrollContent: {
-    padding: spacing.sm,
+    padding: spacing.xs,
     paddingBottom: spacing.lg,
   },
   // Text
@@ -203,7 +206,6 @@ export const pageStyles = StyleSheet.create({
   pageTitle: {
     fontSize: fontSizes.pageTitle,
     fontWeight: fontWeights.bold,
-    marginBottom: spacing.sm,
   },
   description: {
     fontSize: fontSizes.primary,

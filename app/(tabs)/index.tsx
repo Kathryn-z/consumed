@@ -1,4 +1,5 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
+import CategoryChip from "@/components/chips/CategoryChip";
 import { CategorySelectionModal } from "@/components/modals/categorySelectionModal/CategorySelectionModal";
 import { ScrollListWrapper } from "@/components/shared/ScrollList";
 import { useContent } from "@/hooks/useContent";
@@ -77,8 +78,11 @@ export default function Search() {
   };
 
   return (
-    <SafeAreaView style={indexStyles.container}>
-      <View style={indexStyles.content}>
+    <View style={indexStyles.container}>
+      <SafeAreaView
+        edges={["top", "left", "right"]}
+        style={indexStyles.headerContent}
+      >
         {/* Header with Tab Switcher and Search Icon */}
         <View style={indexStyles.header}>
           <View style={indexStyles.tabSwitcher}>
@@ -127,27 +131,18 @@ export default function Search() {
             <Text style={indexStyles.searchIconText}>🔍</Text>
           </TouchableOpacity>
         </View>
+      </SafeAreaView>
 
+      <View style={indexStyles.content}>
         {/* Category Filter Chips */}
         <View style={indexStyles.filterContainer}>
           {CATEGORIES.map((category) => (
-            <TouchableOpacity
+            <CategoryChip
               key={category}
-              style={[
-                indexStyles.chip,
-                selectedCategory === category && indexStyles.chipActive,
-              ]}
+              label={category}
+              isActive={selectedCategory === category}
               onPress={() => handleCategoryPress(category)}
-            >
-              <Text
-                style={[
-                  indexStyles.chipText,
-                  selectedCategory === category && indexStyles.chipTextActive,
-                ]}
-              >
-                {category}
-              </Text>
-            </TouchableOpacity>
+            />
           ))}
         </View>
 
@@ -184,6 +179,6 @@ export default function Search() {
         onDismiss={() => setCategoryModalVisible(false)}
         onSelectCategory={handleCategorySelect}
       />
-    </SafeAreaView>
+    </View>
   );
 }

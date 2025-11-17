@@ -1,5 +1,11 @@
 import { StyleSheet } from "react-native";
-import { colors, fontSizes, fontWeights, spacing } from "../../common";
+import {
+  borderWidths,
+  colors,
+  fontSizes,
+  fontWeights,
+  spacing,
+} from "../../common";
 
 export const statusRatingChipStyles = (
   style: "todo" | "done" | "rated",
@@ -34,7 +40,7 @@ export const statusRatingChipStyles = (
     },
     done: {
       backgroundColor: colors.background.chipDefault,
-      textColor: colors.text.chipStatus,
+      textColor: colors.text.chipDone,
     },
     rated: {
       backgroundColor: colors.background.chipRating,
@@ -70,5 +76,33 @@ export const dateConsumedChipStyles = StyleSheet.create({
     fontSize: fontSizes.infoPrimary,
     color: colors.text.secondary,
     marginBottom: spacing.xs,
+  },
+});
+
+export const categoryChipStyles = StyleSheet.create({
+  container: {},
+  chip: {
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderWidth: borderWidths.default,
+    borderColor: colors.border,
+    borderRadius: 10,
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  chipActive: {
+    backgroundColor: colors.background.chipSelected,
+    borderColor: colors.background.chipSelected,
+  },
+  text: {
+    fontSize: 13,
+    color: colors.text.primary,
+    fontWeight: fontWeights.secondary,
+  },
+  textActive: {
+    color: colors.text.chipSelected,
+    fontWeight: fontWeights.primary,
   },
 });
