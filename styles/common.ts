@@ -180,6 +180,7 @@ export const pageStyles = StyleSheet.create({
     paddingBottom: 0,
   },
   content: {
+    flex: 1,
     padding: spacing.md,
     paddingVertical: 0,
   },
