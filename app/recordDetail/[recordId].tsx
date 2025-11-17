@@ -178,9 +178,7 @@ export default function RecordDetail() {
         <DateConsumedChip dateConsumed={record.dateConsumed} />
 
         {/* Status/Rating Chip */}
-        <View style={recordDetailStyles.statusContainer}>
-          <StatusRatingChip status={item.status} rating={record.rating} />
-        </View>
+        <StatusRatingChip status={item.status} rating={record.rating} />
 
         {/* Notes */}
         {record.notes && (

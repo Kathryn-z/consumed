@@ -1,12 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  cardStyles,
-  chipStyles,
-  colors,
-  pageStyles,
-  spacing,
-  textStyles,
-} from "../common";
+import { cardStyles, colors, pageStyles, spacing, textStyles } from "../common";
 
 export const recordDetailStyles = StyleSheet.create({
   ...pageStyles,
@@ -38,17 +31,8 @@ export const recordDetailStyles = StyleSheet.create({
     ...cardStyles.cardInfoPrimary,
     marginBottom: 0,
   },
-  dateContainer: {
-    ...chipStyles.dateChip,
-  },
-  dateText: {
-    ...cardStyles.cardInfoPrimary,
-  },
-  statusContainer: {
-    ...chipStyles.dateChip,
-  },
   notesContainer: {
-    ...chipStyles.dateChip,
+    ...pageStyles.noteContainer,
   },
   notesText: {
     ...textStyles.longTextPrimary,

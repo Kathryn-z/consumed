@@ -91,9 +91,7 @@ export function RecordCard({ record, onPress }: RecordCardProps) {
           <Text style={recordCardStyles.category}>{getCategoryDisplay()}</Text>
 
           {/* Status/Rating Chip */}
-          <View>
-            <StatusRatingChip status={item.status} rating={record.rating} />
-          </View>
+          <StatusRatingChip status={item.status} rating={record.rating} />
         </View>
       </View>
 

@@ -171,6 +171,10 @@ export const pageStyles = StyleSheet.create({
     alignItems: "center",
     padding: spacing.md,
   },
+  noteContainer: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+  },
   // Content
   content: {
     flex: 1,
@@ -286,29 +290,6 @@ export const cardStyles = StyleSheet.create({
   cardInfoSecondary: {
     fontSize: fontSizes.infoSecondary,
     color: colors.text.tertiary,
-  },
-});
-
-export const chipStyles = StyleSheet.create({
-  // Container
-  chip: {
-    alignSelf: "flex-start",
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    borderRadius: borderRadii.md,
-  },
-  dateChip: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-  },
-  // Text
-  chipText: {
-    fontSize: fontSizes.chip,
-    fontWeight: fontWeights.secondary,
-  },
-  chipBoldText: {
-    fontSize: fontSizes.chip,
-    fontWeight: fontWeights.primary,
   },
 });
 

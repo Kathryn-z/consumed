@@ -17,7 +17,6 @@ import {
   getPodcastEpisodeById,
 } from "@/db/podcastEpisodeOperations";
 import { ItunesPodcastEpisode } from "@/services/api/itunes";
-import { recordDetailStyles } from "@/styles/screens/recordDetail";
 import { recordDetailEditStyles } from "@/styles/screens/recordDetailEdit";
 import { ConsumptionRecord } from "@/types/consumptionRecord";
 import {
@@ -409,12 +408,10 @@ export default function RecordDetailEdit() {
           <DateConsumedChip dateConsumed={newRecordData.dateConsumed} />
 
           {/* Status/Rating Chip */}
-          <View style={recordDetailStyles.statusContainer}>
-            <StatusRatingChip
-              status={item.status}
-              rating={newRecordData.rating}
-            />
-          </View>
+          <StatusRatingChip
+            status={item.status}
+            rating={newRecordData.rating}
+          />
 
           {/* Rating Stars (Edit Mode) */}
           {item.status === "done" && (

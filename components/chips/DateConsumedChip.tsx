@@ -1,6 +1,6 @@
-import { dateConsumedChipStyles } from "@/styles/components/chips/dateConsumedChip";
+import { dateConsumedChipStyles } from "@/styles/components/chips/chips";
 import { formatDateAndDayToString } from "@/utils/dateFormat";
-import { Text, View } from "react-native";
+import Chip from "./Chip";
 
 interface DateConsumedChipProps {
   dateConsumed: string | Date;
@@ -8,10 +8,10 @@ interface DateConsumedChipProps {
 
 export function DateConsumedChip({ dateConsumed }: DateConsumedChipProps) {
   return (
-    <View style={dateConsumedChipStyles.container}>
-      <Text style={dateConsumedChipStyles.dateText}>
-        {formatDateAndDayToString(dateConsumed)}
-      </Text>
-    </View>
+    <Chip
+      label={formatDateAndDayToString(dateConsumed)}
+      styles={dateConsumedChipStyles}
+      onPress={() => {}}
+    />
   );
 }

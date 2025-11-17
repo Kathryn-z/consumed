@@ -1,3 +1,4 @@
+import { StatusRatingChip } from "@/components/chips/StatusRatingChip";
 import { BottomMenuModal } from "@/components/modals/bottomMenuModal/BottomMenuModal";
 import CoverImage from "@/components/shared/CoverImage";
 import { getConsumptionRecordsByContentId } from "@/db/consumptionOperations";
@@ -444,18 +445,8 @@ export default function ContentDetail() {
           {/* Status */}
           <View style={contentDetailStyles.row}>
             <Text style={contentDetailStyles.label}>Status:</Text>
-            <View
-              style={[
-                contentDetailStyles.statusBadge,
-                item.status === "done"
-                  ? contentDetailStyles.statusDone
-                  : contentDetailStyles.statusTodo,
-              ]}
-            >
-              <Text style={contentDetailStyles.statusText}>
-                {item.status === "done" ? "Done" : "To do"}
-              </Text>
-            </View>
+            {/* Status/Rating Chip */}
+            <StatusRatingChip status={item.status} rating={item.rating} />
           </View>
 
           {/* Date Added */}
@@ -465,20 +456,6 @@ export default function ContentDetail() {
               {formatDateToString(item.dateAdded)}
             </Text>
           </View>
-
-          {/* Latest Rating */}
-          {item.rating !== undefined && item.rating !== null && (
-            <View style={contentDetailStyles.row}>
-              <Text style={contentDetailStyles.label}>Latest Rating:</Text>
-              <View style={contentDetailStyles.ratingContainer}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Text key={star} style={contentDetailStyles.star}>
-                    {star <= item.rating! ? "★" : "☆"}
-                  </Text>
-                ))}
-              </View>
-            </View>
-          )}
 
           {/* External Link Button */}
           {(item as any).link && (
