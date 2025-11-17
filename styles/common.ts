@@ -160,14 +160,6 @@ export const pageStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background.page,
   },
-  searchBarContainer: {
-    flex: 1,
-    padding: spacing.md,
-  },
-  searchResultsContainer: {
-    flex: 1,
-    padding: spacing.sm,
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",

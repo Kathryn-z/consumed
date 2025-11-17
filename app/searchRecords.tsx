@@ -1,7 +1,7 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
 import { SearchBar, SearchResultsWrapper } from "@/components/shared/Search";
 import { useContent } from "@/hooks/useContent";
-import { searchRecordsStyles } from "@/styles/screens/searchRecords";
+import { pageStyles } from "@/styles/common";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
@@ -43,8 +43,9 @@ export default function SearchRecords() {
   };
 
   return (
-    <View style={searchRecordsStyles.container}>
-      <View style={searchRecordsStyles.content}>
+    <View style={pageStyles.container}>
+      <View style={pageStyles.content}>
+        {/* Search Bar */}
         <SearchBar
           placeholderText="Search by title, creator, or category..."
           searchQuery={searchQuery}

@@ -55,6 +55,7 @@ export function SearchResultsList<T>({
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       scrollEnabled={true}
+      showsVerticalScrollIndicator={false}
     />
   );
 }

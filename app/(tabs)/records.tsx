@@ -52,7 +52,7 @@ export default function Records() {
               contentContainerStyle={indexStyles.listContent}
             />
           ) : (
-            <View style={indexStyles.emptyContainer}>
+            <View>
               <Text style={indexStyles.emptyText}>{"No records found"}</Text>
             </View>
           )}

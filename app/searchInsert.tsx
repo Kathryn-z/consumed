@@ -4,7 +4,7 @@ import {
   ItunesPodcastResult,
   searchItunesPodcast,
 } from "@/services/api/itunes";
-import { searchInsertStyles } from "@/styles/screens/searchInsert";
+import { pageStyles } from "@/styles/common";
 import { ContentCategory } from "@/types/content";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
@@ -79,8 +79,9 @@ export default function SearchInsert() {
   };
 
   return (
-    <View style={searchInsertStyles.container}>
-      <View style={searchInsertStyles.content}>
+    <View style={pageStyles.container}>
+      <View style={pageStyles.content}>
+        {/* Search Bar */}
         <SearchBar
           placeholderText={`Search for ${category || "content"}...`}
           searchQuery={searchQuery}
