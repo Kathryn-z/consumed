@@ -97,11 +97,9 @@ export default function Search() {
       >
         <Text style={indexStyles.pageTitle}>Library</Text>
         {/* Search Icon */}
-        <EvilIcons
-          name="search"
-          size={iconSizes.header}
-          onPress={handleSearchRecords}
-        />
+        <TouchableOpacity onPress={handleSearchRecords}>
+          <EvilIcons name="search" size={iconSizes.header} />
+        </TouchableOpacity>
       </SafeAreaView>
 
       {/* Tab Header */}
