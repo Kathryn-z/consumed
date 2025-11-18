@@ -27,7 +27,7 @@ export default function Records() {
       {/* header */}
       <SafeAreaView
         edges={["top", "left", "right"]}
-        style={recordsStyles.headerContent}
+        style={recordsStyles.headerContainer}
       >
         <Text style={recordsStyles.pageTitle}>My Records</Text>
       </SafeAreaView>

@@ -8,7 +8,7 @@ export default function Profile() {
       {/* header */}
       <SafeAreaView
         edges={["top", "left", "right"]}
-        style={profileStyles.headerContent}
+        style={profileStyles.headerContainer}
       >
         <Text style={profileStyles.pageTitle}>Profile</Text>
       </SafeAreaView>

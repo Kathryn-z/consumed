@@ -41,7 +41,7 @@ export const spacing = {
 
 export const fontSizes = {
   imagePlaceHolder: 32,
-  pageTitle: 22,
+  pageTitle: 24,
   modalTitle: 20,
   button: 17,
   primary: 16,
@@ -68,6 +68,10 @@ export const borderRadii = {
 
 export const borderWidths = {
   default: 1.5,
+};
+
+export const iconSizes = {
+  header: 32,
 };
 
 export const textStyles = StyleSheet.create({
@@ -162,6 +166,15 @@ export const pageStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background.page,
   },
+  headerContainer: {
+    width: "100%",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 18,
+    paddingTop: 12,
+    paddingBottom: 20,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
@@ -174,15 +187,9 @@ export const pageStyles = StyleSheet.create({
     padding: spacing.md,
   },
   // Content
-  headerContent: {
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: 0,
-  },
   content: {
     flex: 1,
-    padding: spacing.md,
-    paddingVertical: 0,
+    paddingHorizontal: 18,
   },
   scrollContent: {
     padding: spacing.xs,
