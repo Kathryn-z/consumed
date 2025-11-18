@@ -39,7 +39,7 @@ export const tabHeaderStyles = StyleSheet.create({
   },
   fullDivider: {
     height: 1,
-    backgroundColor: "#eeececff",
+    backgroundColor: "#f5f5f5",
     flex: 1,
   },
 });

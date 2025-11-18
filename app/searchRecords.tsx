@@ -1,6 +1,6 @@
 import { ContentCard } from "@/components/cards/contentCards/ContentCard";
+import { MySearchBar } from "@/components/shared/MySearchBar";
 import { ScrollListWrapper } from "@/components/shared/ScrollList";
-import { SearchBar } from "@/components/shared/SearchBar";
 import { useContent } from "@/hooks/useContent";
 import { pageStyles } from "@/styles/common";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -45,15 +45,15 @@ export default function SearchRecords() {
 
   return (
     <View style={pageStyles.container}>
-      <View style={pageStyles.content}>
-        {/* Search Bar */}
-        <SearchBar
-          placeholderText="Search by title, creator, or category..."
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          handleSearch={() => {}}
-        />
+      {/* Search Bar */}
+      <MySearchBar
+        placeholderText="Search by title, creator, or category..."
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        handleSearch={() => {}}
+      />
 
+      <View style={pageStyles.content}>
         {/* Search Results */}
         <ScrollListWrapper
           loading={loading}

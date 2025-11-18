@@ -1,6 +1,6 @@
 import { SearchedContentCard } from "@/components/cards/contentCards/SearchedContentCard";
+import { MySearchBar } from "@/components/shared/MySearchBar";
 import { ScrollListWrapper } from "@/components/shared/ScrollList";
-import { SearchBar } from "@/components/shared/SearchBar";
 
 import {
   ItunesPodcastResult,
@@ -82,15 +82,15 @@ export default function SearchInsert() {
 
   return (
     <View style={pageStyles.container}>
-      <View style={pageStyles.content}>
-        {/* Search Bar */}
-        <SearchBar
-          placeholderText={`Search for ${category || "content"}...`}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          handleSearch={handleSearch}
-        />
+      {/* Search Bar */}
+      <MySearchBar
+        placeholderText={`Search for ${category || "content"}...`}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        handleSearch={handleSearch}
+      />
 
+      <View style={pageStyles.content}>
         {/* Search Results */}
         <ScrollListWrapper
           loading={searching}
